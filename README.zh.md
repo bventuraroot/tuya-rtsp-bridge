@@ -1,7 +1,7 @@
 # 涂鸦 RTSP 网桥
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Français](README.fr.md)](README.fr.md) [![Español](README.es.md)](README.es.md) [![Português](README.pt.md)](README.pt.md) [![Italiano](README.it.md)](README.it.md) [![Čeština](README.cs.md)](README.cs.md) [![Русский](README.ru.md)](README.ru.md) [![Українська](README.uk.md)](README.uk.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md)
+[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Nederlands](README.nl.md)](README.nl.md) [![Français](README.fr.md)](README.fr.md) [![Español](README.es.md)](README.es.md) [![Português](README.pt.md)](README.pt.md) [![Italiano](README.it.md)](README.it.md) [![Polski](README.pl.md)](README.pl.md) [![Čeština](README.cs.md)](README.cs.md) [![Русский](README.ru.md)](README.ru.md) [![Українська](README.uk.md)](README.uk.md) [![Bahasa Indonesia](README.id.md)](README.id.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md)
 
 **把任意涂鸦 / Smart Life / iSmartLife 摄像机变成普通 RTSP 摄像机**，供 Frigate、Agent DVR、go2rtc、Home Assistant 或 VLC 使用。
 
@@ -49,7 +49,7 @@ RTSP 引擎是 **[seydx](https://github.com/seydx)** 的 **[tuya-ipc-terminal](h
 - 标清：`…/sd`（H.264）
 - 所有摄像机共用**一个**网桥 IP，只改路径
 - 安装 [VLC](https://www.videolan.org/) 可预览
-- 语言：English、Deutsch、Français、Español、Português、Italiano、Čeština、Русский、Українська、简体中文、हिन्दी
+- 语言：English、Deutsch、Nederlands、Français、Español、Português、Italiano、Polski、Čeština、Русский、Українська、Bahasa Indonesia、简体中文、हिन्दी
 
 ## 实话实说的限制
 

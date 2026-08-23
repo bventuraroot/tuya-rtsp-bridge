@@ -26,10 +26,12 @@ ShowLanguageDialog=yes
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
+Name: "dutch"; MessagesFile: "compiler:Languages\Dutch.isl"
 Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
+Name: "polish"; MessagesFile: "compiler:Languages\Polish.isl"
 Name: "czech"; MessagesFile: "compiler:Languages\Czech.isl"
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
@@ -50,13 +52,16 @@ Source: "..\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\DEPENDENCIES.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.de.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.nl.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.fr.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.es.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.pt.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.it.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.pl.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.cs.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.ru.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.uk.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.id.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.zh.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.hi.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\SECURITY.md"; DestDir: "{app}"; Flags: ignoreversion
@@ -82,6 +87,8 @@ begin
     ForceDirectories(ExtractFilePath(LangFile));
     if ActiveLanguage = 'german' then
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "de"' + #13#10 + '}', False)
+    else if ActiveLanguage = 'dutch' then
+      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "nl"' + #13#10 + '}', False)
     else if ActiveLanguage = 'french' then
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "fr"' + #13#10 + '}', False)
     else if ActiveLanguage = 'spanish' then
@@ -90,6 +97,8 @@ begin
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "pt"' + #13#10 + '}', False)
     else if ActiveLanguage = 'italian' then
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "it"' + #13#10 + '}', False)
+    else if ActiveLanguage = 'polish' then
+      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "pl"' + #13#10 + '}', False)
     else if ActiveLanguage = 'czech' then
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "cs"' + #13#10 + '}', False)
     else if ActiveLanguage = 'russian' then

@@ -1,7 +1,7 @@
 # RTSP-мост Tuya
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Français](README.fr.md)](README.fr.md) [![Español](README.es.md)](README.es.md) [![Português](README.pt.md)](README.pt.md) [![Italiano](README.it.md)](README.it.md) [![Čeština](README.cs.md)](README.cs.md) [![Русский](README.ru.md)](README.ru.md) [![Українська](README.uk.md)](README.uk.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md)
+[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Nederlands](README.nl.md)](README.nl.md) [![Français](README.fr.md)](README.fr.md) [![Español](README.es.md)](README.es.md) [![Português](README.pt.md)](README.pt.md) [![Italiano](README.it.md)](README.it.md) [![Polski](README.pl.md)](README.pl.md) [![Čeština](README.cs.md)](README.cs.md) [![Русский](README.ru.md)](README.ru.md) [![Українська](README.uk.md)](README.uk.md) [![Bahasa Indonesia](README.id.md)](README.id.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md)
 
 **Превратите любую камеру Tuya / Smart Life / iSmartLife в обычную RTSP-камеру** — для Frigate, Agent DVR, go2rtc, Home Assistant или VLC.
 
@@ -49,7 +49,7 @@ RTSP-движок — **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-te
 - SD: `…/sd` (H.264)
 - Все камеры делят **один** IP моста; меняется только путь
 - Превью, если установлен [VLC](https://www.videolan.org/)
-- Языки: English, Deutsch, Français, Español, Português, Italiano, Čeština, Русский, Українська, 简体中文, हिन्दी
+- Языки: English, Deutsch, Nederlands, Français, Español, Português, Italiano, Polski, Čeština, Русский, Українська, Bahasa Indonesia, 简体中文, हिन्दी
 
 ## Честные ограничения
 
