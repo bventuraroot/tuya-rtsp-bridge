@@ -16,6 +16,30 @@ No firmware flash. No ONVIF (stock Tuya does not offer it). Scan a QR code once,
 
 This repository ships **no** accounts, device IDs, or home IPs.
 
+## Why cheap Tuya cameras need this
+
+Those €20–40 “Smart Life” cams look like IP cameras. They are not. Stock firmware has **no ONVIF** and **no RTSP checkbox**. Live view is the vendor app and a cloud path you do not control. A second phone or a “cloud NVR” often means a subscription — or it steals the only live session.
+
+You paid for a sensor on your wall. Recording should land on **your** disk.
+
+This app is a small local bridge: scan a QR code in the app you already have, then every camera is a normal URL for Frigate, Agent DVR, go2rtc, Home Assistant, or VLC:
+
+```
+rtsp://<this-pc>:8554/<CameraName>/hd
+```
+
+Signaling still uses Tuya. When you watch from this PC, video typically stays on the LAN. Full story: [docs/why.md](docs/why.md) · [docs/warum.md](docs/warum.md).
+
+### The app
+
+First run — language, region, QR, then confirm in Smart Life. No cameras yet:
+
+![Tuya RTSP Bridge welcome screen. Empty list, no QR, localhost only.](docs/images/ui-welcome.png)
+
+After login — demo names only (`Front yard`, `Driveway`). Preview panes stay black here on purpose (no live video in the docs):
+
+![Tuya RTSP Bridge with two placeholder cameras and HD RTSP URLs on 127.0.0.1.](docs/images/ui-ready.png)
+
 ## Credits
 
 The RTSP engine is **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal)** by **[seydx](https://github.com/seydx)** (MIT), vendored at commit `d65b3e9` with three documented local patches. See [CREDITS.md](CREDITS.md) and [NOTICE.md](NOTICE.md).
@@ -118,6 +142,7 @@ Need Go only to build the engine. Release builds on Windows already include the 
 
 | Doc | Audience |
 |---|---|
+| [docs/why.md](docs/why.md) / [warum.md](docs/warum.md) | Why this exists (plain language) |
 | [docs/getting-started.md](docs/getting-started.md) | First run, Wi‑Fi move, PTZ |
 | [docs/faq.md](docs/faq.md) | Black VLC, empty list, “only 10 fps” |
 | [docs/nvr.md](docs/nvr.md) | Frigate, Agent DVR, go2rtc |

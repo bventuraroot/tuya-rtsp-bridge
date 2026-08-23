@@ -265,7 +265,18 @@ class BridgeGui(tk.Tk):
             self.yaml.insert("1.0", y)
 
     def _local_url(self, url: str) -> str:
-        return (url or "").replace("rtsp://192.168.2.155:", "rtsp://127.0.0.1:")
+        if not url:
+            return ""
+        try:
+            from urllib.parse import urlparse, urlunparse
+            p = urlparse(url)
+            if p.scheme == "rtsp":
+                host = "127.0.0.1"
+                netloc = f"{host}:{p.port}" if p.port else host
+                return urlunparse((p.scheme, netloc, p.path, p.params, p.query, p.fragment))
+        except Exception:
+            pass
+        return url
 
     def _sync_cards(self, cams: list, rtsp_up: bool) -> None:
         ids = [str(c.get("deviceId") or c.get("deviceName") or i) for i, c in enumerate(cams)]

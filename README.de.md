@@ -15,6 +15,30 @@ Kein Firmware-Flash. Kein ONVIF (gibt es auf der Stock-Firmware nicht). Einmal Q
 
 Im Repo stecken **keine** Konten, Geräte-IDs oder Heim-IPs.
 
+## Warum billige Tuya-Cams das brauchen
+
+Die 20–40-€-„Smart-Life“-Kamera sieht aus wie eine IP-Cam. Ist sie nicht. Stock-Firmware: **kein ONVIF**, **kein RTSP**. Live nur über die Hersteller-App und eine Cloud, die du nicht kontrollierst. Zweites Handy oder „Cloud-NVR“ heißt oft Abo — oder klaut die einzige Live-Session.
+
+Du hast einen Sensor an deiner Wand bezahlt. Aufnehmen gehört auf **deine** Platte.
+
+Dieses Programm ist eine kleine lokale Brücke: QR in der App scannen, die du schon hast. Danach ist jede Kamera eine normale URL für Frigate, Agent DVR, go2rtc, Home Assistant oder VLC:
+
+```
+rtsp://<dieser-PC>:8554/<Kameraname>/hd
+```
+
+Die Anmeldung bleibt bei Tuya. Vom diesem PC aus bleibt das Video typischerweise im LAN. Länger: [docs/warum.md](docs/warum.md).
+
+### Die Oberfläche
+
+Erster Start — Sprache, Region, QR, in Smart Life bestätigen:
+
+![Startbildschirm. Leere Liste, kein QR, nur localhost.](docs/images/ui-welcome.png)
+
+Nach dem Login — nur Demo-Namen (`Front yard`, `Driveway`). Die Vorschau bleibt in der Doku absichtlich schwarz (kein Livebild):
+
+![Zwei Platzhalter-Kameras, HD-RTSP auf 127.0.0.1.](docs/images/ui-ready.png)
+
 ## Credits
 
 Die RTSP-Engine ist **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal)** von **[seydx](https://github.com/seydx)** (MIT), Stand Commit `d65b3e9`, plus drei lokale Patches. Siehe [CREDITS.md](CREDITS.md) und [NOTICE.md](NOTICE.md).
