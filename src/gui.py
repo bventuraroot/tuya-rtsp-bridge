@@ -238,7 +238,7 @@ class BridgeGui(tk.Tk):
         self._chip("phase", lab, ok)
         self.hint.config(text=s.get("message") or t("hint"))
         user = s.get("user")
-        self.user.config(text=(f"{user.get('nickname') or 'Konto'}\n{user.get('email') or user.get('uid') or ''}" if user else ""))
+        self.user.config(text=(f"{user.get('nickname') or t('account')}\n{user.get('email') or user.get('uid') or ''}" if user else ""))
 
         regions = s.get("regions") or {}
         if not getattr(self, "_regions_ready", False):

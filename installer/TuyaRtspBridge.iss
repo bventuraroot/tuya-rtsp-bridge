@@ -1,7 +1,7 @@
 #define MyAppName "Tuya RTSP Bridge"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.1.0"
 #define MyAppPublisher "Tuya RTSP Bridge contributors"
-#define MyAppURL "https://github.com"
+#define MyAppURL "https://github.com/DanEng1982/tuya-rtsp-bridge"
 
 [Setup]
 AppId={{A7C3E91F-4B2D-4F11-9C08-7E2B91C4D001}

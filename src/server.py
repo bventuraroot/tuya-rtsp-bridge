@@ -232,7 +232,7 @@ def _poll_worker(generation: int) -> None:
 def frigate_yaml(state: dict) -> str:
     lines = ["mqtt:", "  enabled: false", "", "cameras:"]
     if not state["cameras"]:
-        lines.append("  # noch keine Kameras")
+        lines.append("  # no cameras yet")
         return "\n".join(lines) + "\n"
     for cam in state["cameras"]:
         cid = cam["frigateId"]

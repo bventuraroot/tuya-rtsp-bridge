@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tuya-Brücke</title>
+  <title>Tuya Bridge</title>
   <style>
     :root {
       --bg: #0c100c;
@@ -138,10 +138,10 @@
 <body>
   <div class="wrap">
     <header class="top">
-      <h1><span>■</span> Tuya-Brücke <span>CRT</span></h1>
+      <h1><span>■</span> Tuya Bridge</h1>
       <div class="chips">
         <div class="chip" id="rtspChip">RTSP</div>
-        <div class="chip" id="wdChip">Wächter</div>
+        <div class="chip" id="wdChip">Watchdog</div>
         <div class="chip" id="hlsChip">HLS</div>
         <div class="chip" id="phaseChip">…</div>
       </div>
@@ -152,11 +152,11 @@
           <label class="k" for="region">Server</label>
           <select id="region"></select>
         </div>
-        <div class="qr-wrap" id="qrBox"><div class="ph">Kein QR</div></div>
-        <p class="hint" id="hint">Smart Life: <strong>scannen</strong>, dann bestätigen.</p>
+        <div class="qr-wrap" id="qrBox"><div class="ph">No QR</div></div>
+        <p class="hint" id="hint">Smart Life: <strong>scan</strong>, then confirm.</p>
         <div class="actions">
-          <button class="pri" id="btnQr">QR erzeugen</button>
-          <button class="ghost" id="btnOut">Abmelden</button>
+          <button class="pri" id="btnQr">Create QR</button>
+          <button class="ghost" id="btnOut">Sign out</button>
         </div>
         <div class="user" id="userBox" hidden>
           <div class="n" id="userName"></div>
@@ -166,36 +166,36 @@
       <section class="main">
         <div class="row" style="margin-bottom:14px">
           <div>
-            <label class="k" style="margin:0">Kameras · nur HD</label>
+            <label class="k" style="margin:0">Cameras · HD only</label>
             <div id="camCount" class="id">0</div>
           </div>
           <div class="actions">
-            <button id="btnRefresh">Kameras neu</button>
+            <button id="btnRefresh">Refresh cameras</button>
           </div>
         </div>
         <div id="camTable"></div>
         <div style="margin-top:18px">
           <div class="row" style="margin-bottom:8px">
             <label class="k" style="margin:0">Frigate YAML</label>
-            <button id="btnYaml">kopieren</button>
+            <button id="btnYaml">Copy</button>
           </div>
-          <pre id="yamlBox"># nach Login</pre>
+          <pre id="yamlBox"># after login</pre>
         </div>
         <div class="log" id="logBox"></div>
       </section>
       <aside class="ops">
-        <h2>Schalter</h2>
-        <label class="sw"><input type="checkbox" id="fRtsp"><div><div class="t">RTSP-Engine</div><div class="d">:8554 für Agent / Frigate</div></div></label>
-        <label class="sw"><input type="checkbox" id="fWd"><div><div class="t">Wächter</div><div class="d">startet tote Streams neu</div></div></label>
-        <label class="sw"><input type="checkbox" id="fHls"><div><div class="t">HLS / VLC</div><div class="d">teurer x264-Transcode</div></div></label>
-        <label class="sw"><input type="checkbox" id="fArch"><div><div class="t">Brücken-Archiv</div><div class="d">lokal TS — sonst Agent/Frigate</div></div></label>
-        <h2>Neustart</h2>
+        <h2>Switches</h2>
+        <label class="sw"><input type="checkbox" id="fRtsp"><div><div class="t">RTSP engine</div><div class="d">:8554 for Agent / Frigate</div></div></label>
+        <label class="sw"><input type="checkbox" id="fWd"><div><div class="t">Watchdog</div><div class="d">restarts dead streams</div></div></label>
+        <label class="sw"><input type="checkbox" id="fHls"><div><div class="t">HLS / VLC</div><div class="d">expensive x264 transcode</div></div></label>
+        <label class="sw"><input type="checkbox" id="fArch"><div><div class="t">Bridge archive</div><div class="d">else Agent / Frigate</div></div></label>
+        <h2>Restart</h2>
         <div class="stack">
-          <button id="btnRstRtsp">Engine neu (:8554)</button>
-          <button id="btnRstUi">Oberfläche neu</button>
-          <button id="btnRstAll">Alles neu</button>
+          <button id="btnRstRtsp">Restart engine (:8554)</button>
+          <button id="btnRstUi">Restart UI</button>
+          <button id="btnRstAll">Restart all</button>
         </div>
-        <p class="hint">1920×1080. Agent bleibt auf <strong>…/hd</strong>. HLS nur an, wenn du VLC brauchst.</p>
+        <p class="hint">Agent stays on <strong>…/hd</strong>. Turn HLS on only if you need VLC.</p>
       </aside>
     </div>
   </div>
@@ -239,16 +239,16 @@
       }
       if (document.activeElement !== sel) sel.value = s.region;
 
-      const phaseMap = { idle:["Bereit",""], waiting:["Warte Scan","wait"], logged_in:["Angemeldet","ok"], error:["Fehler","bad"] };
+      const phaseMap = { idle:["Ready",""], waiting:["Waiting scan","wait"], logged_in:["Signed in","ok"], error:["Error","bad"] };
       const [pt, pk] = phaseMap[s.phase] || [s.phase, ""];
       chip($("phaseChip"), pt, pk);
-      chip($("rtspChip"), s.rtsp && s.rtsp.running ? "RTSP :" + s.rtsp.port : "RTSP aus", s.rtsp && s.rtsp.running ? "ok" : "");
-      chip($("wdChip"), s.watchdogRunning ? "Wächter an" : "Wächter aus", s.watchdogRunning ? "ok" : "");
-      chip($("hlsChip"), s.hlsRunning ? "HLS an" : "HLS aus", s.hlsRunning ? "wait" : "");
+      chip($("rtspChip"), s.rtsp && s.rtsp.running ? "RTSP :" + s.rtsp.port : "RTSP off", s.rtsp && s.rtsp.running ? "ok" : "");
+      chip($("wdChip"), s.watchdogRunning ? "Watchdog on" : "Watchdog off", s.watchdogRunning ? "ok" : "");
+      chip($("hlsChip"), s.hlsRunning ? "HLS on" : "HLS off", s.hlsRunning ? "wait" : "");
 
       $("hint").innerHTML = s.message
         ? (s.pollCount ? (s.message + " · Poll " + s.pollCount) : s.message)
-        : "Smart Life: <strong>scannen</strong>, dann bestätigen.";
+        : "Smart Life: <strong>scan</strong>, then confirm.";
 
       const box = $("qrBox");
       if (s.hasQr) {
@@ -257,13 +257,13 @@
           lastQrId = s.qrId;
         }
       } else if (s.phase !== "waiting") {
-        box.innerHTML = `<div class="ph">${s.loggedIn ? "Sitzung aktiv" : "Kein QR"}</div>`;
+        box.innerHTML = `<div class="ph">${s.loggedIn ? "Session active" : "No QR"}</div>`;
         lastQrId = "";
       }
 
       $("userBox").hidden = !s.user;
       if (s.user) {
-        $("userName").textContent = s.user.nickname || "Konto";
+        $("userName").textContent = s.user.nickname || "Account";
         $("userMail").textContent = s.user.email || s.user.uid;
       }
 
@@ -278,7 +278,7 @@
       }
 
       if (!(s.cameras||[]).length) {
-        $("camTable").innerHTML = `<div class="empty">${s.loggedIn ? "Keine Kameras." : "Nach dem Scan erscheinen die HD-Links."}</div>`;
+        $("camTable").innerHTML = `<div class="empty">${s.loggedIn ? "No cameras." : "HD links appear after you scan."}</div>`;
       } else {
         $("camTable").innerHTML = s.cameras.map(c => `
           <article class="card">
@@ -287,7 +287,7 @@
                 <h3>${escapeHtml(c.deviceName)}</h3>
                 <div class="id">${escapeHtml(c.deviceId)}</div>
                 <div class="url">${escapeHtml(c.rtspHd)}</div>
-                <button data-copy="${encodeURIComponent(c.rtspHd)}">HD kopieren</button>
+                <button data-copy="${encodeURIComponent(c.rtspHd)}">Copy HD</button>
               </div>
               <div class="ptz">
                 <div></div>
@@ -327,7 +327,7 @@
         });
       }
 
-      let y = "# noch keine Kameras";
+      let y = "# no cameras yet";
       if ((s.cameras||[]).length) {
         y = "mqtt:\n  enabled: false\n\ncameras:\n";
         s.cameras.forEach(c => {

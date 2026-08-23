@@ -1,0 +1,24 @@
+name: Feature idea
+description: Suggest something that helps more camera owners
+title: "[idea] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What should change
+      placeholder: e.g. macOS launcher, extra Tuya region, Home Assistant add-on
+    validations:
+      required: true
+  - type: textarea
+    id: who
+    attributes:
+      label: Who does this help
+      placeholder: Casual users / NVR tinkerers / developers
+  - type: checkboxes
+    id: first
+    attributes:
+      label: Scope
+      options:
+        - label: I can help implement this
+        - label: This is a good first issue for a new contributor

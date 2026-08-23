@@ -1,7 +1,9 @@
 # Tuya RTSP Bridge
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Windows](https://img.shields.io/badge/Windows-10%2F11-blue.svg)](#install)
+[![CI](https://github.com/DanEng1982/tuya-rtsp-bridge/actions/workflows/ci.yml/badge.svg)](https://github.com/DanEng1982/tuya-rtsp-bridge/actions/workflows/ci.yml)
+[![GitHub stars](https://img.shields.io/github/stars/DanEng1982/tuya-rtsp-bridge?style=social)](https://github.com/DanEng1982/tuya-rtsp-bridge/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/DanEng1982/tuya-rtsp-bridge)](https://github.com/DanEng1982/tuya-rtsp-bridge/issues)
 [![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Français](README.fr.md)](README.fr.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md)
 
 **Turn any Tuya / Smart Life / iSmartLife camera into a normal RTSP camera** — so Frigate, Agent DVR, go2rtc, Home Assistant, or VLC can use it.
@@ -150,7 +152,20 @@ Need Go only to build the engine. Release builds on Windows already include the 
 | [docs/api.md](docs/api.md) | Local HTTP API `:8787` |
 | [docs/arch-linux.md](docs/arch-linux.md) | Arch: launch.sh + PKGBUILD |
 | [DEPENDENCIES.md](DEPENDENCIES.md) | Licenses (all redistributable or not shipped) |
-| [docs/fr](docs/fr/) [docs/zh](docs/zh/) [docs/hi](docs/hi/) | French / 中文 / हिन्दी user docs |
+| [docs/fr](docs/fr/) · [docs/zh](docs/zh/) · [docs/hi](docs/hi/) | FR / 中文 / हिन्दी |
+| [SECURITY.md](SECURITY.md) | What not to commit |
+
+## Join in
+
+If this un-clouded a camera you already own, **star the repo** so the next person finds it.
+
+Then pick one:
+
+- [Report a camera model](https://github.com/DanEng1982/tuya-rtsp-bridge/issues/new?template=camera.yml) (Smart Life / Tuya Smart + region)
+- [Suggest a feature](https://github.com/DanEng1982/tuya-rtsp-bridge/issues/new?template=feature.yml)
+- Add a language or fix a string in `src/i18n.py` — see [CONTRIBUTING.md](CONTRIBUTING.md)
+
+PRs from anywhere are welcome. English in code comments; UI already speaks five languages.
 
 ## License
 

@@ -3,3 +3,6 @@ contact_links:
   - name: Read the FAQ first
     url: https://github.com/DanEng1982/tuya-rtsp-bridge/blob/main/docs/faq.md
     about: Empty camera list, black VLC, fps, ONVIF
+  - name: Contributing guide
+    url: https://github.com/DanEng1982/tuya-rtsp-bridge/blob/main/CONTRIBUTING.md
+    about: Translations, camera reports, PRs

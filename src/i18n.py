@@ -71,6 +71,7 @@ _STRINGS: dict[str, dict[str, str]] = {
         "qr_error": "QR error",
         "vlc_missing": "VLC not found. Install VideoLAN VLC (free, LGPL).",
         "camera": "Camera",
+        "account": "Account",
     },
     "de": {
         "app_title": "Tuya-Brücke",
@@ -126,6 +127,7 @@ _STRINGS: dict[str, dict[str, str]] = {
         "qr_error": "QR-Fehler",
         "vlc_missing": "VLC nicht gefunden. Bitte VideoLAN VLC installieren (kostenlos, LGPL).",
         "camera": "Kamera",
+        "account": "Konto",
     },
     "fr": {
         "app_title": "Pont Tuya",
@@ -181,6 +183,7 @@ _STRINGS: dict[str, dict[str, str]] = {
         "qr_error": "Erreur QR",
         "vlc_missing": "VLC introuvable. Installez VideoLAN VLC (gratuit, LGPL).",
         "camera": "Caméra",
+        "account": "Compte",
     },
     "zh": {
         "app_title": "涂鸦网桥",
@@ -236,6 +239,7 @@ _STRINGS: dict[str, dict[str, str]] = {
         "qr_error": "二维码错误",
         "vlc_missing": "未找到 VLC。请安装 VideoLAN VLC（免费，LGPL）。",
         "camera": "摄像机",
+        "account": "账户",
     },
     "hi": {
         "app_title": "टुया ब्रिज",
@@ -291,6 +295,7 @@ _STRINGS: dict[str, dict[str, str]] = {
         "qr_error": "QR त्रुटि",
         "vlc_missing": "VLC नहीं मिला। VideoLAN VLC लगाएँ (मुफ़्त, LGPL)।",
         "camera": "कैमरा",
+        "account": "खाता",
     },
 }
 
