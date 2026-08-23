@@ -9,7 +9,7 @@ Good first contributions:
 - Add or fix a language in `src/i18n.py` (keys must match `en`)
 - Confirm a **camera model** + phone app works (open a [camera issue](../../issues/new?template=camera.yml))
 - Improve docs in `docs/nl`, `docs/fr`, `docs/es`, `docs/pt`, `docs/it`, `docs/pl`, `docs/cs`, `docs/ru`, `docs/uk`, `docs/id`, `docs/zh`, `docs/hi`, or English
-- Linux packaging, macOS notes, Home Assistant examples
+- Linux packaging, Docker, macOS notes, Home Assistant examples
 
 Open an issue before large refactors.
 

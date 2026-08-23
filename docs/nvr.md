@@ -50,6 +50,16 @@ Do **not** mix `tuya://` (password login) with this QR bridge on the same device
 
 Generic camera or go2rtc add-on with the same RTSP URL. Still no ONVIF.
 
+On the HA host (Linux), the bridge can run next to Frigate:
+
+```bash
+git clone https://github.com/DanEng1982/tuya-rtsp-bridge.git
+cd tuya-rtsp-bridge
+docker compose up -d --build
+```
+
+Then open `http://<ha-host>:8787`, scan the QR, and point Frigate at `rtsp://127.0.0.1:8554/<CameraName>/hd`. Details: [docs/docker.md](docker.md).
+
 ## VLC (debug only)
 
 ```

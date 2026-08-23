@@ -86,7 +86,8 @@ Supported login regions: Western Europe, Eastern Europe, USA West, USA East, Chi
 
 ### 1. Install
 
-- **Windows:** `TuyaRtspBridge-Setup.exe` from [Releases](../../releases), pick English or Deutsch
+- **Windows:** `TuyaRtspBridge-Setup.exe` from [Releases](../../releases), pick a language
+- **Docker (Linux / HA host):** [docs/docker.md](docs/docker.md) — `docker compose up -d --build`
 - **Arch Linux:** [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh` or `packaging/arch/PKGBUILD`
 - **From source:** see [Install from source](#install-from-source)
 
@@ -150,6 +151,7 @@ Need Go only to build the engine. Release builds on Windows already include the 
 | [docs/nvr.md](docs/nvr.md) | Frigate, Agent DVR, go2rtc |
 | [docs/architecture.md](docs/architecture.md) | How the pieces fit |
 | [docs/api.md](docs/api.md) | Local HTTP API `:8787` |
+| [docs/docker.md](docs/docker.md) | Docker Compose (Linux host / Desktop ports) |
 | [docs/arch-linux.md](docs/arch-linux.md) | Arch: launch.sh + PKGBUILD |
 | [DEPENDENCIES.md](DEPENDENCIES.md) | Licenses (all redistributable or not shipped) |
 | [docs/nl](docs/nl/) · [docs/fr](docs/fr/) · [docs/es](docs/es/) · [docs/pt](docs/pt/) · [docs/it](docs/it/) · [docs/pl](docs/pl/) · [docs/cs](docs/cs/) · [docs/ru](docs/ru/) · [docs/uk](docs/uk/) · [docs/id](docs/id/) · [docs/zh](docs/zh/) · [docs/hi](docs/hi/) | NL / FR / ES / PT / IT / PL / CS / RU / UK / ID / 中文 / हिन्दी |
