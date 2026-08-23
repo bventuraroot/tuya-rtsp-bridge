@@ -38,6 +38,10 @@ Name: "polish"; MessagesFile: "compiler:Languages\Polish.isl"
 Name: "czech"; MessagesFile: "compiler:Languages\Czech.isl"
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
+Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
+Name: "korean"; MessagesFile: "compiler:Languages\Korean.isl"
+Name: "hebrew"; MessagesFile: "compiler:Languages\Hebrew.isl"
+; Yiddish has no official Inno .isl — app UI still has ייִדיש.
 ; ChineseSimplified.isl is unofficial and not in every Inno install.
 ; App UI still has 中文 via the language menu after first start.
 
@@ -71,6 +75,10 @@ Source: "..\README.uk.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.id.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.zh.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.hi.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.ja.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.ko.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.he.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.yi.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\SECURITY.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\NOTICE.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\CREDITS.md"; DestDir: "{app}"; Flags: ignoreversion
@@ -116,6 +124,12 @@ begin
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "ru"' + #13#10 + '}', False)
     else if ActiveLanguage = 'ukrainian' then
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "uk"' + #13#10 + '}', False)
+    else if ActiveLanguage = 'japanese' then
+      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "ja"' + #13#10 + '}', False)
+    else if ActiveLanguage = 'korean' then
+      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "ko"' + #13#10 + '}', False)
+    else if ActiveLanguage = 'hebrew' then
+      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "he"' + #13#10 + '}', False)
     else
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "en"' + #13#10 + '}', False);
   end;

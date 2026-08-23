@@ -17,7 +17,7 @@ from PIL import Image, ImageTk
 
 from preview import VlcPreview
 from paths import install_root, user_data
-from i18n import LANG_LABELS, current_label, lang_from_label, t
+from i18n import LANG_LABELS, current_label, is_rtl, lang_from_label, t
 
 ROOT = install_root()
 API = "http://127.0.0.1:8787"
@@ -160,7 +160,7 @@ class BridgeGui(tk.Tk):
         self.qr_label = tk.Label(left, text=t("qr_none"), bg="#ffffff", fg="#666", width=32, height=14)
         self.qr_label.pack(padx=18, pady=14, fill="x")
         self.hint = tk.Label(left, text=t("hint"), fg=DIM, bg=PANEL,
-                             wraplength=310, justify="left")
+                             wraplength=310, justify="right" if is_rtl() else "left")
         self.hint.pack(anchor="w", padx=18)
         btns = tk.Frame(left, bg=PANEL)
         btns.pack(fill="x", padx=18, pady=12)
@@ -259,7 +259,7 @@ class BridgeGui(tk.Tk):
         phase = {"idle": (t("phase_idle"), None), "waiting": (t("phase_wait"), None), "logged_in": (t("phase_in"), True), "error": (t("phase_err"), False)}
         lab, ok = phase.get(s.get("phase"), (s.get("phase") or "?", None))
         self._chip("phase", lab, ok)
-        self.hint.config(text=s.get("message") or t("hint"))
+        self.hint.config(text=s.get("message") or t("hint"), justify="right" if is_rtl() else "left")
         user = s.get("user")
         self.user.config(text=(f"{user.get('nickname') or t('account')}\n{user.get('email') or user.get('uid') or ''}" if user else ""))
 

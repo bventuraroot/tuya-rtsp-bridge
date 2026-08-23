@@ -6,7 +6,7 @@
 
 
 [![Lizenz: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Nederlands](README.nl.md)](README.nl.md) [![Français](README.fr.md)](README.fr.md) [![Español](README.es.md)](README.es.md) [![Português](README.pt.md)](README.pt.md) [![Italiano](README.it.md)](README.it.md) [![Polski](README.pl.md)](README.pl.md) [![Čeština](README.cs.md)](README.cs.md) [![Русский](README.ru.md)](README.ru.md) [![Українська](README.uk.md)](README.uk.md) [![Bahasa Indonesia](README.id.md)](README.id.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md)
+[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Nederlands](README.nl.md)](README.nl.md) [![Français](README.fr.md)](README.fr.md) [![Español](README.es.md)](README.es.md) [![Português](README.pt.md)](README.pt.md) [![Italiano](README.it.md)](README.it.md) [![Polski](README.pl.md)](README.pl.md) [![Čeština](README.cs.md)](README.cs.md) [![Русский](README.ru.md)](README.ru.md) [![Українська](README.uk.md)](README.uk.md) [![Bahasa Indonesia](README.id.md)](README.id.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md) [![日本語](README.ja.md)](README.ja.md) [![한국어](README.ko.md)](README.ko.md) [![עברית](README.he.md)](README.he.md) [![ייִדיש](README.yi.md)](README.yi.md)
 
 **Jede Tuya- / Smart-Life- / iSmartLife-Kamera als normales RTSP** — für Frigate, Agent DVR, go2rtc, Home Assistant oder VLC.
 
@@ -32,7 +32,7 @@ Dieses Programm ist eine kleine lokale Brücke: QR in der App scannen, die du sc
 rtsp://<dieser-PC>:8554/<Kameraname>/hd
 ```
 
-Die Anmeldung bleibt bei Tuya. Vom diesem PC aus bleibt das Video typischerweise im LAN. Länger: [docs/warum.md](docs/warum.md).
+Die Anmeldung bleibt bei Tuya. Von diesem PC aus bleibt das Video typischerweise im LAN. Länger: [docs/warum.md](docs/warum.md).
 
 ### Die Oberfläche
 
@@ -53,10 +53,10 @@ Die RTSP-Engine ist **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-term
 - HD: `rtsp://<dieser-PC>:8554/<Kameraname>/hd` (meist HEVC 1080p)
 - SD: `…/sd` (H.264)
 - Alle Kameras über **eine** Brücken-IP, nur der Pfad unterscheidet sich
-- Vorschau, wenn [VLC](https://www.videolan.org/) installiert ist
-- Deutsch oder English
+- Vorschau: unter Windows steckt VLC im Setup; unter Linux `vlc` nachziehen
+- 18 Sprachen in der App
 
-Signalisierung bleibt Tuya-Cloud. Vom diesem PC aus bleibt das Video meist im LAN.
+Signalisierung bleibt Tuya-Cloud. Von diesem PC aus bleibt das Video meist im LAN.
 
 ## Ehrliche Grenzen
 

@@ -9,7 +9,7 @@
 [![CI](https://github.com/DanEng1982/tuya-rtsp-bridge/actions/workflows/ci.yml/badge.svg)](https://github.com/DanEng1982/tuya-rtsp-bridge/actions/workflows/ci.yml)
 [![GitHub stars](https://img.shields.io/github/stars/DanEng1982/tuya-rtsp-bridge?style=social)](https://github.com/DanEng1982/tuya-rtsp-bridge/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/DanEng1982/tuya-rtsp-bridge)](https://github.com/DanEng1982/tuya-rtsp-bridge/issues)
-[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Nederlands](README.nl.md)](README.nl.md) [![Français](README.fr.md)](README.fr.md) [![Español](README.es.md)](README.es.md) [![Português](README.pt.md)](README.pt.md) [![Italiano](README.it.md)](README.it.md) [![Polski](README.pl.md)](README.pl.md) [![Čeština](README.cs.md)](README.cs.md) [![Русский](README.ru.md)](README.ru.md) [![Українська](README.uk.md)](README.uk.md) [![Bahasa Indonesia](README.id.md)](README.id.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md)
+[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Nederlands](README.nl.md)](README.nl.md) [![Français](README.fr.md)](README.fr.md) [![Español](README.es.md)](README.es.md) [![Português](README.pt.md)](README.pt.md) [![Italiano](README.it.md)](README.it.md) [![Polski](README.pl.md)](README.pl.md) [![Čeština](README.cs.md)](README.cs.md) [![Русский](README.ru.md)](README.ru.md) [![Українська](README.uk.md)](README.uk.md) [![Bahasa Indonesia](README.id.md)](README.id.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md) [![日本語](README.ja.md)](README.ja.md) [![한국어](README.ko.md)](README.ko.md) [![עברית](README.he.md)](README.he.md) [![ייִדיש](README.yi.md)](README.yi.md)
 
 **Turn any Tuya / Smart Life / iSmartLife camera into a normal RTSP camera** — so Frigate, Agent DVR, go2rtc, Home Assistant, or VLC can use it.
 
@@ -65,7 +65,7 @@ Phone (Smart Life) ──QR──► this PC ──RTSP :8554──► Frigate /
 - SD: `rtsp://<this-pc>:8554/<CameraName>/sd` (H.264, smaller)
 - All cameras share **one** bridge IP; only the path changes
 - Live preview uses bundled VLC on Windows Setup; on Linux install `vlc`
-- English, Deutsch, Nederlands, Français, Español, Português, Italiano, Polski, Čeština, Русский, Українська, Bahasa Indonesia, 简体中文, हिन्दी (installer + app)
+- English, Deutsch, Nederlands, Français, Español, Português, Italiano, Polski, Čeština, Русский, Українська, Bahasa Indonesia, 简体中文, हिन्दी, 日本語, 한국어, עברית, ייִדיש
 
 Signaling still uses Tuya cloud. When you watch from this PC, video typically stays on your LAN.
 
@@ -161,7 +161,7 @@ Need Go only to build the engine. Release builds on Windows already include the 
 | [docs/docker.md](docs/docker.md) | Docker Compose (Linux host / Desktop ports) |
 | [docs/arch-linux.md](docs/arch-linux.md) | Arch: launch.sh + PKGBUILD |
 | [DEPENDENCIES.md](DEPENDENCIES.md) | Licenses (all redistributable or not shipped) |
-| [docs/nl](docs/nl/) · [docs/fr](docs/fr/) · [docs/es](docs/es/) · [docs/pt](docs/pt/) · [docs/it](docs/it/) · [docs/pl](docs/pl/) · [docs/cs](docs/cs/) · [docs/ru](docs/ru/) · [docs/uk](docs/uk/) · [docs/id](docs/id/) · [docs/zh](docs/zh/) · [docs/hi](docs/hi/) | NL / FR / ES / PT / IT / PL / CS / RU / UK / ID / 中文 / हिन्दी |
+| [docs/nl](docs/nl/) · [docs/fr](docs/fr/) · [docs/es](docs/es/) · [docs/pt](docs/pt/) · [docs/it](docs/it/) · [docs/pl](docs/pl/) · [docs/cs](docs/cs/) · [docs/ru](docs/ru/) · [docs/uk](docs/uk/) · [docs/id](docs/id/) · [docs/zh](docs/zh/) · [docs/hi](docs/hi/) · [docs/ja](docs/ja/) · [docs/ko](docs/ko/) · [docs/he](docs/he/) · [docs/yi](docs/yi/) | NL / FR / ES / PT / IT / PL / CS / RU / UK / ID / 中文 / हिन्दी / 日本語 / 한국어 / עברית / ייִדיש |
 | [SECURITY.md](SECURITY.md) | What not to commit |
 
 ## Join in
@@ -174,7 +174,7 @@ Then pick one:
 - [Suggest a feature](https://github.com/DanEng1982/tuya-rtsp-bridge/issues/new?template=feature.yml)
 - Add a language or fix a string in `src/i18n.py` — see [CONTRIBUTING.md](CONTRIBUTING.md)
 
-PRs from anywhere are welcome. English in code comments; UI already speaks fourteen languages.
+PRs from anywhere are welcome. English in code comments; UI already speaks eighteen languages.
 
 ## License
 

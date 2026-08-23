@@ -30,9 +30,9 @@ This uses the local Tuya protocol on **TCP 6668**, not the cloud. The camera mus
 
 ## Preview
 
-Install [VLC](https://www.videolan.org/). Fullscreen is a button; Esc goes back.
+Windows Setup already includes VLC. On Linux install [VLC](https://www.videolan.org/). Fullscreen is a button; Esc goes back.
 
-Preview is optional. RTSP for Frigate/Agent works without VLC.
+Preview is optional. RTSP for Frigate/Agent works without it.
 
 ## Autostart
 
