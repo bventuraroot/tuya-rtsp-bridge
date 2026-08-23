@@ -6,7 +6,7 @@ Needs [Inno Setup 6](https://jrsoftware.org/isinfo.php) and a network connection
 python packaging\windows\build_bundle.py
 ```
 
-That downloads (and caches) official CPython, VideoLAN VLC, and LGPL ffmpeg, copies `bin\tuya-ipc-terminal.exe`, then runs ISCC.
+That downloads (and caches) official CPython, VideoLAN VLC, and Gyan ffmpeg, copies `bin\tuya-ipc-terminal.exe`, then runs ISCC.
 
 Output: `installer\output\TuyaRtspBridge-Setup.exe`
 

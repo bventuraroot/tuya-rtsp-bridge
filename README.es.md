@@ -81,3 +81,5 @@ Sesiones: `%APPDATA%\TuyaRtspBridge\` (Windows) o `~/.local/share/tuya-rtsp-brid
 ## Licencia
 
 Nuestro código: MIT. Motor incluido: MIT, Copyright (c) 2025 seydx. No afiliado a Tuya Inc.
+
+Nombres, datos locales, licencias incluidas: [docs/legal.md](docs/legal.md).

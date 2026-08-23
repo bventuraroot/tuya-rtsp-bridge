@@ -81,3 +81,5 @@ Sesi: `%APPDATA%\TuyaRtspBridge\` (Windows) atau `~/.local/share/tuya-rtsp-bridg
 ## Lisensi
 
 Kode kami: MIT. Mesin bawaan: MIT, Copyright (c) 2025 seydx. Tidak terafiliasi dengan Tuya Inc.
+
+Nama, data lokal, lisensi yang dibundel: [docs/legal.md](docs/legal.md).

@@ -56,3 +56,5 @@ rtsp://<このPC>:8554/<カメラ名>/hd
 ## ライセンス
 
 こちらのコードはMIT。エンジンはMIT、Copyright (c) 2025 seydx。Tuya Inc.とは無関係。
+
+名称・手元のデータ・同梱ライセンスは [docs/legal.md](docs/legal.md)。

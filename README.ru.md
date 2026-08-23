@@ -81,3 +81,5 @@ Arch: [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh`
 ## Лицензия
 
 Наш код: MIT. Встроенный движок: MIT, Copyright (c) 2025 seydx. Не связано с Tuya Inc.
+
+Имена, локальные данные, прилагаемые лицензии: [docs/legal.md](docs/legal.md).

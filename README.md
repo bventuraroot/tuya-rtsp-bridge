@@ -158,6 +158,7 @@ Need Go only to build the engine. Release builds on Windows already include the 
 | [docs/api.md](docs/api.md) | Local HTTP API `:8787` |
 | [docs/windows.md](docs/windows.md) | Foolproof Windows Setup.exe (Python + VLC + ffmpeg) |
 | [docs/brand.md](docs/brand.md) | Logo, icon, social preview |
+| [docs/legal.md](docs/legal.md) · [docs/rechtliches.md](docs/rechtliches.md) | Names, ToS, what we store, bundled licenses |
 | [CHANGELOG.md](CHANGELOG.md) | What changed in each Setup |
 | [docs/docker.md](docs/docker.md) | Docker Compose (Linux host / Desktop ports) |
 | [docs/arch-linux.md](docs/arch-linux.md) | Arch: launch.sh + PKGBUILD |
@@ -183,3 +184,5 @@ Our code: MIT ([LICENSE](LICENSE)).
 Vendored engine: MIT, Copyright (c) 2025 seydx — full text in [NOTICE.md](NOTICE.md) and `vendor/tuya-ipc-terminal/LICENSE`.
 
 Tuya, Smart Life, and iSmartLife are trademarks of their owners. This project is not affiliated with Tuya Inc. or with seydx beyond using their MIT-licensed engine with credit.
+
+Names, local data, bundled licenses: [docs/legal.md](docs/legal.md).

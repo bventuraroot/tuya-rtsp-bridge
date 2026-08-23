@@ -81,3 +81,5 @@ Arch：[docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh`
 ## 许可
 
 我们的代码：MIT。内嵌引擎：MIT，Copyright (c) 2025 seydx。与涂鸦智能无隶属关系。
+
+名称、本地数据、随附许可：[docs/legal.md](docs/legal.md)。

@@ -22,7 +22,7 @@ Logins stay in `%APPDATA%\TuyaRtspBridge\` — never inside the install folder.
 | Private CPython 3.12 + tkinter + pip wheels | GUI and login, no system Python |
 | `tuya-ipc-terminal.exe` | RTSP engine (MIT, seydx) |
 | Official VideoLAN VLC 3 (64-bit) | In-app preview (`libvlc`) |
-| ffmpeg essentials (LGPL, Gyan) | Watchdog probe |
+| ffmpeg 9.0.1 essentials (GPL-3, Gyan) | Watchdog probe |
 
 Licenses: `NOTICE.md`, `DEPENDENCIES.md`, plus `bin/FFMPEG-LICENSE.txt` and VLC's own COPYING inside `vlc\`.
 

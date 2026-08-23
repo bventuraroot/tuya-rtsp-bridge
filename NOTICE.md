@@ -78,17 +78,28 @@ The Windows Setup.exe ships a private CPython plus those wheels.
 
 ## 3. Redistributed with the Windows Setup.exe (v1.2+)
 
-| Software | License | Notes |
+These are unmodified official binaries, copied next to the app. They are not
+statically linked into our Python. You may replace them.
+
+| Software | License of that binary | Notes |
 |---|---|---|
-| CPython 3.12 | PSF | `runtime\` — https://www.python.org |
-| VideoLAN VLC 3 | LGPL-2.1+ | Official win64 zip in `vlc\`. Replaceable. |
-| ffmpeg essentials | LGPL | Gyan build in `bin\ffmpeg.exe`. Replaceable. |
+| CPython 3.12 | PSF | `runtime/` — https://www.python.org |
+| VideoLAN VLC 3.0.21 (official win64 zip) | GPL-2.0 (player); libVLC is LGPL-2.1+ | `vlc/COPYING.txt`. Source: https://www.videolan.org |
+| ffmpeg 9.0.1 essentials (Gyan) | GPL-3.0 (`--enable-gpl --enable-version3`, includes libx264) | `bin/ffmpeg.exe` + `bin/FFMPEG-LICENSE.txt`. Source: https://ffmpeg.org and https://www.gyan.dev/ffmpeg/builds/ |
+
+Older project text called ffmpeg “LGPL”. That was wrong for this Gyan essentials
+build. The engine starts ffmpeg as a separate process. The optional preview
+loads `libvlc` dynamically.
 
 Linux packages these from the distro instead.
 
 Inno Setup is used only to *build* the Windows installer. It is not shipped
-as source here. Commercial redistribution of an Inno-built installer may
-need an Inno commercial license; our app license remains MIT.
+as a library. The Inno license still allows any purpose, including commercial
+applications; a paid Inno key is requested for commercial users of the
+compiler, not strictly required. This project is given away (MIT, no paid
+edition). See https://jrsoftware.org/isorder.php
+
+Plain-language summary: [docs/legal.md](docs/legal.md) · [docs/rechtliches.md](docs/rechtliches.md)
 
 ---
 

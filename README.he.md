@@ -64,3 +64,5 @@ rtsp://<המחשב-הזה>:8554/<שם-המצלמה>/hd
 הקוד שלנו MIT. המנוע MIT, Copyright (c) 2025 seydx. לא קשור ל-Tuya Inc.
 
 </div>
+
+שמות, נתונים מקומיים, רישיונות מצורפים: [docs/legal.md](docs/legal.md).

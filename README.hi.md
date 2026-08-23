@@ -81,3 +81,5 @@ Arch: [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh`
 ## लाइसेंस
 
 हमारा कोड: MIT। वेंडर इंजन: MIT, Copyright (c) 2025 seydx। Tuya Inc. से संबद्ध नहीं।
+
+नाम, स्थानीय डेटा, बंडल लाइसेंस: [docs/legal.md](docs/legal.md)।

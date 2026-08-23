@@ -56,3 +56,5 @@ rtsp://<이-PC>:8554/<카메라이름>/hd
 ## 라이선스
 
 우리 코드는 MIT. 엔진은 MIT, Copyright (c) 2025 seydx. Tuya Inc.와는 무관하다.
+
+이름, 로컬 데이터, 동봉 라이선스: [docs/legal.md](docs/legal.md).

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.3
+
+- Honest licenses: bundled ffmpeg is GPL-3 (Gyan essentials), VLC zip is GPL-2 / libVLC LGPL
+- Short legal notes: [docs/legal.md](docs/legal.md), [docs/rechtliches.md](docs/rechtliches.md)
+- Same app as 1.2.2
+
 ## 1.2.2
 
 - App UI and docs in 18 languages (added Japanese, Korean, Hebrew, Yiddish)

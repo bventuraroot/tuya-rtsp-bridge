@@ -81,3 +81,5 @@ Relace: `%APPDATA%\TuyaRtspBridge\` (Windows) nebo `~/.local/share/tuya-rtsp-bri
 ## Licence
 
 Náš kód: MIT. Dodaný engine: MIT, Copyright (c) 2025 seydx. Není přidruženo k Tuya Inc.
+
+Názvy, místní data, přiložené licence: [docs/legal.md](docs/legal.md).

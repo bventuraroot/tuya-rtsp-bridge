@@ -85,3 +85,5 @@ Unser Code: MIT ([LICENSE](LICENSE)).
 Vendored Engine: MIT, Copyright (c) 2025 seydx — [NOTICE.md](NOTICE.md).
 
 Nicht mit Tuya Inc. verbunden.
+
+Namen, lokale Daten, mitgelieferte Lizenzen: [docs/rechtliches.md](docs/rechtliches.md).

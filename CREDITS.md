@@ -15,7 +15,7 @@ support upstream: https://github.com/seydx/tuya-ipc-terminal
 - [tinytuya](https://github.com/jasonacox/tinytuya) — local Tuya protocol / PTZ (MIT)
 - [pion](https://github.com/pion) — WebRTC stack inside the engine (MIT)
 - [Eclipse Paho](https://github.com/eclipse/paho.mqtt.golang) — MQTT (EDL/EPL)
-- [VideoLAN](https://www.videolan.org/) — optional preview via python-vlc (LGPL)
+- [VideoLAN](https://www.videolan.org/) — optional preview via python-vlc (LGPL bindings; bundled Windows player is VideoLAN’s GPL zip)
 
 Full legal text: [NOTICE.md](NOTICE.md) · licenses in [DEPENDENCIES.md](DEPENDENCIES.md).
 

@@ -24,11 +24,13 @@ See `NOTICE.md` (full legal text) and `vendor/tuya-ipc-terminal/LICENSE`.
 
 These sit next to the app. You can replace them with any compatible official build.
 
-| Software | License | Notes |
+| Software | License of that binary | Notes |
 |---|---|---|
-| CPython 3.12 | PSF | Private copy under `runtime\` |
-| VideoLAN VLC 3 (64-bit) | LGPL-2.1+ | Official zip; `vlc\COPYING` |
-| ffmpeg essentials (Gyan) | LGPL | `bin\ffmpeg.exe` + `bin\FFMPEG-LICENSE.txt` |
+| CPython 3.12 | PSF | Private copy under `runtime/` |
+| VideoLAN VLC 3.0.21 (official win64 zip) | GPL-2.0 (player); libVLC LGPL-2.1+ | `vlc/COPYING.txt` · https://www.videolan.org |
+| ffmpeg 9.0.1 essentials (Gyan, `--enable-gpl`) | GPL-3.0 | `bin/FFMPEG-LICENSE.txt` · https://ffmpeg.org |
+
+ffmpeg is a separate process. Preview loads `libvlc`. We do not statically link either.
 
 Linux / source installs still use distro Python, VLC, and ffmpeg.
 
@@ -41,3 +43,5 @@ pion/webrtc, eclipse/paho.mqtt.golang, rs/zerolog, spf13/cobra, golang.org/x/* �
 - No Tuya/Smart Life credentials, cookies, or `localKey`
 - No camera device IDs or LAN IPs
 - No telemetry
+
+Short version: [docs/legal.md](docs/legal.md) · [docs/rechtliches.md](docs/rechtliches.md)
