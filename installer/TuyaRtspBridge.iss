@@ -26,6 +26,8 @@ ShowLanguageDialog=yes
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
+Name: "french"; MessagesFile: "compiler:Languages\French.isl"
+Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
@@ -42,6 +44,9 @@ Source: "..\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\DEPENDENCIES.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.de.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.fr.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.zh.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.hi.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\SECURITY.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\NOTICE.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\CREDITS.md"; DestDir: "{app}"; Flags: ignoreversion
@@ -65,6 +70,10 @@ begin
     ForceDirectories(ExtractFilePath(LangFile));
     if ActiveLanguage = 'german' then
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "de"' + #13#10 + '}', False)
+    else if ActiveLanguage = 'french' then
+      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "fr"' + #13#10 + '}', False)
+    else if ActiveLanguage = 'chinesesimplified' then
+      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "zh"' + #13#10 + '}', False)
     else
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "en"' + #13#10 + '}', False);
   end;

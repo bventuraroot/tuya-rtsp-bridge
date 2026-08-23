@@ -17,6 +17,7 @@ from PIL import Image, ImageTk
 
 from preview import VlcPreview
 from paths import install_root, user_data
+from i18n import LANG_LABELS, current_label, lang_from_label, t
 
 ROOT = install_root()
 API = "http://127.0.0.1:8787"
@@ -76,7 +77,7 @@ def api(path: str, body: dict | None = None) -> dict:
 class BridgeGui(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
-        self.title("Tuya-Brücke")
+        self.title(t("app_title"))
         self.configure(bg=BG)
         self.geometry("1920x1080+0+0")
         self.minsize(1280, 800)
@@ -94,10 +95,11 @@ class BridgeGui(tk.Tk):
         top = tk.Frame(self, bg=PANEL, height=64)
         top.pack(fill="x")
         top.pack_propagate(False)
-        tk.Label(
-            top, text="■  TUYA-BRÜCKE", fg=AMBER, bg=PANEL,
+        self.lbl_banner = tk.Label(
+            top, text=t("app_banner"), fg=AMBER, bg=PANEL,
             font=("Segoe UI", 18, "bold"),
-        ).pack(side="left", padx=22)
+        )
+        self.lbl_banner.pack(side="left", padx=22)
         self.chips = {}
         for key in ("rtsp", "wd", "hls", "phase"):
             lb = tk.Label(top, text=key.upper(), fg=DIM, bg=BG, bd=1, relief="solid",
@@ -119,78 +121,91 @@ class BridgeGui(tk.Tk):
         right.grid(row=0, column=2, sticky="nse")
         right.grid_propagate(False)
 
-        tk.Label(left, text="LANGUAGE / SPRACHE", fg=DIM, bg=PANEL, font=("Segoe UI", 9)).pack(anchor="w", padx=18, pady=(14, 4))
-        self.lang_var = tk.StringVar(value=("Deutsch" if __import__("i18n").current_lang() == "de" else "English"))
-        lang_box = tk.OptionMenu(left, self.lang_var, "English", "Deutsch", command=self._set_lang)
+        self.lbl_lang = tk.Label(left, text=t("lang_heading"), fg=DIM, bg=PANEL, font=("Segoe UI", 9))
+        self.lbl_lang.pack(anchor="w", padx=18, pady=(14, 4))
+        self.lang_var = tk.StringVar(value=current_label())
+        lang_box = tk.OptionMenu(left, self.lang_var, *LANG_LABELS.values(), command=self._set_lang)
         lang_box.config(bg="#0e140e", fg=INK, highlightthickness=0, width=32)
         lang_box.pack(fill="x", padx=18)
 
-        tk.Label(left, text="SERVER", fg=DIM, bg=PANEL, font=("Segoe UI", 9)).pack(anchor="w", padx=18, pady=(18, 4))
+        self.lbl_server = tk.Label(left, text=t("server"), fg=DIM, bg=PANEL, font=("Segoe UI", 9))
+        self.lbl_server.pack(anchor="w", padx=18, pady=(18, 4))
         self.region = tk.StringVar()
         self.region_box = tk.OptionMenu(left, self.region, "")
         self.region_box.config(bg="#0e140e", fg=INK, highlightthickness=0, width=32)
         self.region_box.pack(fill="x", padx=18)
-        self.qr_label = tk.Label(left, text="Kein QR", bg="#ffffff", fg="#666", width=32, height=14)
+        self.qr_label = tk.Label(left, text=t("qr_none"), bg="#ffffff", fg="#666", width=32, height=14)
         self.qr_label.pack(padx=18, pady=14, fill="x")
-        self.hint = tk.Label(left, text="Smart Life: scannen, dann bestätigen.", fg=DIM, bg=PANEL,
+        self.hint = tk.Label(left, text=t("hint"), fg=DIM, bg=PANEL,
                              wraplength=310, justify="left")
         self.hint.pack(anchor="w", padx=18)
         btns = tk.Frame(left, bg=PANEL)
         btns.pack(fill="x", padx=18, pady=12)
-        tk.Button(btns, text="QR erzeugen", command=self.do_qr, bg=AMBER, fg="#1a1404",
-                  relief="flat", padx=12, pady=8).pack(side="left")
-        tk.Button(btns, text="Abmelden", command=self.do_logout, bg=PANEL, fg=INK,
-                  relief="flat", padx=12, pady=8).pack(side="left", padx=8)
+        self.btn_qr = tk.Button(btns, text=t("btn_qr"), command=self.do_qr, bg=AMBER, fg="#1a1404",
+                  relief="flat", padx=12, pady=8)
+        self.btn_qr.pack(side="left")
+        self.btn_logout = tk.Button(btns, text=t("btn_logout"), command=self.do_logout, bg=PANEL, fg=INK,
+                  relief="flat", padx=12, pady=8)
+        self.btn_logout.pack(side="left", padx=8)
         self.user = tk.Label(left, text="", fg=INK, bg=PANEL, justify="left")
         self.user.pack(anchor="w", padx=18, pady=8)
 
         head = tk.Frame(mid, bg=BG)
         head.pack(fill="x", padx=20, pady=16)
-        tk.Label(head, text="KAMERAS  ·  NUR HD", fg=DIM, bg=BG, font=("Segoe UI", 9)).pack(side="left")
+        self.lbl_cams = tk.Label(head, text=t("cameras"), fg=DIM, bg=BG, font=("Segoe UI", 9))
+        self.lbl_cams.pack(side="left")
         self.cam_count = tk.Label(head, text="", fg=DIM, bg=BG, font=("Consolas", 10))
         self.cam_count.pack(side="left", padx=12)
-        tk.Button(head, text="Kameras neu", command=self.do_refresh, bg=PANEL, fg=INK,
-                  relief="flat", padx=10, pady=6).pack(side="right")
+        self.btn_refresh = tk.Button(head, text=t("cameras_refresh"), command=self.do_refresh, bg=PANEL, fg=INK,
+                  relief="flat", padx=10, pady=6)
+        self.btn_refresh.pack(side="right")
         self.cam_box = tk.Frame(mid, bg=BG)
         self.cam_box.pack(fill="both", expand=True, padx=20)
         self.yaml = tk.Text(mid, height=3, bg="#0e140e", fg=INK, insertbackground=INK,
                             relief="flat", font=("Consolas", 10))
         self.yaml.pack(fill="x", padx=20, pady=(8, 6))
-        tk.Button(mid, text="YAML kopieren", command=self.copy_yaml, bg=PANEL, fg=INK,
-                  relief="flat", padx=10, pady=6).pack(anchor="e", padx=20, pady=(0, 10))
+        self.btn_yaml = tk.Button(mid, text=t("yaml_copy"), command=self.copy_yaml, bg=PANEL, fg=INK,
+                  relief="flat", padx=10, pady=6)
+        self.btn_yaml.pack(anchor="e", padx=20, pady=(0, 10))
 
-        tk.Label(right, text="SCHALTER", fg=DIM, bg="#101610", font=("Segoe UI", 9)).pack(anchor="w", padx=20, pady=(18, 8))
+        self.lbl_sw = tk.Label(right, text=t("switches"), fg=DIM, bg="#101610", font=("Segoe UI", 9))
+        self.lbl_sw.pack(anchor="w", padx=20, pady=(18, 8))
         self.vars = {
             "rtsp": tk.BooleanVar(value=True),
             "watchdog": tk.BooleanVar(value=True),
             "hls": tk.BooleanVar(value=False),
             "archive": tk.BooleanVar(value=False),
         }
-        labels = {
-            "rtsp": ("RTSP-Engine", ":8554 für Agent / Frigate"),
-            "watchdog": ("Wächter", "startet tote Streams neu"),
-            "hls": ("HLS / VLC", "teurer x264-Transcode"),
-            "archive": ("Brücken-Archiv", "sonst Agent / Frigate"),
-        }
-        for key, (title, sub) in labels.items():
+        self.flag_btns: dict[str, tk.Checkbutton] = {}
+        self.flag_subs: dict[str, tk.Label] = {}
+        for key, title_k, sub_k in (
+            ("rtsp", "rtsp_engine", "rtsp_engine_d"),
+            ("watchdog", "watchdog", "watchdog_d"),
+            ("hls", "hls", "hls_d"),
+            ("archive", "archive", "archive_d"),
+        ):
             fr = tk.Frame(right, bg="#101610")
             fr.pack(fill="x", padx=20, pady=4)
-            tk.Checkbutton(
+            cb = tk.Checkbutton(
                 fr, variable=self.vars[key], command=self.push_flags,
-                text=title, fg=INK, bg="#101610", selectcolor=BG,
+                text=t(title_k), fg=INK, bg="#101610", selectcolor=BG,
                 activebackground="#101610", activeforeground=AMBER,
                 font=("Segoe UI", 12, "bold"), anchor="w",
-            ).pack(fill="x")
-            tk.Label(fr, text=sub, fg=DIM, bg="#101610", font=("Segoe UI", 10)).pack(anchor="w", padx=22)
+            )
+            cb.pack(fill="x")
+            sub = tk.Label(fr, text=t(sub_k), fg=DIM, bg="#101610", font=("Segoe UI", 10))
+            sub.pack(anchor="w", padx=22)
+            self.flag_btns[key] = cb
+            self.flag_subs[key] = sub
 
-        tk.Label(right, text="NEUSTART", fg=DIM, bg="#101610", font=("Segoe UI", 9)).pack(anchor="w", padx=20, pady=(22, 8))
-        for text, cmd in (
-            ("Engine neu  (:8554)", self.do_rst_rtsp),
-            ("Oberfläche / API neu", self.do_rst_ui),
-            ("Alles neu", self.do_rst_all),
-        ):
-            tk.Button(right, text=text, command=cmd, bg=PANEL, fg=INK, relief="flat",
-                      pady=10).pack(fill="x", padx=20, pady=4)
+        self.lbl_rst = tk.Label(right, text=t("restart"), fg=DIM, bg="#101610", font=("Segoe UI", 9))
+        self.lbl_rst.pack(anchor="w", padx=20, pady=(22, 8))
+        self.btn_rst_e = tk.Button(right, text=t("rst_engine"), command=self.do_rst_rtsp, bg=PANEL, fg=INK, relief="flat", pady=10)
+        self.btn_rst_e.pack(fill="x", padx=20, pady=4)
+        self.btn_rst_u = tk.Button(right, text=t("rst_ui"), command=self.do_rst_ui, bg=PANEL, fg=INK, relief="flat", pady=10)
+        self.btn_rst_u.pack(fill="x", padx=20, pady=4)
+        self.btn_rst_a = tk.Button(right, text=t("rst_all"), command=self.do_rst_all, bg=PANEL, fg=INK, relief="flat", pady=10)
+        self.btn_rst_a.pack(fill="x", padx=20, pady=4)
         self.status = tk.Label(right, text="", fg=DIM, bg="#101610", wraplength=330, justify="left")
         self.status.pack(anchor="w", padx=20, pady=16)
 
@@ -209,19 +224,19 @@ class BridgeGui(tk.Tk):
             st = api("/api/state")
             self._paint(st)
         except Exception as exc:
-            self._chip("phase", "API AUS", False)
+            self._chip("phase", t("chip_api_off"), False)
             self.status.config(text=str(exc))
         self.after(2500, self.refresh)
 
     def _paint(self, s: dict) -> None:
         running = bool((s.get("rtsp") or {}).get("running"))
-        self._chip("rtsp", f"RTSP :{(s.get('rtsp') or {}).get('port', '')}" if running else "RTSP AUS", running or None)
-        self._chip("wd", "WÄCHTER AN" if s.get("watchdogRunning") else "WÄCHTER AUS", bool(s.get("watchdogRunning")) or None)
-        self._chip("hls", "HLS AN" if s.get("hlsRunning") else "HLS AUS", False if s.get("hlsRunning") else None)
-        phase = {"idle": ("BEREIT", None), "waiting": ("WARTE SCAN", None), "logged_in": ("ANGEMELDET", True), "error": ("FEHLER", False)}
+        self._chip("rtsp", f"RTSP :{(s.get('rtsp') or {}).get('port', '')}" if running else t("chip_rtsp_off"), running or None)
+        self._chip("wd", t("chip_wd_on") if s.get("watchdogRunning") else t("chip_wd_off"), bool(s.get("watchdogRunning")) or None)
+        self._chip("hls", t("chip_hls_on") if s.get("hlsRunning") else t("chip_hls_off"), False if s.get("hlsRunning") else None)
+        phase = {"idle": (t("phase_idle"), None), "waiting": (t("phase_wait"), None), "logged_in": (t("phase_in"), True), "error": (t("phase_err"), False)}
         lab, ok = phase.get(s.get("phase"), (s.get("phase") or "?", None))
         self._chip("phase", lab, ok)
-        self.hint.config(text=s.get("message") or "Smart Life: scannen, dann bestätigen.")
+        self.hint.config(text=s.get("message") or t("hint"))
         user = s.get("user")
         self.user.config(text=(f"{user.get('nickname') or 'Konto'}\n{user.get('email') or user.get('uid') or ''}" if user else ""))
 
@@ -242,7 +257,7 @@ class BridgeGui(tk.Tk):
             self._last_qr = s.get("qrId") or ""
             self._load_qr()
         elif not s.get("hasQr"):
-            self.qr_label.config(image="", text="Sitzung aktiv" if s.get("loggedIn") else "Kein QR")
+            self.qr_label.config(image="", text=t("qr_session") if s.get("loggedIn") else t("qr_none"))
             self.qr_img = None
 
         flags = s.get("flags") or {}
@@ -254,7 +269,7 @@ class BridgeGui(tk.Tk):
         self.cam_count.config(text=f"{len(cams)}  ·  {s.get('lanIp')}:{(s.get('rtsp') or {}).get('port')}")
         self._sync_cards(cams, bool(running))
 
-        y = "# noch keine Kameras\n"
+        y = t("yaml_empty")
         if cams:
             y = "mqtt:\n  enabled: false\n\ncameras:\n"
             for cam in cams:
@@ -287,7 +302,7 @@ class BridgeGui(tk.Tk):
                 rec["frame"].destroy()
         if not cams:
             if "empty" not in self._cards:
-                lb = tk.Label(self.cam_box, text="Nach dem Scan erscheinen die HD-Links.", fg=DIM, bg=BG)
+                lb = tk.Label(self.cam_box, text=t("empty_cams"), fg=DIM, bg=BG)
                 lb.pack(anchor="w")
                 self._cards["empty"] = {"frame": lb, "preview": VlcPreview(), "url": ""}
             return
@@ -299,7 +314,7 @@ class BridgeGui(tk.Tk):
             if did not in self._cards:
                 self._cards[did] = self._make_card(cam)
             rec = self._cards[did]
-            rec["name"].config(text=cam.get("deviceName") or "Kamera")
+            rec["name"].config(text=cam.get("deviceName") or t("camera"))
             rec["id"].config(text=cam.get("deviceId") or "")
             rec["url_l"].config(text=url)
             rec["url"] = url
@@ -313,7 +328,7 @@ class BridgeGui(tk.Tk):
                 prev.start(local, int(rec["thumb"].winfo_id()), cache_ms=150)
             elif not rtsp_up and prev.running:
                 prev.stop()
-                rec["thumb"].itemconfig(rec["txt_id"], text="kein Stream")
+                rec["thumb"].itemconfig(rec["txt_id"], text=t("no_stream"))
 
     def _make_card(self, cam: dict) -> dict:
         did = str(cam.get("deviceId") or "")
@@ -322,7 +337,7 @@ class BridgeGui(tk.Tk):
         card.pack(fill="x", pady=6)
         thumb = tk.Canvas(card, width=480, height=270, bg="#050705", highlightthickness=0, cursor="hand2")
         thumb.pack(side="left", padx=8, pady=8)
-        txt_id = thumb.create_text(240, 135, text="klick = Vollbild", fill=DIM, font=("Segoe UI", 11))
+        txt_id = thumb.create_text(240, 135, text=t("fs_hint"), fill=DIM, font=("Segoe UI", 11))
         rec: dict = {"frame": card, "thumb": thumb, "txt_id": txt_id, "url": url}
         prev = VlcPreview()
         rec["preview"] = prev
@@ -330,7 +345,7 @@ class BridgeGui(tk.Tk):
 
         right = tk.Frame(card, bg=PANEL)
         right.pack(side="left", fill="both", expand=True, padx=8, pady=8)
-        rec["name"] = tk.Label(right, text=cam.get("deviceName") or "Kamera", fg=INK, bg=PANEL,
+        rec["name"] = tk.Label(right, text=cam.get("deviceName") or t("camera"), fg=INK, bg=PANEL,
                                font=("Segoe UI", 14, "bold"))
         rec["name"].pack(anchor="w")
         rec["id"] = tk.Label(right, text=did, fg=DIM, bg=PANEL, font=("Consolas", 9))
@@ -338,11 +353,12 @@ class BridgeGui(tk.Tk):
         rec["url_l"] = tk.Label(right, text=url, fg=INK, bg=PANEL, font=("Consolas", 10),
                                 wraplength=420, justify="left")
         rec["url_l"].pack(anchor="w", pady=4)
-        rec["copy"] = tk.Button(right, text="HD kopieren", command=lambda u=url: self._clip(u),
+        rec["copy"] = tk.Button(right, text=t("copy_hd"), command=lambda u=url: self._clip(u),
                                 bg=BG, fg=AMBER, relief="flat")
         rec["copy"].pack(anchor="w", side="left")
-        tk.Button(right, text="Vollbild", command=lambda d=did: self._open_fullscreen(d),
-                  bg=BG, fg=INK, relief="flat").pack(anchor="w", side="left", padx=8)
+        rec["fsbtn"] = tk.Button(right, text=t("fullscreen"), command=lambda d=did: self._open_fullscreen(d),
+                  bg=BG, fg=INK, relief="flat")
+        rec["fsbtn"].pack(anchor="w", side="left", padx=8)
         ptz = tk.Frame(right, bg=PANEL)
         ptz.pack(anchor="w", pady=8)
 
@@ -378,7 +394,7 @@ class BridgeGui(tk.Tk):
         win.attributes("-fullscreen", True)
         bar = tk.Frame(win, bg="#111", height=36)
         bar.pack(fill="x")
-        tk.Button(bar, text="Zurück  (Esc)", command=self._close_fullscreen,
+        tk.Button(bar, text=t("back"), command=self._close_fullscreen,
                   bg="#222", fg=INK, relief="flat", padx=14).pack(side="left", padx=8, pady=4)
         cv = tk.Frame(win, bg="black")
         cv.pack(fill="both", expand=True)
@@ -421,12 +437,12 @@ class BridgeGui(tk.Tk):
             self.qr_img = ImageTk.PhotoImage(img)
             self.qr_label.config(image=self.qr_img, text="")
         except Exception:
-            self.qr_label.config(image="", text="QR-Fehler")
+            self.qr_label.config(image="", text=t("qr_error"))
 
     def _clip(self, text: str) -> None:
         self.clipboard_clear()
         self.clipboard_append(text)
-        self.status.config(text="kopiert")
+        self.status.config(text=t("copied"))
 
     def copy_yaml(self) -> None:
         self._clip(self.yaml.get("1.0", "end").strip())
@@ -450,13 +466,13 @@ class BridgeGui(tk.Tk):
         self._thread(go)
 
     def _set_lang(self, choice: str) -> None:
-        lang = "de" if str(choice).startswith("D") else "en"
+        lang = lang_from_label(str(choice))
         try:
             api("/api/lang", {"lang": lang})
         except Exception:
             from i18n import save_lang
             save_lang(lang)
-        self.status.config(text="Language saved — restart the app / Sprache gespeichert — App neu starten.")
+        self.status.config(text=t("lang_saved"))
 
     def do_qr(self) -> None:
         rid = self.region.get() or "eu"
@@ -469,15 +485,15 @@ class BridgeGui(tk.Tk):
         self._thread(lambda: self.after(0, lambda: self._paint(api("/api/cameras/refresh", {}))))
 
     def do_rst_rtsp(self) -> None:
-        self.status.config(text="Engine startet neu …")
+        self.status.config(text=t("engine_restart"))
         self._thread(lambda: self.after(0, lambda: self._paint(api("/api/restart/rtsp", {}))))
 
     def do_rst_ui(self) -> None:
-        self.status.config(text="API startet neu …")
+        self.status.config(text=t("ui_restart"))
         self._thread(lambda: api("/api/restart/ui", {}))
 
     def do_rst_all(self) -> None:
-        self.status.config(text="Alles neu …")
+        self.status.config(text=t("all_restart"))
         self._thread(lambda: api("/api/restart/all", {}))
 
 

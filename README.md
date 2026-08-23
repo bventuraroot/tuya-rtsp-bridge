@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Windows](https://img.shields.io/badge/Windows-10%2F11-blue.svg)](#install)
-[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md)
+[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Français](README.fr.md)](README.fr.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md)
 
 **Turn any Tuya / Smart Life / iSmartLife camera into a normal RTSP camera** — so Frigate, Agent DVR, go2rtc, Home Assistant, or VLC can use it.
 
@@ -58,7 +58,7 @@ Phone (Smart Life) ──QR──► this PC ──RTSP :8554──► Frigate /
 - SD: `rtsp://<this-pc>:8554/<CameraName>/sd` (H.264, smaller)
 - All cameras share **one** bridge IP; only the path changes
 - Live preview if [VLC](https://www.videolan.org/) is installed
-- English or Deutsch (installer + app)
+- English, Deutsch, Français, 简体中文, हिन्दी (installer + app)
 
 Signaling still uses Tuya cloud. When you watch from this PC, video typically stays on your LAN.
 
@@ -150,7 +150,7 @@ Need Go only to build the engine. Release builds on Windows already include the 
 | [docs/api.md](docs/api.md) | Local HTTP API `:8787` |
 | [docs/arch-linux.md](docs/arch-linux.md) | Arch: launch.sh + PKGBUILD |
 | [DEPENDENCIES.md](DEPENDENCIES.md) | Licenses (all redistributable or not shipped) |
-| [SECURITY.md](SECURITY.md) | What not to commit |
+| [docs/fr](docs/fr/) [docs/zh](docs/zh/) [docs/hi](docs/hi/) | French / 中文 / हिन्दी user docs |
 
 ## License
 
