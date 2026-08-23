@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tuya Bridge</title>
+  <meta name="description" content="Turn cheap Tuya / Smart Life / iSmartLife cameras into local RTSP for Frigate and Agent DVR. No ONVIF, no firmware flash.">
+  <title>Tuya RTSP Bridge</title>
+  <link rel="icon" href="/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/logo.png">
   <style>
     :root {
       --bg: #0c100c;
@@ -53,6 +57,16 @@
       padding: 0 28px;
       border-bottom: 1px solid var(--line);
       background: var(--panel);
+    }
+    header.top .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header.top .brand img {
+      width: 32px;
+      height: 32px;
+      display: block;
     }
     header.top h1 {
       font-size: 22px;
@@ -138,7 +152,10 @@
 <body>
   <div class="wrap">
     <header class="top">
-      <h1><span>■</span> Tuya Bridge</h1>
+      <div class="brand">
+        <img src="/logo.svg" width="32" height="32" alt="">
+        <h1><span>Tuya</span> RTSP Bridge</h1>
+      </div>
       <div class="chips">
         <div class="chip" id="rtspChip">RTSP</div>
         <div class="chip" id="wdChip">Watchdog</div>

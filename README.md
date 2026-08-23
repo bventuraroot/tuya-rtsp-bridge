@@ -1,5 +1,10 @@
 # Tuya RTSP Bridge
 
+<p align="center">
+  <img src="docs/images/logo.png" width="128" alt="Tuya RTSP Bridge">
+</p>
+
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![CI](https://github.com/DanEng1982/tuya-rtsp-bridge/actions/workflows/ci.yml/badge.svg)](https://github.com/DanEng1982/tuya-rtsp-bridge/actions/workflows/ci.yml)
 [![GitHub stars](https://img.shields.io/github/stars/DanEng1982/tuya-rtsp-bridge?style=social)](https://github.com/DanEng1982/tuya-rtsp-bridge/stargazers)
@@ -59,7 +64,7 @@ Phone (Smart Life) ──QR──► this PC ──RTSP :8554──► Frigate /
 - HD: `rtsp://<this-pc>:8554/<CameraName>/hd` (usually HEVC 1080p)
 - SD: `rtsp://<this-pc>:8554/<CameraName>/sd` (H.264, smaller)
 - All cameras share **one** bridge IP; only the path changes
-- Live preview if [VLC](https://www.videolan.org/) is installed
+- Live preview uses bundled VLC on Windows Setup; on Linux install `vlc`
 - English, Deutsch, Nederlands, Français, Español, Português, Italiano, Polski, Čeština, Русский, Українська, Bahasa Indonesia, 简体中文, हिन्दी (installer + app)
 
 Signaling still uses Tuya cloud. When you watch from this PC, video typically stays on your LAN.
@@ -152,6 +157,7 @@ Need Go only to build the engine. Release builds on Windows already include the 
 | [docs/architecture.md](docs/architecture.md) | How the pieces fit |
 | [docs/api.md](docs/api.md) | Local HTTP API `:8787` |
 | [docs/windows.md](docs/windows.md) | Foolproof Windows Setup.exe (Python + VLC + ffmpeg) |
+| [docs/brand.md](docs/brand.md) | Logo, icon, social preview |
 | [docs/docker.md](docs/docker.md) | Docker Compose (Linux host / Desktop ports) |
 | [docs/arch-linux.md](docs/arch-linux.md) | Arch: launch.sh + PKGBUILD |
 | [DEPENDENCIES.md](DEPENDENCIES.md) | Licenses (all redistributable or not shipped) |

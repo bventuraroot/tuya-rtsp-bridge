@@ -32,6 +32,10 @@ package() {
     "$pkgdir/usr/bin/tuya-rtsp-bridge"
   install -Dm644 "$srcdir/$pkgname/packaging/linux/tuya-rtsp-bridge.desktop" \
     "$pkgdir/usr/share/applications/tuya-rtsp-bridge.desktop"
+  install -Dm644 "$srcdir/$pkgname/docs/images/logo-mark.png" \
+    "$pkgdir/usr/share/icons/hicolor/256x256/apps/tuya-rtsp-bridge.png"
+  install -Dm644 "$srcdir/$pkgname/docs/images/logo.svg" \
+    "$pkgdir/usr/share/icons/hicolor/scalable/apps/tuya-rtsp-bridge.svg"
   install -Dm644 "$srcdir/$pkgname/packaging/linux/tuya-rtsp-bridge.service" \
     "$pkgdir/usr/lib/systemd/user/tuya-rtsp-bridge.service"
   install -Dm644 "$srcdir/$pkgname/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"

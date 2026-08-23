@@ -19,6 +19,8 @@ OutputBaseFilename=TuyaRtspBridge-Setup
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
+SetupIconFile=..\docs\images\app.ico
+UninstallDisplayIcon={app}\app.ico
 PrivilegesRequired=lowest
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
@@ -73,11 +75,14 @@ Source: "..\SECURITY.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\NOTICE.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\CREDITS.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\CONTRIBUTING.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\docs\images\app.ico"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\docs\images\logo.svg"; DestDir: "{app}\docs\images"; Flags: ignoreversion
+Source: "..\docs\images\logo.png"; DestDir: "{app}\docs\images"; Flags: ignoreversion
 
 [Icons]
-Name: "{group}\Tuya RTSP Bridge"; Filename: "{app}\runtime\pythonw.exe"; Parameters: "-u ""{app}\src\gui.py"""; WorkingDir: "{app}"
-Name: "{autodesktop}\Tuya RTSP Bridge"; Filename: "{app}\runtime\pythonw.exe"; Parameters: "-u ""{app}\src\gui.py"""; WorkingDir: "{app}"; Tasks: desktopicon
-Name: "{group}\Tuya RTSP Bridge (console)"; Filename: "{app}\launch.bat"; WorkingDir: "{app}"
+Name: "{group}\Tuya RTSP Bridge"; Filename: "{app}\runtime\pythonw.exe"; Parameters: "-u ""{app}\src\gui.py"""; WorkingDir: "{app}"; IconFilename: "{app}\app.ico"
+Name: "{autodesktop}\Tuya RTSP Bridge"; Filename: "{app}\runtime\pythonw.exe"; Parameters: "-u ""{app}\src\gui.py"""; WorkingDir: "{app}"; IconFilename: "{app}\app.ico"; Tasks: desktopicon
+Name: "{group}\Tuya RTSP Bridge (console)"; Filename: "{app}\launch.bat"; WorkingDir: "{app}"; IconFilename: "{app}\app.ico"
 
 [Run]
 Filename: "{app}\runtime\pythonw.exe"; Parameters: "-u ""{app}\src\gui.py"""; WorkingDir: "{app}"; Description: "Start Tuya RTSP Bridge"; Flags: nowait postinstall skipifsilent skipifdoesntexist

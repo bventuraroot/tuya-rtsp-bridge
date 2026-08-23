@@ -81,6 +81,7 @@ class BridgeGui(tk.Tk):
         self.configure(bg=BG)
         self.geometry("1920x1080+0+0")
         self.minsize(1280, 800)
+        self._apply_icon()
         self.qr_img = None
         self._last_qr = ""
         self._busy = False
@@ -91,10 +92,32 @@ class BridgeGui(tk.Tk):
         self._build()
         self.after(200, self.refresh)
 
+    def _apply_icon(self) -> None:
+        ico = ROOT / "web" / "favicon.ico"
+        png = ROOT / "web" / "logo.png"
+        if ico.exists():
+            try:
+                self.iconbitmap(default=str(ico))
+            except tk.TclError:
+                pass
+        if png.exists():
+            try:
+                self._wm_icon = ImageTk.PhotoImage(Image.open(png))
+                self.iconphoto(True, self._wm_icon)
+            except Exception:
+                pass
+
     def _build(self) -> None:
         top = tk.Frame(self, bg=PANEL, height=64)
         top.pack(fill="x")
         top.pack_propagate(False)
+        logo_path = ROOT / "web" / "logo.png"
+        if logo_path.exists():
+            try:
+                self._banner_logo = ImageTk.PhotoImage(Image.open(logo_path).resize((32, 32)))
+                tk.Label(top, image=self._banner_logo, bg=PANEL).pack(side="left", padx=(18, 0), pady=14)
+            except Exception:
+                pass
         self.lbl_banner = tk.Label(
             top, text=t("app_banner"), fg=AMBER, bg=PANEL,
             font=("Segoe UI", 18, "bold"),

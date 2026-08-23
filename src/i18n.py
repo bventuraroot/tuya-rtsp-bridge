@@ -27,8 +27,8 @@ LANG_LABELS = {
 
 _STRINGS: dict[str, dict[str, str]] = {
     "en": {
-        "app_title": "Tuya Bridge",
-        "app_banner": "■  TUYA BRIDGE",
+        "app_title": "Tuya RTSP Bridge",
+        "app_banner": "TUYA RTSP BRIDGE",
         "lang_heading": "LANGUAGE",
         "server": "Server",
         "qr_none": "No QR",
@@ -83,8 +83,8 @@ _STRINGS: dict[str, dict[str, str]] = {
         "account": "Account",
     },
     "de": {
-        "app_title": "Tuya-Brücke",
-        "app_banner": "■  TUYA-BRÜCKE",
+        "app_title": "Tuya-RTSP-Brücke",
+        "app_banner": "TUYA-RTSP-BRÜCKE",
         "lang_heading": "SPRACHE",
         "server": "Server",
         "qr_none": "Kein QR",
@@ -139,8 +139,8 @@ _STRINGS: dict[str, dict[str, str]] = {
         "account": "Konto",
     },
     "fr": {
-        "app_title": "Pont Tuya",
-        "app_banner": "■  PONT TUYA",
+        "app_title": "Pont RTSP Tuya",
+        "app_banner": "PONT RTSP TUYA",
         "lang_heading": "LANGUE",
         "server": "Serveur",
         "qr_none": "Pas de QR",
@@ -195,8 +195,8 @@ _STRINGS: dict[str, dict[str, str]] = {
         "account": "Compte",
     },
     "es": {
-        "app_title": "Puente Tuya",
-        "app_banner": "■  PUENTE TUYA",
+        "app_title": "Puente RTSP Tuya",
+        "app_banner": "PUENTE RTSP TUYA",
         "lang_heading": "IDIOMA",
         "server": "Servidor",
         "qr_none": "Sin QR",
@@ -251,8 +251,8 @@ _STRINGS: dict[str, dict[str, str]] = {
         "account": "Cuenta",
     },
     "pt": {
-        "app_title": "Ponte Tuya",
-        "app_banner": "■  PONTE TUYA",
+        "app_title": "Ponte RTSP Tuya",
+        "app_banner": "PONTE RTSP TUYA",
         "lang_heading": "IDIOMA",
         "server": "Servidor",
         "qr_none": "Sem QR",
@@ -307,8 +307,8 @@ _STRINGS: dict[str, dict[str, str]] = {
         "account": "Conta",
     },
     "zh": {
-        "app_title": "涂鸦网桥",
-        "app_banner": "■  涂鸦网桥",
+        "app_title": "涂鸦 RTSP 网桥",
+        "app_banner": "涂鸦 RTSP 网桥",
         "lang_heading": "语言",
         "server": "服务器",
         "qr_none": "尚无二维码",
@@ -363,8 +363,8 @@ _STRINGS: dict[str, dict[str, str]] = {
         "account": "账户",
     },
     "hi": {
-        "app_title": "टुया ब्रिज",
-        "app_banner": "■  टुया ब्रिज",
+        "app_title": "टुया RTSP ब्रिज",
+        "app_banner": "टुया RTSP ब्रिज",
         "lang_heading": "भाषा",
         "server": "सर्वर",
         "qr_none": "कोई QR नहीं",
@@ -419,8 +419,8 @@ _STRINGS: dict[str, dict[str, str]] = {
         "account": "खाता",
     },
     "it": {
-        "app_title": "Ponte Tuya",
-        "app_banner": "■  PONTE TUYA",
+        "app_title": "Ponte RTSP Tuya",
+        "app_banner": "PONTE RTSP TUYA",
         "lang_heading": "LINGUA",
         "server": "Server",
         "qr_none": "Nessun QR",
@@ -475,8 +475,8 @@ _STRINGS: dict[str, dict[str, str]] = {
         "account": "Account",
     },
     "cs": {
-        "app_title": "Tuya most",
-        "app_banner": "■  TUYA MOST",
+        "app_title": "Tuya RTSP most",
+        "app_banner": "TUYA RTSP MOST",
         "lang_heading": "JAZYK",
         "server": "Server",
         "qr_none": "Žádný QR",
@@ -531,8 +531,8 @@ _STRINGS: dict[str, dict[str, str]] = {
         "account": "Účet",
     },
     "ru": {
-        "app_title": "Мост Tuya",
-        "app_banner": "■  МОСТ TUYA",
+        "app_title": "RTSP-мост Tuya",
+        "app_banner": "RTSP-МОСТ TUYA",
         "lang_heading": "ЯЗЫК",
         "server": "Сервер",
         "qr_none": "Нет QR",
@@ -587,8 +587,8 @@ _STRINGS: dict[str, dict[str, str]] = {
         "account": "Аккаунт",
     },
     "uk": {
-        "app_title": "Міст Tuya",
-        "app_banner": "■  МІСТ TUYA",
+        "app_title": "RTSP-міст Tuya",
+        "app_banner": "RTSP-МІСТ TUYA",
         "lang_heading": "МОВА",
         "server": "Сервер",
         "qr_none": "Немає QR",
@@ -643,8 +643,8 @@ _STRINGS: dict[str, dict[str, str]] = {
         "account": "Обліковий запис",
     },
     "nl": {
-        "app_title": "Tuya-brug",
-        "app_banner": "■  TUYA-BRUG",
+        "app_title": "Tuya-RTSP-brug",
+        "app_banner": "TUYA-RTSP-BRUG",
         "lang_heading": "TAAL",
         "server": "Server",
         "qr_none": "Geen QR",
@@ -699,8 +699,8 @@ _STRINGS: dict[str, dict[str, str]] = {
         "account": "Account",
     },
     "pl": {
-        "app_title": "Most Tuya",
-        "app_banner": "■  MOST TUYA",
+        "app_title": "Most RTSP Tuya",
+        "app_banner": "MOST RTSP TUYA",
         "lang_heading": "JĘZYK",
         "server": "Serwer",
         "qr_none": "Brak QR",
@@ -755,8 +755,8 @@ _STRINGS: dict[str, dict[str, str]] = {
         "account": "Konto",
     },
     "id": {
-        "app_title": "Jembatan Tuya",
-        "app_banner": "■  JEMBATAN TUYA",
+        "app_title": "Jembatan RTSP Tuya",
+        "app_banner": "JEMBATAN RTSP TUYA",
         "lang_heading": "BAHASA",
         "server": "Server",
         "qr_none": "Belum ada QR",
