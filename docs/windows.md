@@ -2,6 +2,8 @@
 
 Double-click **TuyaRtspBridge-Setup.exe** from [Releases](../../releases). Next, Next, Finish.
 
+The wizard follows the Windows language when Inno has a pack for it (English, German, Dutch, French, Spanish, Portuguese, Italian, Polish, Czech, Russian, Ukrainian, Japanese, Korean, Hebrew). Chinese, Hindi, Indonesian, and Yiddish are in the app menu after the first start.
+
 You do **not** need to install Python, VLC, ffmpeg, or Git. The Setup copies a private runtime into `%LOCALAPPDATA%\Programs\TuyaRtspBridge`.
 
 ## After install

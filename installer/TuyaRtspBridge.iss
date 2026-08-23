@@ -1,5 +1,5 @@
 #define MyAppName "Tuya RTSP Bridge"
-#define MyAppVersion "1.2.1"
+#define MyAppVersion "1.2.2"
 #define MyAppPublisher "Tuya RTSP Bridge contributors"
 #define MyAppURL "https://github.com/DanEng1982/tuya-rtsp-bridge"
 #define BundleDir "..\packaging\windows\staging"
@@ -79,6 +79,7 @@ Source: "..\README.ja.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.ko.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.he.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.yi.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CHANGELOG.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\SECURITY.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\NOTICE.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\CREDITS.md"; DestDir: "{app}"; Flags: ignoreversion
