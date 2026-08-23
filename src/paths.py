@@ -73,3 +73,61 @@ def engine_exe() -> Path:
         if p.exists():
             return p
     return bin_dir() / name
+
+
+def vlc_dir() -> Path | None:
+    """Folder that contains libvlc.dll / plugins. Bundled copy wins."""
+    env = os.environ.get("TUYA_VLC_DIR")
+    candidates = []
+    if env:
+        candidates.append(Path(env))
+    root = install_root()
+    candidates.extend(
+        [
+            root / "vlc",
+            root / "runtime" / "vlc",
+            Path(r"C:\Program Files\VideoLAN\VLC"),
+            Path(r"C:\Program Files (x86)\VideoLAN\VLC"),
+            Path("/usr/lib/vlc"),
+            Path("/usr/lib64/vlc"),
+            Path("/usr/lib/x86_64-linux-gnu/vlc"),
+        ]
+    )
+    for d in candidates:
+        if (d / "libvlc.dll").exists() or (d / "plugins").is_dir():
+            return d
+    return None
+
+
+def ffmpeg_exe() -> Path | None:
+    """Bundled ffmpeg first, then PATH."""
+    import shutil
+
+    name = "ffmpeg.exe" if os.name == "nt" else "ffmpeg"
+    bundled = bin_dir() / name
+    if bundled.exists():
+        return bundled
+    extra = install_root() / "ffmpeg" / name
+    if extra.exists():
+        return extra
+    w = shutil.which("ffmpeg")
+    return Path(w) if w else None
+
+
+def prepend_bundled_path() -> None:
+    """Make bundled ffmpeg/VLC visible to child processes."""
+    parts: list[str] = []
+    b = bin_dir()
+    if b.is_dir():
+        parts.append(str(b))
+    v = install_root() / "vlc"
+    if v.is_dir():
+        parts.append(str(v))
+        plug = v / "plugins"
+        if plug.is_dir():
+            os.environ.setdefault("VLC_PLUGIN_PATH", str(plug))
+    if parts:
+        os.environ["PATH"] = os.pathsep.join(parts) + os.pathsep + os.environ.get("PATH", "")
+
+
+prepend_bundled_path()

@@ -79,14 +79,14 @@ Supported login regions: Western Europe, Eastern Europe, USA West, USA East, Chi
 
 ### 0. You need
 
-1. Windows 10/11 **or Arch Linux** (other Linux: use `./launch.sh`)
-2. Python 3.10+ (Windows: tick **Add python.exe to PATH**; Arch: `pacman -S python tk`)
-3. A Tuya Smart or Smart Life account that already sees the cameras
-4. Optional: [VLC](https://www.videolan.org/) / `pacman -S vlc` for the in-app preview
+1. Windows 10/11 **or Arch Linux** (other Linux: use `./launch.sh` or Docker)
+2. A Tuya Smart or Smart Life account that already sees the cameras
+
+Windows users do **not** install Python, VLC, or ffmpeg. That is all inside the Setup.
 
 ### 1. Install
 
-- **Windows:** `TuyaRtspBridge-Setup.exe` from [Releases](../../releases), pick a language
+- **Windows:** `TuyaRtspBridge-Setup.exe` from [Releases](../../releases) — next, next, finish. Details: [docs/windows.md](docs/windows.md)
 - **Docker (Linux / HA host):** [docs/docker.md](docs/docker.md) — `docker compose up -d --build`
 - **Arch Linux:** [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh` or `packaging/arch/PKGBUILD`
 - **From source:** see [Install from source](#install-from-source)
@@ -151,6 +151,7 @@ Need Go only to build the engine. Release builds on Windows already include the 
 | [docs/nvr.md](docs/nvr.md) | Frigate, Agent DVR, go2rtc |
 | [docs/architecture.md](docs/architecture.md) | How the pieces fit |
 | [docs/api.md](docs/api.md) | Local HTTP API `:8787` |
+| [docs/windows.md](docs/windows.md) | Foolproof Windows Setup.exe (Python + VLC + ffmpeg) |
 | [docs/docker.md](docs/docker.md) | Docker Compose (Linux host / Desktop ports) |
 | [docs/arch-linux.md](docs/arch-linux.md) | Arch: launch.sh + PKGBUILD |
 | [DEPENDENCIES.md](DEPENDENCIES.md) | Licenses (all redistributable or not shipped) |

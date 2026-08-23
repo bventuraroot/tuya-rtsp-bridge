@@ -10,23 +10,15 @@ from pathlib import Path
 from typing import Dict, Optional
 import re
 
-from paths import install_root, user_data
+from paths import ffmpeg_exe, install_root, user_data
 
 ROOT = user_data()
 LIVE = install_root() / "web" / "live"
 LOG_BASE = ROOT / "hd_proxy.log"
-WINGET_FF = Path(
-    os.environ.get("LOCALAPPDATA", "")
-) / "Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0-full_build/bin/ffmpeg.exe"
 
 
 def find_ffmpeg() -> Optional[Path]:
-    w = shutil.which("ffmpeg")
-    if w:
-        return Path(w)
-    if WINGET_FF.exists():
-        return WINGET_FF
-    return None
+    return ffmpeg_exe()
 
 
 def _open_log():

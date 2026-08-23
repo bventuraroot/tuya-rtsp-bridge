@@ -10,7 +10,7 @@ import time
 import urllib.request
 from pathlib import Path
 
-from paths import engine_exe, user_data
+from paths import engine_exe, ffmpeg_exe, user_data
 from procutil import creationflags, kill_engine, pid_alive
 
 LOCK = user_data() / "rtsp_watchdog.lock"
@@ -63,8 +63,7 @@ def cameras() -> list[str]:
 
 
 def ffmpeg() -> Path | None:
-    w = shutil.which("ffmpeg")
-    return Path(w) if w else None
+    return ffmpeg_exe()
 
 
 def cam_bytes(ff: Path, cam: str) -> int:

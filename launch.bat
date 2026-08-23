@@ -2,32 +2,36 @@
 setlocal
 cd /d "%~dp0"
 title Tuya RTSP Bridge
-echo.
-echo  Tuya RTSP Bridge
-echo  ----------------
-if not exist ".venv\Scripts\python.exe" (
+set "PATH=%~dp0bin;%~dp0vlc;%PATH%"
+if exist "%~dp0vlc\plugins" set "VLC_PLUGIN_PATH=%~dp0vlc\plugins"
+set "TUYA_BRIDGE_ROOT=%~dp0"
+
+set "PYW="
+if exist "%~dp0runtime\pythonw.exe" set "PYW=%~dp0runtime\pythonw.exe"
+if not defined PYW if exist "%~dp0.venv\Scripts\pythonw.exe" set "PYW=%~dp0.venv\Scripts\pythonw.exe"
+if not defined PYW if exist "%~dp0runtime\python.exe" set "PYW=%~dp0runtime\python.exe"
+if not defined PYW if exist "%~dp0.venv\Scripts\python.exe" set "PYW=%~dp0.venv\Scripts\python.exe"
+
+if not defined PYW (
+  echo.
   echo  Creating a local Python environment...
   py -3 -m venv .venv 2>nul
   if not exist ".venv\Scripts\python.exe" python -m venv .venv
   if not exist ".venv\Scripts\python.exe" (
     echo.
-    echo  Python 3.10+ is missing.
-    echo  Install from https://www.python.org/downloads/
-    echo  Tick  "Add python.exe to PATH"  then run this again.
+    echo  This folder has no bundled runtime and no system Python.
+    echo  Use TuyaRtspBridge-Setup.exe from GitHub Releases — it includes everything.
     echo.
-    echo  Python 3.10+ fehlt.
-    echo  Installation: https://www.python.org/downloads/
-    echo  Haken bei  "Add python.exe to PATH"  setzen.
+    echo  Oder: Python 3.10+ von https://www.python.org/downloads/  ^(Haken bei Add to PATH^)
     echo.
     pause
     exit /b 1
   )
   ".venv\Scripts\python.exe" -m pip install --upgrade pip
   ".venv\Scripts\python.exe" -m pip install -r "%~dp0requirements.txt"
+  if exist ".venv\Scripts\pythonw.exe" set "PYW=%~dp0.venv\Scripts\pythonw.exe"
+  if not defined PYW set "PYW=%~dp0.venv\Scripts\python.exe"
 )
-if exist ".venv\Scripts\pythonw.exe" (
-  start "" ".venv\Scripts\pythonw.exe" -u "%~dp0src\gui.py"
-) else (
-  start "" ".venv\Scripts\python.exe" -u "%~dp0src\gui.py"
-)
+
+start "" "%PYW%" -u "%~dp0src\gui.py"
 endlocal

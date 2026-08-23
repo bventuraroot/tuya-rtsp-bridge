@@ -3,26 +3,19 @@ from __future__ import annotations
 
 import os
 import sys
-from pathlib import Path
+from paths import vlc_dir
 
-VLC_DIR = Path(r"C:\Program Files\VideoLAN\VLC")
 _instance = None
 
 
 def configure_vlc_env() -> None:
-    if os.name == "nt" and VLC_DIR.exists():
-        os.environ["PATH"] = str(VLC_DIR) + os.pathsep + os.environ.get("PATH", "")
-        os.environ.setdefault("VLC_PLUGIN_PATH", str(VLC_DIR / "plugins"))
+    d = vlc_dir()
+    if not d:
         return
-    for d in (
-        Path("/usr/lib/vlc"),
-        Path("/usr/lib64/vlc"),
-        Path("/usr/lib/x86_64-linux-gnu/vlc"),
-    ):
-        plug = d / "plugins"
-        if plug.exists():
-            os.environ.setdefault("VLC_PLUGIN_PATH", str(plug))
-            break
+    os.environ["PATH"] = str(d) + os.pathsep + os.environ.get("PATH", "")
+    plug = d / "plugins"
+    if plug.is_dir():
+        os.environ["VLC_PLUGIN_PATH"] = str(plug)
 
 
 def vlc_mod():

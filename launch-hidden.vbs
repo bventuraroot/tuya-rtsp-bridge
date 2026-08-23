@@ -5,8 +5,12 @@ Set sh = CreateObject("WScript.Shell")
 Set fso = CreateObject("Scripting.FileSystemObject")
 root = fso.GetParentFolderName(WScript.ScriptFullName)
 sh.CurrentDirectory = root
+sh.Environment("PROCESS")("TUYA_BRIDGE_ROOT") = root
+sh.Environment("PROCESS")("PATH") = root & "\bin;" & root & "\vlc;" & sh.Environment("PROCESS")("PATH")
 
-pythonw = root & "\.venv\Scripts\pythonw.exe"
+pythonw = root & "\runtime\pythonw.exe"
+If Not fso.FileExists(pythonw) Then pythonw = root & "\runtime\python.exe"
+If Not fso.FileExists(pythonw) Then pythonw = root & "\.venv\Scripts\pythonw.exe"
 If Not fso.FileExists(pythonw) Then pythonw = root & "\.venv\Scripts\python.exe"
 If Not fso.FileExists(pythonw) Then WScript.Quit 1
 

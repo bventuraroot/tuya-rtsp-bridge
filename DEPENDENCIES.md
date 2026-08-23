@@ -18,15 +18,19 @@ See `NOTICE.md` (full legal text) and `vendor/tuya-ipc-terminal/LICENSE`.
 | qrcode | BSD-3-Clause | Login QR |
 | pillow | HPND-like (PIL) | QR + images |
 | tinytuya | MIT | Local PTZ (TCP 6668) |
-| python-vlc | LGPL-2.1+ | Live preview HWND (does **not** ship VLC) |
+| python-vlc | LGPL-2.1+ | Live preview HWND |
 
-## Required on the user's machine (not bundled)
+## Windows Setup.exe (v1.2+) redistributes
 
-| Software | License | Why not bundled |
+These sit next to the app. You can replace them with any compatible official build.
+
+| Software | License | Notes |
 |---|---|---|
-| Python 3.10+ | PSF | Interpreter |
-| VideoLAN VLC 3.x | LGPL-2.1+ | Hardware video preview. Install from https://www.videolan.org/ |
-| ffmpeg (optional) | LGPL/GPL | Watchdog byte-probe only. Any LGPL build is enough. |
+| CPython 3.12 | PSF | Private copy under `runtime\` |
+| VideoLAN VLC 3 (64-bit) | LGPL-2.1+ | Official zip; `vlc\COPYING` |
+| ffmpeg essentials (Gyan) | LGPL | `bin\ffmpeg.exe` + `bin\FFMPEG-LICENSE.txt` |
+
+Linux / source installs still use distro Python, VLC, and ffmpeg.
 
 ## Go engine transitive (MIT / BSD)
 
@@ -36,5 +40,4 @@ pion/webrtc, eclipse/paho.mqtt.golang, rs/zerolog, spf13/cobra, golang.org/x/* â
 
 - No Tuya/Smart Life credentials, cookies, or `localKey`
 - No camera device IDs or LAN IPs
-- No VLC or ffmpeg binaries (license / size)
 - No telemetry

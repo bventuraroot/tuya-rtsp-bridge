@@ -34,6 +34,14 @@ cd ..\..
 launch.bat
 ```
 
+Foolproof Setup.exe (bundles CPython + VLC + ffmpeg + engine):
+
+```bat
+python packaging\windows\build_bundle.py
+```
+
+Output: `installer\output\TuyaRtspBridge-Setup.exe`. See [docs/windows.md](docs/windows.md).
+
 Linux / Arch: `./launch.sh` (see [docs/arch-linux.md](docs/arch-linux.md)).
 
 ## Checks
@@ -41,6 +49,7 @@ Linux / Arch: `./launch.sh` (see [docs/arch-linux.md](docs/arch-linux.md)).
 ```bash
 python -m py_compile src/*.py
 python tests/test_i18n.py
+python tests/test_paths.py
 ```
 
 CI runs the same on every PR.

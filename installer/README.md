@@ -1,14 +1,15 @@
 # Build the Windows installer
 
-Needs [Inno Setup 6](https://jrsoftware.org/isinfo.php) (free for non-commercial use).
+Needs [Inno Setup 6](https://jrsoftware.org/isinfo.php) and a network connection the first time.
 
 ```bat
-cd vendor\tuya-ipc-terminal
-go build -o ..\..\bin\tuya-ipc-terminal.exe .
-cd ..\..\installer
-"C:\Program Files (x86)\Inno Setup 6\ISCC.exe" TuyaRtspBridge.iss
+python packaging\windows\build_bundle.py
 ```
+
+That downloads (and caches) official CPython, VideoLAN VLC, and LGPL ffmpeg, copies `bin\tuya-ipc-terminal.exe`, then runs ISCC.
 
 Output: `installer\output\TuyaRtspBridge-Setup.exe`
 
-The wizard language (English / Deutsch) also writes `%APPDATA%\TuyaRtspBridge\config.json`.
+The wizard language also writes `%APPDATA%\TuyaRtspBridge\config.json`.
+
+See [docs/windows.md](../docs/windows.md).

@@ -61,10 +61,10 @@ Declared in `vendor/tuya-ipc-terminal/go.mod`. All OSI-approved
 
 ---
 
-## 2. Python dependencies (not vendored — installed by pip)
+## 2. Python dependencies
 
-We do **not** copy their source into this tree. Licenses apply at runtime
-after `pip install -r requirements.txt`.
+On a source / Linux install they come from `pip install -r requirements.txt`.
+The Windows Setup.exe ships a private CPython plus those wheels.
 
 | Package | License |
 |---|---|
@@ -72,17 +72,19 @@ after `pip install -r requirements.txt`.
 | qrcode | BSD-3-Clause |
 | pillow | HPND (historical PIL) |
 | tinytuya | MIT (jasonacox/tinytuya) |
-| python-vlc | LGPL-2.1+ (bindings only; VLC is not shipped) |
+| python-vlc | LGPL-2.1+ (bindings) |
 
 ---
 
-## 3. Required on the user’s machine (not redistributed)
+## 3. Redistributed with the Windows Setup.exe (v1.2+)
 
 | Software | License | Notes |
 |---|---|---|
-| Python 3.10+ | PSF | Interpreter |
-| VideoLAN VLC | LGPL-2.1+ | Optional preview. Install from videolan.org |
-| ffmpeg | LGPL or GPL | Optional watchdog probe |
+| CPython 3.12 | PSF | `runtime\` — https://www.python.org |
+| VideoLAN VLC 3 | LGPL-2.1+ | Official win64 zip in `vlc\`. Replaceable. |
+| ffmpeg essentials | LGPL | Gyan build in `bin\ffmpeg.exe`. Replaceable. |
+
+Linux packages these from the distro instead.
 
 Inno Setup is used only to *build* the Windows installer. It is not shipped
 as source here. Commercial redistribution of an Inno-built installer may

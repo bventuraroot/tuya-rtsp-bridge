@@ -1,7 +1,8 @@
 #define MyAppName "Tuya RTSP Bridge"
-#define MyAppVersion "1.1.0"
+#define MyAppVersion "1.2.0"
 #define MyAppPublisher "Tuya RTSP Bridge contributors"
 #define MyAppURL "https://github.com/DanEng1982/tuya-rtsp-bridge"
+#define BundleDir "..\packaging\windows\staging"
 
 [Setup]
 AppId={{A7C3E91F-4B2D-4F11-9C08-7E2B91C4D001}
@@ -35,7 +36,8 @@ Name: "polish"; MessagesFile: "compiler:Languages\Polish.isl"
 Name: "czech"; MessagesFile: "compiler:Languages\Czech.isl"
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
-Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
+; ChineseSimplified.isl is unofficial and not in every Inno install.
+; App UI still has 中文 via the language menu after first start.
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
@@ -44,8 +46,11 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "..\src\*"; DestDir: "{app}\src"; Flags: ignoreversion recursesubdirs; Excludes: "__pycache__\*,*.pyc"
 Source: "..\web\*"; DestDir: "{app}\web"; Flags: ignoreversion recursesubdirs
 Source: "..\vendor\tuya-ipc-terminal\*"; DestDir: "{app}\vendor\tuya-ipc-terminal"; Flags: ignoreversion recursesubdirs
-Source: "..\bin\tuya-ipc-terminal.exe"; DestDir: "{app}\bin"; Flags: ignoreversion
+Source: "{#BundleDir}\bin\*"; DestDir: "{app}\bin"; Flags: ignoreversion
+Source: "{#BundleDir}\runtime\*"; DestDir: "{app}\runtime"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#BundleDir}\vlc\*"; DestDir: "{app}\vlc"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\launch.bat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\launch-gui.vbs"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\launch-hidden.vbs"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\requirements.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
@@ -70,11 +75,12 @@ Source: "..\CREDITS.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\CONTRIBUTING.md"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
-Name: "{group}\Tuya RTSP Bridge"; Filename: "{app}\launch.bat"; WorkingDir: "{app}"
-Name: "{autodesktop}\Tuya RTSP Bridge"; Filename: "{app}\launch.bat"; WorkingDir: "{app}"; Tasks: desktopicon
+Name: "{group}\Tuya RTSP Bridge"; Filename: "{app}\runtime\pythonw.exe"; Parameters: "-u ""{app}\src\gui.py"""; WorkingDir: "{app}"
+Name: "{autodesktop}\Tuya RTSP Bridge"; Filename: "{app}\runtime\pythonw.exe"; Parameters: "-u ""{app}\src\gui.py"""; WorkingDir: "{app}"; Tasks: desktopicon
+Name: "{group}\Tuya RTSP Bridge (console)"; Filename: "{app}\launch.bat"; WorkingDir: "{app}"
 
 [Run]
-Filename: "{app}\launch.bat"; Description: "Start Tuya RTSP Bridge"; Flags: nowait postinstall skipifsilent shellexec
+Filename: "{app}\runtime\pythonw.exe"; Parameters: "-u ""{app}\src\gui.py"""; WorkingDir: "{app}"; Description: "Start Tuya RTSP Bridge"; Flags: nowait postinstall skipifsilent skipifdoesntexist
 
 [Code]
 procedure CurStepChanged(CurStep: TSetupStep);
@@ -105,8 +111,6 @@ begin
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "ru"' + #13#10 + '}', False)
     else if ActiveLanguage = 'ukrainian' then
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "uk"' + #13#10 + '}', False)
-    else if ActiveLanguage = 'chinesesimplified' then
-      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "zh"' + #13#10 + '}', False)
     else
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "en"' + #13#10 + '}', False);
   end;

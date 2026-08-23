@@ -14,6 +14,8 @@ jobs:
         with:
           python-version: "3.11"
       - name: Syntax
-        run: python -m py_compile src/*.py tests/test_i18n.py
+        run: python -m py_compile src/*.py tests/test_i18n.py tests/test_paths.py
       - name: i18n keys
         run: python tests/test_i18n.py
+      - name: path helpers
+        run: python tests/test_paths.py
