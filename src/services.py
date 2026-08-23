@@ -1,14 +1,13 @@
-"""Start/stop optionaler Dienste. Keine Secrets."""
+"""Start/stop optional services. No secrets."""
 from __future__ import annotations
 
 import json
-import os
-import subprocess
 import sys
 from pathlib import Path
 from typing import Any
 
-from paths import install_root, tuya_data, user_data
+from paths import tuya_data, user_data
+from procutil import creationflags, kill_pids, pids_matching, python_exe
 
 DATA = tuya_data()
 FLAGS = DATA / "ui_flags.json"
@@ -19,18 +18,6 @@ DEFAULTS = {
     "archive": False,
     "hls": False,
 }
-
-
-def _pythonw() -> Path:
-    exe = Path(sys.executable)
-    pw = exe.with_name("pythonw.exe")
-    if pw.exists():
-        return pw
-    return exe
-
-
-def _flags() -> int:
-    return subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
 
 
 def load_flags() -> dict[str, bool]:
@@ -57,59 +44,29 @@ def save_flags(flags: dict[str, bool]) -> dict[str, bool]:
     return merged
 
 
-def _pids_matching(needle: str) -> list[int]:
-    try:
-        raw = subprocess.check_output(
-            [
-                "powershell.exe",
-                "-NoProfile",
-                "-Command",
-                "Get-CimInstance Win32_Process | "
-                f"Where-Object {{ $_.CommandLine -like '*{needle}*' }} | "
-                "Select-Object -ExpandProperty ProcessId",
-            ],
-            text=True,
-            timeout=12,
-            creationflags=_flags(),
-        )
-    except (subprocess.CalledProcessError, subprocess.TimeoutExpired, OSError):
-        return []
-    out: list[int] = []
-    for part in raw.split():
-        if part.isdigit():
-            pid = int(part)
-            if pid > 4:
-                out.append(pid)
-    return out
-
-
-def _kill_pids(pids: list[int]) -> None:
-    for pid in pids:
-        subprocess.run(
-            ["taskkill.exe", "/F", "/PID", str(pid)],
-            capture_output=True,
-            creationflags=_flags(),
-        )
-
-
 def _spawn(script: str) -> None:
-    exe = _pythonw()
+    exe = python_exe()
     path = SRC / script
     if not path.exists() or not exe.exists():
         return
+    import subprocess
+
+    env = dict(**__import__("os").environ)
+    env["PYTHONPATH"] = str(SRC) + __import__("os").pathsep + env.get("PYTHONPATH", "")
     subprocess.Popen(
         [str(exe), "-u", str(path)],
         cwd=str(user_data()),
-        creationflags=_flags(),
+        env=env,
+        creationflags=creationflags(),
     )
 
 
 def watchdog_running() -> bool:
-    return bool(_pids_matching("rtsp_watchdog.py"))
+    return bool(pids_matching("rtsp_watchdog.py"))
 
 
 def archive_running() -> bool:
-    return bool(_pids_matching("archive_recorder.py"))
+    return bool(pids_matching("archive_recorder.py"))
 
 
 def set_watchdog(on: bool) -> None:
@@ -117,7 +74,7 @@ def set_watchdog(on: bool) -> None:
         if not watchdog_running():
             _spawn("rtsp_watchdog.py")
         return
-    _kill_pids(_pids_matching("rtsp_watchdog.py"))
+    kill_pids(pids_matching("rtsp_watchdog.py"))
     lock = user_data() / "rtsp_watchdog.lock"
     if lock.exists():
         try:
@@ -131,7 +88,7 @@ def set_archive(on: bool) -> None:
         if not archive_running():
             _spawn("archive_recorder.py")
         return
-    _kill_pids(_pids_matching("archive_recorder.py"))
+    kill_pids(pids_matching("archive_recorder.py"))
 
 
 def status() -> dict[str, Any]:

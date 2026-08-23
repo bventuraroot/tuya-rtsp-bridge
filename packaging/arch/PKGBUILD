@@ -1,0 +1,43 @@
+# Maintainer: DanEng1982 <DanEng1982@users.noreply.github.com>
+pkgname=tuya-rtsp-bridge
+pkgver=1.1.0
+pkgrel=1
+pkgdesc="Local RTSP for any Tuya / Smart Life camera (QR login, Frigate, Agent DVR)"
+arch=('x86_64' 'aarch64')
+url="https://github.com/DanEng1982/tuya-rtsp-bridge"
+license=('MIT')
+depends=('python' 'python-pip' 'python-requests' 'python-pillow' 'python-qrcode' 'tk')
+optdepends=(
+  'vlc: in-app live preview'
+  'ffmpeg: watchdog byte probe'
+)
+makedepends=('go' 'git')
+source=("$pkgname::git+https://github.com/DanEng1982/tuya-rtsp-bridge.git#tag=v$pkgver")
+sha256sums=('SKIP')
+
+build() {
+  cd "$srcdir/$pkgname/vendor/tuya-ipc-terminal"
+  export CGO_ENABLED=0
+  go build -trimpath -ldflags="-s -w" -o "$srcdir/tuya-ipc-terminal" .
+}
+
+package() {
+  local root="$pkgdir/usr/lib/$pkgname"
+  install -d "$root"/{src,web,vendor,bin}
+  cp -a "$srcdir/$pkgname/src/." "$root/src/"
+  cp -a "$srcdir/$pkgname/web/." "$root/web/"
+  cp -a "$srcdir/$pkgname/vendor/." "$root/vendor/"
+  install -m755 "$srcdir/tuya-ipc-terminal" "$root/bin/tuya-ipc-terminal"
+  install -Dm755 "$srcdir/$pkgname/packaging/linux/tuya-rtsp-bridge" \
+    "$pkgdir/usr/bin/tuya-rtsp-bridge"
+  install -Dm644 "$srcdir/$pkgname/packaging/linux/tuya-rtsp-bridge.desktop" \
+    "$pkgdir/usr/share/applications/tuya-rtsp-bridge.desktop"
+  install -Dm644 "$srcdir/$pkgname/packaging/linux/tuya-rtsp-bridge.service" \
+    "$pkgdir/usr/lib/systemd/user/tuya-rtsp-bridge.service"
+  install -Dm644 "$srcdir/$pkgname/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 "$srcdir/$pkgname/NOTICE.md" "$pkgdir/usr/share/licenses/$pkgname/NOTICE.md"
+  install -Dm644 "$srcdir/$pkgname/CREDITS.md" "$pkgdir/usr/share/doc/$pkgname/CREDITS.md"
+  python -m venv --system-site-packages "$root/venv"
+  "$root/venv/bin/pip" install --no-warn-script-location \
+    -r "$srcdir/$pkgname/requirements.txt"
+}

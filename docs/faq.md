@@ -38,4 +38,4 @@ Optional and expensive (x264 transcode). Off by default. Agent/Frigate should us
 
 ### Linux / macOS?
 
-The engine is Go and can be built elsewhere. The desktop GUI and installer are Windows-first. Help welcome.
+`./launch.sh` from a clone. Arch package: [docs/arch-linux.md](arch-linux.md). Data lives in `~/.local/share/tuya-rtsp-bridge/`.

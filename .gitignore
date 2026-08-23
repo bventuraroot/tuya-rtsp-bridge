@@ -12,3 +12,4 @@ hls/
 dist/
 build/
 installer/output/
+bin/

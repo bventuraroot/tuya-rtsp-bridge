@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Tuya RTSP Bridge
+Name[de]=Tuya-RTSP-Brücke
+Comment=QR login → local RTSP for Tuya / Smart Life cameras
+Comment[de]=QR-Login → lokales RTSP für Tuya-/Smart-Life-Kameras
+Exec=tuya-rtsp-bridge
+Icon=camera-web
+Terminal=false
+Categories=AudioVideo;Network;Monitor;
+StartupNotify=true

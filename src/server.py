@@ -139,18 +139,25 @@ def restart_rtsp_engine() -> None:
     rtsp.start()
 
 
-from paths import install_root, user_data
-
 def restart_ui_later() -> None:
-    launcher = install_root() / "launch-hidden.vbs"
-    flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
-    if launcher.exists():
-        subprocess.Popen(
-            f'ping -n 3 127.0.0.1 >nul & wscript.exe //B //nologo "{launcher}"',
-            shell=True,
-            cwd=str(user_data()),
-            creationflags=flags,
-        )
+    from procutil import creationflags, python_exe
+
+    server = Path(__file__).resolve()
+    exe = python_exe()
+    flags = creationflags()
+    if os.name == "nt":
+        cmd = f'ping -n 3 127.0.0.1 >nul & "{exe}" -u "{server}"'
+    else:
+        cmd = f'sleep 2 && "{exe}" -u "{server}"'
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(server.parent) + os.pathsep + env.get("PYTHONPATH", "")
+    subprocess.Popen(
+        cmd,
+        shell=True,
+        cwd=str(user_data()),
+        env=env,
+        creationflags=flags,
+    )
     threading.Thread(target=lambda: (time.sleep(0.5), os._exit(0)), daemon=True).start()
 
 

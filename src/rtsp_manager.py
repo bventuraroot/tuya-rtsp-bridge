@@ -11,12 +11,13 @@ from pathlib import Path
 from typing import Optional
 
 from paths import bin_dir, engine_exe, engine_src, install_root
+from procutil import creationflags, kill_engine
 
 ROOT = install_root()
 TOOLS = ROOT / "tools"
 BIN = bin_dir()
 GO_ROOT = TOOLS / "go"
-GO_EXE = GO_ROOT / "bin" / "go.exe"
+GO_EXE = GO_ROOT / "bin" / ("go.exe" if os.name == "nt" else "go")
 SRC = engine_src()
 EXE = engine_exe()
 
@@ -63,14 +64,12 @@ class RtspManager:
         if not go and GO_EXE.exists():
             go = str(GO_EXE)
         if not go:
-            raise RuntimeError("tuya-ipc-terminal.exe missing and no Go compiler on PATH.")
+            raise RuntimeError("tuya-ipc-terminal missing and no Go compiler on PATH.")
         if not SRC.exists():
             raise RuntimeError(f"engine source missing: {SRC}")
         BIN.mkdir(parents=True, exist_ok=True)
         env = os.environ.copy()
         env["CGO_ENABLED"] = "0"
-        env["GOOS"] = "windows"
-        env["GOARCH"] = "amd64"
         self._log("Building tuya-ipc-terminal …")
         proc = subprocess.run(
             [go, "build", "-o", str(EXE), "."],
@@ -94,7 +93,7 @@ class RtspManager:
         exe = self.ensure_binary()
         self.port = port
         self._log(f"Starte RTSP auf Port {port} …")
-        flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+        flags = creationflags()
         self.proc = subprocess.Popen(
             [str(exe), "rtsp", "start", "--port", str(port)],
             cwd=str(self.cwd),
@@ -123,13 +122,7 @@ class RtspManager:
             except subprocess.TimeoutExpired:
                 self.proc.kill()
         self.proc = None
-        # Hängende Instanz ohne unser Handle (API-Stop wirkungslos).
-        if os.name == "nt":
-            subprocess.run(
-                ["taskkill.exe", "/F", "/IM", "tuya-ipc-terminal.exe"],
-                capture_output=True,
-                creationflags=subprocess.CREATE_NO_WINDOW,
-            )
+        kill_engine()
         for _ in range(10):
             if not self.running():
                 break

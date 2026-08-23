@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="${TUYA_BRIDGE_ROOT:-/usr/lib/tuya-rtsp-bridge}"
+export TUYA_BRIDGE_ROOT="$ROOT"
+export PYTHONPATH="$ROOT/src${PYTHONPATH:+:$PYTHONPATH}"
+if [[ -x "$ROOT/venv/bin/python" ]]; then
+  PY="$ROOT/venv/bin/python"
+else
+  PY="${PYTHON:-python3}"
+fi
+if [[ "${1:-}" == "--server" || "${1:-}" == "--headless" ]]; then
+  exec "$PY" -u "$ROOT/src/server.py"
+fi
+exec "$PY" -u "$ROOT/src/gui.py"

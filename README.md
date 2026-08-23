@@ -53,17 +53,19 @@ Supported login regions: Western Europe, Eastern Europe, USA West, USA East, Chi
 
 ### 0. You need
 
-1. Windows 10/11 64-bit
-2. [Python 3.10+](https://www.python.org/downloads/) — tick **Add python.exe to PATH**
+1. Windows 10/11 **or Arch Linux** (other Linux: use `./launch.sh`)
+2. Python 3.10+ (Windows: tick **Add python.exe to PATH**; Arch: `pacman -S python tk`)
 3. A Tuya Smart or Smart Life account that already sees the cameras
-4. Optional: [VLC](https://www.videolan.org/) for the in-app preview
+4. Optional: [VLC](https://www.videolan.org/) / `pacman -S vlc` for the in-app preview
 
 ### 1. Install
 
-- **Easy:** download `TuyaRtspBridge-Setup.exe` from [Releases](../../releases), pick English or Deutsch
+- **Windows:** `TuyaRtspBridge-Setup.exe` from [Releases](../../releases), pick English or Deutsch
+- **Arch Linux:** [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh` or `packaging/arch/PKGBUILD`
 - **From source:** see [Install from source](#install-from-source)
 
-The app lives in `%LOCALAPPDATA%\Programs\TuyaRtspBridge`. Logins live in `%APPDATA%\TuyaRtspBridge\` (never in git).
+Windows install dir: `%LOCALAPPDATA%\Programs\TuyaRtspBridge`.  
+Logins: `%APPDATA%\TuyaRtspBridge\` (Windows) or `~/.local/share/tuya-rtsp-bridge/` (Linux). Never in git.
 
 ### 2. Log in
 
@@ -102,7 +104,15 @@ cd ..\..
 launch.bat
 ```
 
-Need Go only to build the engine. Release builds already include `bin/tuya-ipc-terminal.exe`.
+Linux / Arch:
+
+```bash
+sudo pacman -S --needed python python-pip tk go vlc ffmpeg   # Arch
+chmod +x launch.sh
+./launch.sh
+```
+
+Need Go only to build the engine. Release builds on Windows already include the `.exe`.
 
 ## Docs
 
@@ -113,6 +123,7 @@ Need Go only to build the engine. Release builds already include `bin/tuya-ipc-t
 | [docs/nvr.md](docs/nvr.md) | Frigate, Agent DVR, go2rtc |
 | [docs/architecture.md](docs/architecture.md) | How the pieces fit |
 | [docs/api.md](docs/api.md) | Local HTTP API `:8787` |
+| [docs/arch-linux.md](docs/arch-linux.md) | Arch: launch.sh + PKGBUILD |
 | [DEPENDENCIES.md](DEPENDENCIES.md) | Licenses (all redistributable or not shipped) |
 | [SECURITY.md](SECURITY.md) | What not to commit |
 

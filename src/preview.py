@@ -1,7 +1,8 @@
-"""Live-Vorschau über VLC (HWND). Ein Start pro Kamera, kein Restart-Loop."""
+"""Live preview via libVLC. HWND on Windows, X11 window id on Linux."""
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 
 VLC_DIR = Path(r"C:\Program Files\VideoLAN\VLC")
@@ -9,10 +10,19 @@ _instance = None
 
 
 def configure_vlc_env() -> None:
-    if not VLC_DIR.exists():
+    if os.name == "nt" and VLC_DIR.exists():
+        os.environ["PATH"] = str(VLC_DIR) + os.pathsep + os.environ.get("PATH", "")
+        os.environ.setdefault("VLC_PLUGIN_PATH", str(VLC_DIR / "plugins"))
         return
-    os.environ["PATH"] = str(VLC_DIR) + os.pathsep + os.environ.get("PATH", "")
-    os.environ.setdefault("VLC_PLUGIN_PATH", str(VLC_DIR / "plugins"))
+    for d in (
+        Path("/usr/lib/vlc"),
+        Path("/usr/lib64/vlc"),
+        Path("/usr/lib/x86_64-linux-gnu/vlc"),
+    ):
+        plug = d / "plugins"
+        if plug.exists():
+            os.environ.setdefault("VLC_PLUGIN_PATH", str(plug))
+            break
 
 
 def vlc_mod():
@@ -40,6 +50,16 @@ def vlc_instance():
     return _instance
 
 
+def _attach(player, wid: int) -> None:
+    if os.name == "nt":
+        player.set_hwnd(wid)
+        return
+    if sys.platform == "darwin":
+        player.set_nsobject(wid)
+        return
+    player.set_xwindow(wid)
+
+
 class VlcPreview:
     def __init__(self) -> None:
         self.player = None
@@ -59,7 +79,7 @@ class VlcPreview:
         self.stop()
         inst = vlc_instance()
         ply = inst.media_player_new()
-        ply.set_hwnd(hwnd)
+        _attach(ply, hwnd)
         media = inst.media_new(url)
         media.add_option(f":network-caching={cache_ms}")
         media.add_option(f":live-caching={cache_ms}")

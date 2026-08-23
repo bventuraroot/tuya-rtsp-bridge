@@ -42,23 +42,18 @@ def port_up(port: int) -> bool:
 def ensure_backend() -> None:
     if port_up(8787):
         return
-    vbs = install_root() / "launch-hidden.vbs"
-    if vbs.exists():
-        subprocess.Popen(
-            ["wscript.exe", "//B", "//nologo", str(vbs)],
-            cwd=str(user_data()),
-            creationflags=_nowin(),
-        )
-    else:
-        server = Path(__file__).resolve().parent / "server.py"
-        py = Path(os.environ.get("PYTHONW") or "") if False else None
-        import sys
-        subprocess.Popen(
-            [sys.executable.replace("python.exe", "pythonw.exe") if "python.exe" in sys.executable else sys.executable,
-             "-u", str(server)],
-            cwd=str(user_data()),
-            creationflags=_nowin(),
-        )
+    import sys
+    from procutil import python_exe
+
+    server = Path(__file__).resolve().parent / "server.py"
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(server.parent) + os.pathsep + env.get("PYTHONPATH", "")
+    subprocess.Popen(
+        [str(python_exe()), "-u", str(server)],
+        cwd=str(user_data()),
+        env=env,
+        creationflags=_nowin(),
+    )
     for _ in range(40):
         if port_up(8787):
             return

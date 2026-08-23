@@ -11,6 +11,7 @@ import urllib.request
 from pathlib import Path
 
 from paths import engine_exe, user_data
+from procutil import creationflags, kill_engine, pid_alive
 
 LOCK = user_data() / "rtsp_watchdog.lock"
 LOG = user_data() / "rtsp_watchdog.log"
@@ -32,19 +33,7 @@ def already_running() -> bool:
         return False
     if pid == os.getpid():
         return False
-    if os.name == "nt":
-        out = subprocess.run(
-            ["tasklist.exe", "/FI", f"PID eq {pid}", "/NH"],
-            capture_output=True,
-            text=True,
-            creationflags=subprocess.CREATE_NO_WINDOW,
-        )
-        return str(pid) in (out.stdout or "")
-    try:
-        os.kill(pid, 0)
-        return True
-    except OSError:
-        return False
+    return pid_alive(pid)
 
 
 def port_up() -> bool:
@@ -79,11 +68,11 @@ def ffmpeg() -> Path | None:
 
 
 def cam_bytes(ff: Path, cam: str) -> int:
-    dest = Path(os.environ.get("LOCALAPPDATA", str(user_data()))) / "Temp" / f"wd_{cam}.ts"
+    dest = user_data() / "tmp" / f"wd_{cam}.ts"
     dest.parent.mkdir(parents=True, exist_ok=True)
     if dest.exists():
         dest.unlink()
-    flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+    flags = creationflags()
     subprocess.run(
         [
             str(ff), "-hide_banner", "-loglevel", "error",
@@ -102,12 +91,8 @@ def cam_bytes(ff: Path, cam: str) -> int:
 
 
 def restart_engine() -> None:
-    flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
-    subprocess.run(
-        ["taskkill.exe", "/F", "/IM", "tuya-ipc-terminal.exe"],
-        capture_output=True,
-        creationflags=flags,
-    )
+    flags = creationflags()
+    kill_engine()
     time.sleep(2)
     try:
         req = urllib.request.Request(
