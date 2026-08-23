@@ -8,7 +8,7 @@ This project is MIT-licensed. It vendors and depends on other free/open-source w
 |---|---|---|
 | tuya-ipc-terminal | MIT | https://github.com/seydx/tuya-ipc-terminal |
 
-See `vendor/tuya-ipc-terminal/LICENSE`.
+See `NOTICE.md` (full legal text) and `vendor/tuya-ipc-terminal/LICENSE`.
 
 ## Python runtime dependencies (pip)
 

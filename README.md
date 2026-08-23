@@ -16,6 +16,10 @@ No firmware flash. No ONVIF (stock Tuya does not offer it). Scan a QR code once,
 
 This repository ships **no** accounts, device IDs, or home IPs.
 
+## Credits
+
+The RTSP engine is **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal)** by **[seydx](https://github.com/seydx)** (MIT), vendored at commit `d65b3e9` with three documented local patches. See [CREDITS.md](CREDITS.md) and [NOTICE.md](NOTICE.md).
+
 ---
 
 ## What you get
@@ -114,6 +118,7 @@ Need Go only to build the engine. Release builds already include `bin/tuya-ipc-t
 
 ## License
 
-MIT. RTSP engine by [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal) (MIT), vendored with attribution.
+Our code: MIT ([LICENSE](LICENSE)).  
+Vendored engine: MIT, Copyright (c) 2025 seydx — full text in [NOTICE.md](NOTICE.md) and `vendor/tuya-ipc-terminal/LICENSE`.
 
-Tuya, Smart Life, and iSmartLife are trademarks of their owners. This project is not affiliated with Tuya Inc.
+Tuya, Smart Life, and iSmartLife are trademarks of their owners. This project is not affiliated with Tuya Inc. or with seydx beyond using their MIT-licensed engine with credit.

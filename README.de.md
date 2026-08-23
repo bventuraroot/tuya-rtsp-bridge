@@ -15,6 +15,10 @@ Kein Firmware-Flash. Kein ONVIF (gibt es auf der Stock-Firmware nicht). Einmal Q
 
 Im Repo stecken **keine** Konten, Geräte-IDs oder Heim-IPs.
 
+## Credits
+
+Die RTSP-Engine ist **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal)** von **[seydx](https://github.com/seydx)** (MIT), Stand Commit `d65b3e9`, plus drei lokale Patches. Siehe [CREDITS.md](CREDITS.md) und [NOTICE.md](NOTICE.md).
+
 ## Was du bekommst
 
 - HD: `rtsp://<dieser-PC>:8554/<Kameraname>/hd` (meist HEVC 1080p)
@@ -49,4 +53,7 @@ Ausführlich: [docs/getting-started.md](docs/getting-started.md) · [docs/faq.md
 
 ## Lizenz
 
-MIT. Engine: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal) (MIT). Nicht mit Tuya Inc. verbunden.
+Unser Code: MIT ([LICENSE](LICENSE)).  
+Vendored Engine: MIT, Copyright (c) 2025 seydx — [NOTICE.md](NOTICE.md).
+
+Nicht mit Tuya Inc. verbunden.

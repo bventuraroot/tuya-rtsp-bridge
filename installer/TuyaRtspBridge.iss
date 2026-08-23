@@ -43,6 +43,8 @@ Source: "..\DEPENDENCIES.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.de.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\SECURITY.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\NOTICE.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CREDITS.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\CONTRIBUTING.md"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
