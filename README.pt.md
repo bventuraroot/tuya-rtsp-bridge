@@ -1,7 +1,7 @@
 # Ponte RTSP Tuya
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Français](README.fr.md)](README.fr.md) [![Español](README.es.md)](README.es.md) [![Português](README.pt.md)](README.pt.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md)
+[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Français](README.fr.md)](README.fr.md) [![Español](README.es.md)](README.es.md) [![Português](README.pt.md)](README.pt.md) [![Italiano](README.it.md)](README.it.md) [![Čeština](README.cs.md)](README.cs.md) [![Русский](README.ru.md)](README.ru.md) [![Українська](README.uk.md)](README.uk.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md)
 
 **Transforme qualquer câmera Tuya / Smart Life / iSmartLife numa câmera RTSP normal** — para Frigate, Agent DVR, go2rtc, Home Assistant ou VLC.
 
@@ -49,7 +49,7 @@ O motor RTSP é o **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-termin
 - SD: `…/sd` (H.264)
 - Todas as câmeras compartilham **um** IP da ponte; só o caminho muda
 - Prévia se o [VLC](https://www.videolan.org/) estiver instalado
-- Idiomas: English, Deutsch, Français, Español, Português, 简体中文, हिन्दी
+- Idiomas: English, Deutsch, Français, Español, Português, Italiano, Čeština, Русский, Українська, 简体中文, हिन्दी
 
 ## Limites honestos
 

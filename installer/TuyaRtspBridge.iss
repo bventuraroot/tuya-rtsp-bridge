@@ -29,6 +29,10 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
+Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
+Name: "czech"; MessagesFile: "compiler:Languages\Czech.isl"
+Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
+Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
 
 [Tasks]
@@ -49,6 +53,10 @@ Source: "..\README.de.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.fr.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.es.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.pt.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.it.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.cs.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.ru.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.uk.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.zh.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.hi.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\SECURITY.md"; DestDir: "{app}"; Flags: ignoreversion
@@ -80,6 +88,14 @@ begin
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "es"' + #13#10 + '}', False)
     else if ActiveLanguage = 'brazilianportuguese' then
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "pt"' + #13#10 + '}', False)
+    else if ActiveLanguage = 'italian' then
+      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "it"' + #13#10 + '}', False)
+    else if ActiveLanguage = 'czech' then
+      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "cs"' + #13#10 + '}', False)
+    else if ActiveLanguage = 'russian' then
+      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "ru"' + #13#10 + '}', False)
+    else if ActiveLanguage = 'ukrainian' then
+      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "uk"' + #13#10 + '}', False)
     else if ActiveLanguage = 'chinesesimplified' then
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "zh"' + #13#10 + '}', False)
     else
