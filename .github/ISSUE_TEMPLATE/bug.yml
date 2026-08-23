@@ -1,0 +1,29 @@
+name: Bug
+description: Something is broken in the app (not a specific camera model)
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 24H2
+  - type: checkboxes
+    id: redact
+    attributes:
+      label: Redaction
+      options:
+        - label: I removed secrets and personal IPs
+          required: true

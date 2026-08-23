@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Read the FAQ first
+    url: https://github.com/DanEng1982/tuya-rtsp-bridge/blob/main/docs/faq.md
+    about: Empty camera list, black VLC, fps, ONVIF

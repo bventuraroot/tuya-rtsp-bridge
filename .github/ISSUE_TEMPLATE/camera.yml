@@ -1,0 +1,38 @@
+name: Camera does not work
+description: Report a Tuya / Smart Life model that fails login, RTSP, or PTZ
+title: "[camera] "
+labels: ["camera"]
+body:
+  - type: input
+    id: model
+    attributes:
+      label: Camera model
+      placeholder: e.g. NP-CSH-8645 / LSC Outdoor
+    validations:
+      required: true
+  - type: dropdown
+    id: app
+    attributes:
+      label: Phone app
+      options: [Smart Life, Tuya Smart, iSmartLife, Other]
+    validations:
+      required: true
+  - type: dropdown
+    id: region
+    attributes:
+      label: Region in this app
+      options: [eu, we, us, ue, cn, in]
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens
+      placeholder: QR never completes / cameras empty / DESCRIBE ok but no video / PTZ dead
+    validations:
+      required: true
+  - type: checkboxes
+    id: redact
+    attributes:
+      label: Redaction
+      options:
+        - label: I removed emails, cookies, device IDs, and LAN IPs from logs
+          required: true

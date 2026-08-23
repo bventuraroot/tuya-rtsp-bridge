@@ -15,12 +15,12 @@ REGIONS = {
     "eu": {
         "key": "eu-central",
         "host": "protect-eu.ismartlife.me",
-        "label": "Westeuropa (EU)",
+        "label": "Western Europe (EU)",
     },
     "we": {
         "key": "eu-east",
         "host": "protect-we.ismartlife.me",
-        "label": "Westeuropa (WE)",
+        "label": "Eastern Europe (WE)",
     },
     "us": {
         "key": "us-west",
@@ -30,7 +30,17 @@ REGIONS = {
     "ue": {
         "key": "us-east",
         "host": "protect-ue.ismartlife.me",
-        "label": "USA Ost",
+        "label": "USA East",
+    },
+    "cn": {
+        "key": "china",
+        "host": "protect.ismartlife.me",
+        "label": "China",
+    },
+    "in": {
+        "key": "india",
+        "host": "protect-in.ismartlife.me",
+        "label": "India",
     },
 }
 
