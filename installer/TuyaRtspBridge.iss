@@ -1,5 +1,5 @@
 #define MyAppName "Tuya RTSP Bridge"
-#define MyAppVersion "1.2.0"
+#define MyAppVersion "1.2.1"
 #define MyAppPublisher "Tuya RTSP Bridge contributors"
 #define MyAppURL "https://github.com/DanEng1982/tuya-rtsp-bridge"
 #define BundleDir "..\packaging\windows\staging"
