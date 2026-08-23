@@ -3,13 +3,10 @@ from __future__ import annotations
 
 import json
 import os
-import shutil
 import subprocess
 import time
 import urllib.request
-from pathlib import Path
-
-from paths import user_data
+from paths import ffmpeg_exe, user_data
 
 ARCH = user_data() / "archive"
 LOG = ARCH / "recorder.log"
@@ -36,9 +33,9 @@ def cameras() -> list[str]:
 
 
 def main() -> None:
-    ff = shutil.which("ffmpeg")
+    ff = ffmpeg_exe()
     if not ff:
-        log("ffmpeg not on PATH — archive idle")
+        log("ffmpeg missing — archive idle")
         while True:
             time.sleep(3600)
     flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
@@ -53,7 +50,7 @@ def main() -> None:
             out = str(dest / f"{cam}_%Y%m%d_%H%M%S.ts")
             procs[cam] = subprocess.Popen(
                 [
-                    ff, "-hide_banner", "-loglevel", "error",
+                    str(ff), "-hide_banner", "-loglevel", "error",
                     "-rtsp_transport", "tcp", "-i", f"rtsp://127.0.0.1:8554/{cam}/hd",
                     "-map", "0:v:0", "-c", "copy", "-an",
                     "-f", "segment", "-segment_time", str(SEG_SEC),

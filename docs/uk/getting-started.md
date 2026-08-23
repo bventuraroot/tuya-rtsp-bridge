@@ -2,8 +2,8 @@
 
 Працює з камерами, які видно в **Tuya Smart**, **Smart Life** або **iSmartLife**.
 
-1. Встановіть Python 3.10+ (Windows: позначте **Add to PATH**).
-2. Запустіть інсталятор або `launch.bat` / `./launch.sh`.
+1. Windows: `TuyaRtspBridge-Setup.exe` з Releases (Python/VLC/ffmpeg усередині). Linux: `./launch.sh`.
+2. Запустіть **Tuya RTSP Bridge**.
 3. Оберіть той самий регіон, що в телефоні.
 4. Створити QR → сканувати → **підтвердити**.
 5. Скопіюйте HD-адресу в NVR.

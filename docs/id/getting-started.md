@@ -2,8 +2,8 @@
 
 Berjalan dengan kamera yang terlihat di **Tuya Smart**, **Smart Life**, atau **iSmartLife**.
 
-1. Pasang Python 3.10+ (Windows: centang **Add to PATH**).
-2. Jalankan pemasang atau `launch.bat` / `./launch.sh`.
+1. Windows: `TuyaRtspBridge-Setup.exe` dari Releases (Python/VLC/ffmpeg sudah termasuk). Linux: `./launch.sh`.
+2. Jalankan **Tuya RTSP Bridge**.
 3. Pilih wilayah yang sama dengan di ponsel.
 4. Buat QR → pindai → **konfirmasi**.
 5. Salin URL HD ke NVR.

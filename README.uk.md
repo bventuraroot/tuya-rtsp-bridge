@@ -63,11 +63,11 @@ RTSP-рушій — **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-term
 ## Встановлення за 5 хвилин
 
 1. Windows 10/11 **або Arch Linux**
-2. Python 3.10+ (Windows: позначте **Add to PATH**)
-3. Обліковий запис Smart Life / Tuya Smart, де камери вже видно
-4. За бажанням: VLC для попереднього перегляду
+2. Обліковий запис Smart Life / Tuya Smart, де камери вже видно
 
-Windows: `TuyaRtspBridge-Setup.exe` у [Releases](../../releases) — оберіть мову.  
+У Windows не ставте Python, VLC і ffmpeg окремо — вони в Setup.
+
+Windows: `TuyaRtspBridge-Setup.exe` у [Releases](../../releases) — далі, далі, готово. Подробиці: [docs/windows.md](docs/windows.md).  
 Arch: [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh`
 
 Вхід: створити QR → сканувати в Smart Life → **підтвердити** → скопіювати `rtsp://127.0.0.1:8554/<Назва>/hd`.

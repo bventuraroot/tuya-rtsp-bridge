@@ -2,8 +2,8 @@
 
 适用于出现在 **涂鸦智能**、**Smart Life** 或 **iSmartLife** 里的摄像机。
 
-1. 安装 Python 3.10+（Windows 勾选 **Add to PATH**）。
-2. 运行安装包或 `launch.bat` / `./launch.sh`。
+1. Windows：从 Releases 下载 `TuyaRtspBridge-Setup.exe`（已含 Python/VLC/ffmpeg）。Linux：`./launch.sh`。
+2. 打开 **Tuya RTSP Bridge**。
 3. 选择与手机 App 相同的区域。
 4. 生成二维码 → 扫描 → **确认**。
 5. 把高清地址复制到 NVR。

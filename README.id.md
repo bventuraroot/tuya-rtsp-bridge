@@ -63,11 +63,11 @@ Wilayah: Eropa Barat/Timur, AS Barat/Timur, Tiongkok, India.
 ## Pemasangan dalam 5 menit
 
 1. Windows 10/11 **atau Arch Linux**
-2. Python 3.10+ (Windows: centang **Add to PATH**)
-3. Akun Smart Life / Tuya Smart yang sudah melihat kameranya
-4. Opsional: VLC untuk pratinjau
+2. Akun Smart Life / Tuya Smart yang sudah melihat kameranya
 
-Windows: `TuyaRtspBridge-Setup.exe` dari [Releases](../../releases) — pilih bahasa.  
+Di Windows tidak perlu memasang Python, VLC, atau ffmpeg — semuanya di Setup.
+
+Windows: `TuyaRtspBridge-Setup.exe` dari [Releases](../../releases) — berikutnya, berikutnya, selesai. Rincian: [docs/windows.md](docs/windows.md).  
 Arch: [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh`
 
 Masuk: buat QR → pindai di Smart Life → **konfirmasi** → salin `rtsp://127.0.0.1:8554/<Nama>/hd`.

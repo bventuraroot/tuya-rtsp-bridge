@@ -63,11 +63,11 @@ RTSP इंजन **[seydx](https://github.com/seydx)** का **[tuya-ipc-termi
 ## ५ मिनट में सेटअप
 
 1. Windows 10/11 **या Arch Linux**
-2. Python 3.10+ (Windows पर **Add to PATH** चुनें)
-3. Smart Life / Tuya Smart खाता जिसमें कैमरे पहले से दिखते हैं
-4. वैकल्पिक: पूर्वावलोकन के लिए VLC
+2. Smart Life / Tuya Smart खाता जिसमें कैमरे पहले से दिखते हैं
 
-Windows: [Releases](../../releases) से `TuyaRtspBridge-Setup.exe` — भाषा चुनें।  
+Windows पर अलग से Python, VLC या ffmpeg नहीं चाहिए — Setup में है।
+
+Windows: [Releases](../../releases) से `TuyaRtspBridge-Setup.exe` — अगला, अगला, समाप्त। विवरण: [docs/windows.md](docs/windows.md)।  
 Arch: [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh`
 
 लॉगिन: QR बनाएँ → Smart Life से स्कैन → **पुष्टि** → `rtsp://127.0.0.1:8554/<नाम>/hd` कॉपी करें।

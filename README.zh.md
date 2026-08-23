@@ -63,11 +63,11 @@ RTSP 引擎是 **[seydx](https://github.com/seydx)** 的 **[tuya-ipc-terminal](h
 ## 五分钟安装
 
 1. Windows 10/11 **或 Arch Linux**
-2. Python 3.10+（Windows 勾选 **Add to PATH**）
-3. 已能在 Smart Life / 涂鸦智能 里看到摄像机的账号
-4. 可选：VLC 做预览
+2. 已能在 Smart Life / 涂鸦智能 里看到摄像机的账号
 
-Windows：[Releases](../../releases) 里的 `TuyaRtspBridge-Setup.exe`，选择语言。  
+Windows 不必另装 Python、VLC 或 ffmpeg，都在安装包里。
+
+Windows：[Releases](../../releases) 里的 `TuyaRtspBridge-Setup.exe`，下一步即可。说明：[docs/windows.md](docs/windows.md)。  
 Arch：[docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh`
 
 登录：生成二维码 → Smart Life 扫描 → **确认** → 复制 `rtsp://127.0.0.1:8554/<名称>/hd`。
