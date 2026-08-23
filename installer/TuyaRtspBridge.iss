@@ -27,6 +27,8 @@ ShowLanguageDialog=yes
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "french"; MessagesFile: "compiler:Languages\French.isl"
+Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
+Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
 
 [Tasks]
@@ -45,6 +47,8 @@ Source: "..\DEPENDENCIES.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.de.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.fr.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.es.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\README.pt.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.zh.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.hi.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\SECURITY.md"; DestDir: "{app}"; Flags: ignoreversion
@@ -72,6 +76,10 @@ begin
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "de"' + #13#10 + '}', False)
     else if ActiveLanguage = 'french' then
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "fr"' + #13#10 + '}', False)
+    else if ActiveLanguage = 'spanish' then
+      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "es"' + #13#10 + '}', False)
+    else if ActiveLanguage = 'brazilianportuguese' then
+      SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "pt"' + #13#10 + '}', False)
     else if ActiveLanguage = 'chinesesimplified' then
       SaveStringToFile(LangFile, '{' + #13#10 + '  "lang": "zh"' + #13#10 + '}', False)
     else

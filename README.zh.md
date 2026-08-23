@@ -1,7 +1,7 @@
 # 涂鸦 RTSP 网桥
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Français](README.fr.md)](README.fr.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md)
+[![English](README.md)](README.md) [![Deutsch](README.de.md)](README.de.md) [![Français](README.fr.md)](README.fr.md) [![Español](README.es.md)](README.es.md) [![Português](README.pt.md)](README.pt.md) [![简体中文](README.zh.md)](README.zh.md) [![हिन्दी](README.hi.md)](README.hi.md)
 
 **把任意涂鸦 / Smart Life / iSmartLife 摄像机变成普通 RTSP 摄像机**，供 Frigate、Agent DVR、go2rtc、Home Assistant 或 VLC 使用。
 

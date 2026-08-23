@@ -16,7 +16,7 @@ Open an issue before large refactors.
 ## Rules
 
 1. Do **not** commit `%APPDATA%\\TuyaRtspBridge`, cookies, `localKey`, device IDs, or LAN IPs.
-2. UI strings live in `src/i18n.py`. All five languages must keep the same keys.
+2. UI strings live in `src/i18n.py`. All listed languages must keep the same keys.
 3. Engine source is `vendor/tuya-ipc-terminal` (MIT, seydx). Prefer upstream for generic engine fixes.
 4. Say which **camera model** and **app** (Smart Life vs Tuya Smart) you tested.
 5. No exploit write-ups against Tuya cloud.
