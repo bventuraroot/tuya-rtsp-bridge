@@ -79,7 +79,7 @@ RTSP-рушій — **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-term
 
 У Windows не ставте Python, VLC і ffmpeg окремо — вони в Setup.
 
-Windows: `TuyaRtspBridge-Setup.exe` у [Releases](../../releases) — далі, далі, готово. Подробиці: [docs/windows.md](docs/windows.md).  
+Windows: `TuyaRtspBridge-Setup.exe` у [Releases](https://github.com/DanEng1982/tuya-rtsp-bridge/releases) — далі, далі, готово. Подробиці: [docs/windows.md](docs/windows.md).  
 Arch: [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh`
 
 Вхід: створити QR → сканувати в Smart Life → **підтвердити** → скопіювати `rtsp://127.0.0.1:8554/<Назва>/hd`.

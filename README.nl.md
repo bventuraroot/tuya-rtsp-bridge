@@ -79,7 +79,7 @@ Regio’s: West-/Oost-Europa, VS West/Oost, China, India.
 
 Windows: geen extra Python, VLC of ffmpeg — dat zit in de Setup.
 
-Windows: `TuyaRtspBridge-Setup.exe` van [Releases](../../releases) — volgende, volgende, klaar. Details: [docs/windows.md](docs/windows.md).  
+Windows: `TuyaRtspBridge-Setup.exe` van [Releases](https://github.com/DanEng1982/tuya-rtsp-bridge/releases) — volgende, volgende, klaar. Details: [docs/windows.md](docs/windows.md).  
 Arch: [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh`
 
 Inloggen: QR maken → scannen in Smart Life → **bevestigen** → `rtsp://127.0.0.1:8554/<Naam>/hd` kopiëren.

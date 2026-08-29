@@ -51,7 +51,7 @@ rtsp://<דער-קאָמפּיוטער>:8554/<קאַמערע-נאָמען>/hd
 ## אין 5 מינוט
 
 1. Windows 10/11 און אַ Smart Life-חשבון וואָס זעט שוין די קאַמערעס. קיין באַזונדער Python, VLC אָדער ffmpeg.
-2. `TuyaRtspBridge-Setup.exe` פֿון [Releases](../../releases). ווײַטער, ווײַטער, פֿאַרטיק. פּרטים: [docs/windows.md](docs/windows.md).
+2. `TuyaRtspBridge-Setup.exe` פֿון [Releases](https://github.com/DanEng1982/tuya-rtsp-bridge/releases). ווײַטער, ווײַטער, פֿאַרטיק. פּרטים: [docs/windows.md](docs/windows.md).
 3. עפֿענען די אַפּ → דער זעלבער ראַיאָן ווי אויפֿן טעלעפֿאָן → מאַכן אַ QR → סקאַנירן און **באַשטעטיקן**
 4. קלעפּן דעם HD-אַדרעס אין Agent DVR / Frigate: `rtsp://127.0.0.1:8554/<נאָמען>/hd`
 

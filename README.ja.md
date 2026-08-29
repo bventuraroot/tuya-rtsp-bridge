@@ -45,7 +45,7 @@ rtsp://<このPC>:8554/<カメラ名>/hd
 ## 5分で入れる
 
 1. Windows 10/11と、もうカメラが見えているSmart Lifeアカウント。PythonもVLCもffmpegも別途いらない。
-2. [Releases](../../releases) の `TuyaRtspBridge-Setup.exe`。次へ、次へ、完了。詳細は [docs/windows.md](docs/windows.md)。
+2. [Releases](https://github.com/DanEng1982/tuya-rtsp-bridge/releases) の `TuyaRtspBridge-Setup.exe`。次へ、次へ、完了。詳細は [docs/windows.md](docs/windows.md)。
 3. アプリ起動 → スマホと同じ地域（日本のアカウントでもEU/USなど実クラスタを選ぶ）→ QR作成 → アプリで読んで **確認**
 4. HDのURLをAgent DVR / Frigateへ: `rtsp://127.0.0.1:8554/<名前>/hd`
 

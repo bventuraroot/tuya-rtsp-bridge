@@ -45,7 +45,7 @@ rtsp://<이-PC>:8554/<카메라이름>/hd
 ## 5분이면 된다
 
 1. Windows 10/11과, 이미 카메라가 보이는 Smart Life 계정. Python, VLC, ffmpeg는 따로 안 깔아도 된다.
-2. [Releases](../../releases)의 `TuyaRtspBridge-Setup.exe`. 다음, 다음, 마침. 설명: [docs/windows.md](docs/windows.md).
+2. [Releases](https://github.com/DanEng1982/tuya-rtsp-bridge/releases)의 `TuyaRtspBridge-Setup.exe`. 다음, 다음, 마침. 설명: [docs/windows.md](docs/windows.md).
 3. 앱 실행 → 폰과 같은 지역 → QR 만들기 → 앱에서 찍고 **확인**
 4. HD 주소를 Agent DVR / Frigate에 붙인다: `rtsp://127.0.0.1:8554/<이름>/hd`
 

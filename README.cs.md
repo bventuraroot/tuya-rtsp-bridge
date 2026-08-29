@@ -71,7 +71,7 @@ Regiony: západní/východní Evropa, USA západ/východ, Čína, Indie.
 
 Ve Windows Python, VLC ani ffmpeg neinstalujte — jsou v Setupu.
 
-Windows: `TuyaRtspBridge-Setup.exe` z [Releases](../../releases) — další, další, dokončit. Podrobnosti: [docs/windows.md](docs/windows.md).  
+Windows: `TuyaRtspBridge-Setup.exe` z [Releases](https://github.com/DanEng1982/tuya-rtsp-bridge/releases) — další, další, dokončit. Podrobnosti: [docs/windows.md](docs/windows.md).  
 Arch: [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh`
 
 Přihlášení: vytvořit QR → naskenovat ve Smart Life → **potvrdit** → zkopírovat `rtsp://127.0.0.1:8554/<Nazev>/hd`.

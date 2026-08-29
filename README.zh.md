@@ -79,7 +79,7 @@ RTSP 引擎是 **[seydx](https://github.com/seydx)** 的 **[tuya-ipc-terminal](h
 
 Windows 不必另装 Python、VLC 或 ffmpeg，都在安装包里。
 
-Windows：[Releases](../../releases) 里的 `TuyaRtspBridge-Setup.exe`，下一步即可。说明：[docs/windows.md](docs/windows.md)。  
+Windows：[Releases](https://github.com/DanEng1982/tuya-rtsp-bridge/releases) 里的 `TuyaRtspBridge-Setup.exe`，下一步即可。说明：[docs/windows.md](docs/windows.md)。  
 Arch：[docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh`
 
 登录：生成二维码 → Smart Life 扫描 → **确认** → 复制 `rtsp://127.0.0.1:8554/<名称>/hd`。

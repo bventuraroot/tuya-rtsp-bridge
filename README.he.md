@@ -51,7 +51,7 @@ rtsp://<המחשב-הזה>:8554/<שם-המצלמה>/hd
 ## בחמש דקות
 
 1. Windows 10/11 וחשבון Smart Life שכבר רואה את המצלמות. בלי Python, VLC או ffmpeg בנפרד.
-2. `TuyaRtspBridge-Setup.exe` מ-[Releases](../../releases). הבא, הבא, סיום. פירוט: [docs/windows.md](docs/windows.md).
+2. `TuyaRtspBridge-Setup.exe` מ-[Releases](https://github.com/DanEng1982/tuya-rtsp-bridge/releases). הבא, הבא, סיום. פירוט: [docs/windows.md](docs/windows.md).
 3. מפעילים את האפליקציה → אותו אזור כמו בטלפון → יוצרים QR → סורקים ומאשרים
 4. מדביקים את כתובת ה-HD ב-Agent DVR / Frigate: `rtsp://127.0.0.1:8554/<שם>/hd`
 

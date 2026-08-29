@@ -77,7 +77,7 @@ Regionen: Westeuropa, Osteuropa, USA West/Ost, China, Indien.
 ## In 5 Minuten
 
 1. Windows 10/11 + Smart-Life-Konto. **Kein** extra Python, VLC oder ffmpeg.
-2. `TuyaRtspBridge-Setup.exe` aus [Releases](../../releases) — Weiter, Weiter, Fertig. Details: [docs/windows.md](docs/windows.md)
+2. `TuyaRtspBridge-Setup.exe` aus [Releases](https://github.com/DanEng1982/tuya-rtsp-bridge/releases) — Weiter, Weiter, Fertig. Details: [docs/windows.md](docs/windows.md)
 3. App starten → Region wie im Handy (DE = **EU**) → **QR erzeugen** → in der App scannen und **bestätigen**
 4. HD-URL kopieren nach Agent DVR / Frigate: `rtsp://127.0.0.1:8554/<Name>/hd`
 

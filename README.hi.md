@@ -71,7 +71,7 @@ RTSP इंजन **[seydx](https://github.com/seydx)** का **[tuya-ipc-termi
 
 Windows पर अलग से Python, VLC या ffmpeg नहीं चाहिए — Setup में है।
 
-Windows: [Releases](../../releases) से `TuyaRtspBridge-Setup.exe` — अगला, अगला, समाप्त। विवरण: [docs/windows.md](docs/windows.md)।  
+Windows: [Releases](https://github.com/DanEng1982/tuya-rtsp-bridge/releases) से `TuyaRtspBridge-Setup.exe` — अगला, अगला, समाप्त। विवरण: [docs/windows.md](docs/windows.md)।  
 Arch: [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh`
 
 लॉगिन: QR बनाएँ → Smart Life से स्कैन → **पुष्टि** → `rtsp://127.0.0.1:8554/<नाम>/hd` कॉपी करें।
