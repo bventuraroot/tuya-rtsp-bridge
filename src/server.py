@@ -333,6 +333,40 @@ class Handler(SimpleHTTPRequestHandler):
                     self._json(500, {"error": f"PTZ: {exc}"})
                 return
 
+            if path == "/api/cloud/auth":
+                # Smart Life reverse-app login (public app secrets, user password once)
+                email = (body.get("email") or "").strip()
+                password = body.get("password") or ""
+                country = str(body.get("countryCode") or "49")
+                if not password:
+                    self._json(400, {"error": "password required"})
+                    return
+                if not email:
+                    # fall back to session email
+                    try:
+                        lr = getattr(client, "login", None) or {}
+                        email = (lr.get("email") if isinstance(lr, dict) else "") or ""
+                    except Exception:
+                        email = ""
+                if not email:
+                    self._json(400, {"error": "email required"})
+                    return
+                try:
+                    local_ptz.cloud.set_credentials(email, password, country)
+                    local_ptz.cloud.login(force=True)
+                    self._json(
+                        200,
+                        {
+                            "status": "ok",
+                            "cloud": True,
+                            "email": email,
+                            "hasSid": bool(local_ptz.cloud._sid),
+                        },
+                    )
+                except Exception as exc:
+                    self._json(500, {"error": f"Cloud-Auth: {exc}"})
+                return
+
             if path == "/api/qr/start":
                 region = body.get("region") or "we"
                 start_qr_flow(region)

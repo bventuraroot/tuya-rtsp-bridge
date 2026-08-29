@@ -1,4 +1,4 @@
-"""Lokale PTZ-Steuerung über Tuya-DPs (Port 6668). Keine Keys loggen."""
+"""PTZ: LAN 6668 first, then Cloud reverse Smart-Life API. Keine Secrets loggen."""
 from __future__ import annotations
 
 import json
@@ -9,6 +9,8 @@ from pathlib import Path
 from typing import Optional
 
 import tinytuya
+
+from cloud_mobile import CloudMobile
 
 DIR = {
     "up": "0",
@@ -151,9 +153,28 @@ class LocalPtz:
     def __init__(self, data_dir: Path, tuya_client) -> None:
         self.data_dir = data_dir
         self.client = tuya_client
+        region = getattr(tuya_client, "region_id", None) or "eu"
+        self.cloud = CloudMobile(data_dir, region_id=str(region))
         self._lock = threading.Lock()
         self._map: dict[str, dict] = {}
         self._load_cache()
+        self._seed_cloud_email()
+
+    def _seed_cloud_email(self) -> None:
+        try:
+            login = getattr(self.client, "login", None) or {}
+            if isinstance(login, dict) and login:
+                self.cloud.seed_from_session(login)
+                return
+            # session file fallback
+            for p in self.data_dir.glob("user_*.json"):
+                data = json.loads(p.read_text(encoding="utf-8"))
+                lr = (data.get("sessionData") or {}).get("loginResult") or {}
+                if lr:
+                    self.cloud.seed_from_session(lr)
+                    break
+        except Exception:
+            pass
 
     def _load_cache(self) -> None:
         p = self.data_dir / LAN_CACHE
@@ -204,7 +225,6 @@ class LocalPtz:
         with self._lock:
             hit = self._map.get(device_id)
             if hit and hit.get("ip") and hit.get("key") and hit.get("version"):
-                # re-fetch key if missing from disk cache (keys not persisted)
                 if hit.get("key"):
                     return hit
             cached_ip = (hit or {}).get("ip")
@@ -230,7 +250,16 @@ class LocalPtz:
                 for v in self._map.values()
                 if v.get("ip") and v.get("ip") not in ips
             )
-        scanned = _scan_6668()
+        # Fast path for remote: only scan if we already have candidate IPs
+        # or a local (non-VPN) prefix. Full /24 scan is expensive and useless off-site.
+        prefs = _prefixes()
+        scanned: list[str] = []
+        if ips or prefs:
+            # limit scan: only when local prefixes exist; still useful at home
+            try:
+                scanned = _scan_6668() if prefs else []
+            except Exception:
+                scanned = []
         for ip in scanned:
             if ip not in ips:
                 ips.append(ip)
@@ -246,7 +275,7 @@ class LocalPtz:
                 last = f"{ip} v{ver}"
         raise RuntimeError(
             f"Kamera {device_id} nicht auf LAN "
-            f"(prefixes={_prefixes() or ['?']}, scanned={len(scanned)}, last={last or 'none'})"
+            f"(prefixes={prefs or ['?']}, scanned={len(scanned)}, last={last or 'none'})"
         )
 
     def warmup(self, device_ids: list[str]) -> None:
@@ -271,17 +300,69 @@ class LocalPtz:
             return self.stop(device_id)
         if direction not in DIR:
             raise ValueError(f"unbekannte Richtung {direction}")
-        d = self._device(device_id)
-        res = d.set_value(PTZ_DP, DIR[direction])
-        return {"via": "lan", "dp": PTZ_DP, "value": DIR[direction], "result": res, "ip": self._map.get(device_id, {}).get("ip")}
+        # Prefer cloud when we already have cloud auth and no LAN cache —
+        # remote users shouldn't wait for a LAN scan timeout first.
+        prefer_cloud = self.cloud.has_auth() and device_id not in self._map
+        lan_err: Optional[str] = None
+        if not prefer_cloud:
+            try:
+                d = self._device(device_id)
+                res = d.set_value(PTZ_DP, DIR[direction])
+                return {
+                    "via": "lan",
+                    "dp": PTZ_DP,
+                    "value": DIR[direction],
+                    "result": res,
+                    "ip": self._map.get(device_id, {}).get("ip"),
+                }
+            except Exception as exc:
+                lan_err = str(exc)
+        try:
+            out = self.cloud.move(device_id, direction)
+            if lan_err:
+                out["lan_error"] = lan_err
+            return out
+        except Exception as cloud_exc:
+            if prefer_cloud and lan_err is None:
+                # cloud failed first; still try LAN once
+                try:
+                    d = self._device(device_id)
+                    res = d.set_value(PTZ_DP, DIR[direction])
+                    return {
+                        "via": "lan",
+                        "dp": PTZ_DP,
+                        "value": DIR[direction],
+                        "result": res,
+                        "ip": self._map.get(device_id, {}).get("ip"),
+                        "cloud_error": str(cloud_exc),
+                    }
+                except Exception as exc:
+                    lan_err = str(exc)
+            raise RuntimeError(
+                f"PTZ fail lan=({lan_err or 'n/a'}) cloud=({cloud_exc})"
+            ) from cloud_exc
 
     def stop(self, device_id: str) -> dict:
-        rec = self.ensure(device_id)
-        d = tinytuya.Device(device_id, rec["ip"], rec["key"], version=rec["version"])
-        d.set_socketTimeout(2.0)
-        res = None
+        lan_err: Optional[str] = None
         try:
+            rec = self.ensure(device_id)
+            d = tinytuya.Device(device_id, rec["ip"], rec["key"], version=rec["version"])
+            d.set_socketTimeout(2.0)
             res = d.set_value(STOP_DP, True)
+            return {
+                "via": "lan",
+                "dp": STOP_DP,
+                "value": True,
+                "result": res,
+                "ip": rec.get("ip"),
+            }
         except Exception as exc:
-            res = {"error": str(exc)}
-        return {"via": "lan", "dp": STOP_DP, "value": True, "result": res, "ip": rec.get("ip")}
+            lan_err = str(exc)
+        try:
+            out = self.cloud.stop(device_id)
+            out["lan_error"] = lan_err
+            return out
+        except Exception as cloud_exc:
+            raise RuntimeError(
+                f"PTZ stop fail lan=({lan_err or 'n/a'}) cloud=({cloud_exc})"
+            ) from cloud_exc
