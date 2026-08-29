@@ -1,23 +1,16 @@
-# Зачем это существует
+# Зачем это нужно
 
-Дешёвые камеры Tuya / Smart Life / iSmartLife легко купить и трудно *владеть*.
+Дешёвые Tuya/Smart Life камеры: нет ONVIF, нет нативного RTSP, cloud-приложение, второй viewer крадёт live-сессию.
 
-Заводская прошивка **не даёт ONVIF** и не даёт своего RTSP. Живое видео идёт через облако производителя. Второй зритель часто крадёт сессию.
-
-Вы заплатили за датчик на *своей* стене. Пишите на *свой* диск.
-
-**Tuya RTSP Bridge**: один QR в уже установленном приложении, затем
+**Tuya RTSP Bridge** — локальная программа: один QR, затем обычный RTSP:
 
 ```
-rtsp://<этот-пк>:8554/<ИмяКамеры>/hd
+rtsp://<этот-пк>:8554/<CameraName>/hd
 ```
 
-в Frigate, Agent DVR, go2rtc, VLC или Home Assistant.
+Сигнализация через Tuya; видео с этого ПК обычно камера → ваша машина в LAN. Не прошивка, не 60 fps (~10 fps HD), не affiliated с Tuya Inc. Engine: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal) (MIT).
 
-Сигнализация остаётся у Tuya. С этого ПК видео обычно остаётся в LAN.
+Далее: [getting-started.md](getting-started.md) · [FAQ](faq.md) · [NVR](nvr.md)
 
-## Чем это не является
-
-Это не прошивка, не ONVIF и не обещание 60 кадр/с (часто ~10 кадр/с HD). Движок: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal) (MIT).
-
-Снимки: [docs/images](../images/) — демо без аккаунтов и видео.
+![Welcome](../images/ui-welcome.png)
+![Ready](../images/ui-ready.png)

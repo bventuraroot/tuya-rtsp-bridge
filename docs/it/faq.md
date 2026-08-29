@@ -1,34 +1,40 @@
 # Domande frequenti
 
 ### Elenco telecamere vuoto
-Regione sbagliata. «Europa occidentale» nell’app DE = **EU**, non WE.
+Regione sbagliata. «Europa occidentale» app DE = **EU**, non WE.
 
 ### Il QR non finisce
-Tieni la finestra aperta e **conferma** sul telefono.
+Finestra aperta e **conferma** sul telefono.
 
-### QR minuscolo / fessura / non scansionabile (Windows)
-Risolto in **1.2.4+**: canvas fisso **320×320** (NEAREST). Aggiorna l’app. «No QR» prima di Create QR è normale.
+### QR minuscolo / fessura (Windows)
+Risolto in **1.2.4+**: canvas fisso **320×320** (NEAREST). Aggiorna Setup.
 
 ### Connessione rifiutata (WinError 10061)
 La UI avvia l’API (`:8787`) da sola. Riprova Create QR.
 
 ### VLC nero
-VLC 3 fallisce spesso su HEVC/RTSP. Lo stream è vivo. Agent/Frigate. Linux: pipe MJPEG ffmpeg.
+Lo stream è vivo. Agent/Frigate. Linux: ffmpeg MJPEG.
 
-### Mi aspettavo 60 fps
-Molti modelli danno ~**10 fps** in HD.
+### 60 fps?
+Spesso ~**10 fps** HD.
 
-### È ONVIF?
+### ONVIF?
 No. Solo RTSP.
 
 ### Il video esce di casa?
-Segnalazione a Tuya. In locale di solito camera → questo PC.
+Segnalazione a Tuya. In locale: camera → questo PC.
+
+### go2rtc `tuya://`?
+Email/password Tuya Smart, non QR Smart Life.
 
 ### Cloud PTZ fuori LAN?
-Prima PTZ LAN (TCP **6668**). Fuori rete: cloud dopo email+password una volta (`POST /api/cloud/auth`) — senza chiavi IoT developer.
+LAN TCP **6668** prima. Remoto: `POST /api/cloud/auth`, `cloud_auth.json` mode 600. Niente chiavi IoT developer.
+
+### Dove sta il login?
+`%APPDATA%\TuyaRtspBridge\` o `~/.local/share/tuya-rtsp-bridge/`.
 
 ### Add-on Home Assistant?
-Sì — [`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). Host network. Docker: [docker.md](../docker.md).
+[`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). [docker.md](docker.md).
 
-### Linux / macOS?
-`./launch.sh`. Arch: [arch-linux.md](../arch-linux.md). Dati: `~/.local/share/tuya-rtsp-bridge/`.
+### Linux?
+`./launch.sh` · [arch-linux.md](../arch-linux.md).

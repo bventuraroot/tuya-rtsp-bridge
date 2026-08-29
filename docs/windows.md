@@ -1,6 +1,6 @@
 # Windows installer (noob / foolproof)
 
-Double-click **TuyaRtspBridge-Setup.exe** from [Releases](../../releases). Next, Next, Finish.
+Double-click **TuyaRtspBridge-Setup.exe** from [Releases](https://github.com/DanEng1982/tuya-rtsp-bridge/releases). Next, Next, Finish.
 
 The wizard follows the Windows language when Inno has a pack for it (English, German, Dutch, French, Spanish, Portuguese, Italian, Polish, Czech, Russian, Ukrainian, Japanese, Korean, Hebrew). Chinese, Hindi, Indonesian, and Yiddish are in the app menu after the first start.
 

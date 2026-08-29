@@ -1,34 +1,40 @@
 # Частые вопросы
 
 ### Список камер пуст после входа
-Неверный регион. «Западная Европа» в DE-приложении = **EU**, не WE.
+Неверный регион. «Западная Европа» в DE-приложении = **EU** (`protect-eu`), не WE.
 
 ### QR не завершается
-Держите окно открытым и **подтвердите** в телефоне.
+Окно открыто и **подтвердите** в телефоне.
 
-### QR крошечный / щель / не сканируется (Windows)
-Исправлено в **1.2.4+**: фиксированный холст **320×320** (NEAREST). Обновите приложение. «No QR» до Create QR — нормально.
+### QR крошечный / щель (Windows)
+Исправлено в **1.2.4+**: холст **320×320** (NEAREST). Обновите Setup. «No QR» до Create QR — нормально.
 
 ### Соединение отклонено (WinError 10061)
 UI сам запускает API (`:8787`). Повторите Create QR.
 
 ### VLC чёрный
-VLC 3 часто падает на HEVC/RTSP. Поток жив. Agent/Frigate. Linux: pipe MJPEG ffmpeg.
+Поток жив. Agent/Frigate. Linux: ffmpeg MJPEG.
 
 ### Хотел 60 fps
-Многие модели дают ~**10 fps** в HD.
+Часто ~**10 fps** HD HEVC — это камера.
 
 ### Это ONVIF?
 Нет. Только RTSP.
 
 ### Уходит ли видео из дома?
-Сигнализация к Tuya. Локально обычно камера → этот ПК.
+Сигнализация к Tuya. Локально: камера → этот ПК. Телефон в LTE = второй cloud-viewer.
+
+### go2rtc `tuya://`?
+Email/пароль Tuya Smart, не QR Smart Life.
 
 ### Cloud PTZ вне LAN?
-Сначала LAN PTZ (TCP **6668**). Удалённо: cloud после email+пароль один раз (`POST /api/cloud/auth`) — без IoT developer keys.
+Сначала LAN TCP **6668**. Удалённо: `POST /api/cloud/auth` → `cloud_auth.json` mode 600. Без IoT developer keys.
+
+### Где логин?
+`%APPDATA%\TuyaRtspBridge\` или `~/.local/share/tuya-rtsp-bridge/`. Не в git и не в скриншоты.
 
 ### Аддон Home Assistant?
-Да — [`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). Host network. Docker: [docker.md](../docker.md).
+[`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). Host network. [docker.md](docker.md).
 
 ### Linux / macOS?
-`./launch.sh`. Arch: [arch-linux.md](../arch-linux.md). Данные: `~/.local/share/tuya-rtsp-bridge/`.
+`./launch.sh`. Arch: [arch-linux.md](../arch-linux.md).

@@ -58,3 +58,7 @@ Nach dem Login — nur Platzhalter-Namen (kein Livebild, keine echten Geräte-ID
 Die Bilder stammen aus einer Demo-Sitzung. Keine Konten, keine Seriennummern, kein Video.
 
 Weiter: [erste-schritte.md](erste-schritte.md) · [FAQ](faq.md) · [NVR](nvr.md)
+
+---
+
+Auch unter [de/why.md](de/why.md).

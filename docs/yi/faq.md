@@ -1,34 +1,40 @@
 # FAQ
 
-### קאַמערע־ליסטע ליידיק נאָך לאָגין
-פֿאַלשע רעגיאָן. «מערב־אייראָפּע» אין דער DE־אַפּ = **EU**, ניט WE.
+### קאַמערע־ליסטע ליידיק
+פֿאַלשע רעגיאָן. «מערב־אייראָפּע» אין DE־אַפּ = **EU**, ניט WE.
 
 ### QR ענדיקט זיך ניט
-האַלט דאָס פֿענסטער אָפֿן און **באַשטעטיק** אויפֿן טעלעפֿאָן.
+פֿענסטער אָפֿן און **באַשטעטיק** אויפֿן טעלעפֿאָן.
 
-### QR קליין / שפּאַלט / ניט סקענירבאַר (Windows)
-פֿאַרריכט אין **1.2.4+**: פֿיקסירט **320×320** קאַנוועס (NEAREST). דערהייַנטיק די אַפּ. «No QR» פֿאַר Create QR איז נאָרמאַל.
+### QR שפּאַלט (Windows)
+פֿאַרריכט אין **1.2.4+**: **320×320** קאַנוועס (NEAREST). דערהייַנטיק Setup.
 
-### פֿאַרבינדונג אָפּגעזאָגט (WinError 10061)
-די UI סטאַרט די API (`:8787`) אַליין. פּרוּוו Create QR נאָך אַ מאָל.
+### WinError 10061
+UI סטאַרט API `:8787` אַליין. פּרוּוו Create QR נאָך אַ מאָל.
 
 ### VLC שוואַרץ
-VLC 3 פֿאַלט אָפֿט אויף HEVC/RTSP. דער סטרים לעבט. Agent/Frigate. Linux: ffmpeg MJPEG.
+סטרים לעבט. Agent/Frigate. Linux: ffmpeg MJPEG.
 
-### געוואָלט 60 fps
-פֿיל מאָדעלן געבן ~**10 fps** אין HD.
+### 60 fps?
+אָפֿט ~**10 fps** HD.
 
-### איז דאָס ONVIF?
+### ONVIF?
 ניין. נאָר RTSP.
 
 ### גייט ווידעאָ אַרויס פֿון שטוב?
-סיגנאַלירונג צו Tuya. לאָקאַל געוויינטלעך קאַמערע → דער PC.
+סיגנאַלירונג צו Tuya. לאָקאַל: קאַמערע → דער PC.
+
+### go2rtc `tuya://`?
+Email/פּאַראָל Tuya Smart, ניט Smart Life QR.
 
 ### Cloud PTZ אַרויס פֿון LAN?
-ערשט LAN PTZ (TCP **6668**). ווײַט: cloud נאָך email+פּאַראָל איין מאָל (`POST /api/cloud/auth`) — אָן IoT developer keys.
+ערשט LAN TCP **6668**. ווײַט: `POST /api/cloud/auth`, `cloud_auth.json` mode 600.
 
-### Home Assistant add-on?
-יאָ — [`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). Host network. Docker: [docker.md](../docker.md).
+### וווּ איז לאָגין?
+`%APPDATA%\TuyaRtspBridge\` אָדער `~/.local/share/tuya-rtsp-bridge/`.
 
-### Linux / macOS?
-`./launch.sh`. Arch: [arch-linux.md](../arch-linux.md). דאַטן: `~/.local/share/tuya-rtsp-bridge/`.
+### HA add-on?
+[`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). [docker.md](docker.md).
+
+### Linux?
+`./launch.sh` · [arch-linux.md](../arch-linux.md).

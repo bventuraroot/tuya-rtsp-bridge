@@ -1,23 +1,16 @@
 # Dlaczego to istnieje
 
-Tanie kamery Tuya / Smart Life / iSmartLife łatwo kupić i trudno nimi *władać*.
+Tanie kamery Tuya: brak ONVIF, brak natywnego RTSP, cloud app.
 
-Fabryczny firmware **nie ma ONVIF** ani własnego RTSP. Podgląd idzie przez chmurę producenta. Drugi widz często kradnie sesję.
-
-Zapłaciłeś za czujnik na *swojej* ścianie. Nagrywaj na *swoim* dysku.
-
-**Tuya RTSP Bridge**: jeden QR w aplikacji, którą już masz, potem
+**Tuya RTSP Bridge** → lokalne RTSP po jednym QR:
 
 ```
-rtsp://<ten-pc>:8554/<NazwaKamery>/hd
+rtsp://<ten-pc>:8554/<CameraName>/hd
 ```
 
-w Frigate, Agent DVR, go2rtc, VLC lub Home Assistant.
+Sygnalizacja Tuya; wideo lokalnie zwykle kamera → Twój PC w LAN. Engine MIT: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal).
 
-Sygnalizacja zostaje u Tuya. Z tego PC wideo zwykle zostaje w LAN.
+Dalej: [getting-started.md](getting-started.md) · [FAQ](faq.md) · [NVR](nvr.md)
 
-## Czym to nie jest
-
-To nie flash firmware, nie ONVIF i nie obietnica 60 kl./s (często ~10 kl./s HD). Silnik: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal) (MIT).
-
-Zrzuty: [docs/images](../images/) — demo bez kont i wideo.
+![Welcome](../images/ui-welcome.png)
+![Ready](../images/ui-ready.png)

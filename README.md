@@ -102,7 +102,7 @@ Windows users do **not** install Python, VLC, or ffmpeg. That is all inside the 
 
 ### 1. Install
 
-- **Windows:** `TuyaRtspBridge-Setup.exe` from [Releases](../../releases) — next, next, finish. Details: [docs/windows.md](docs/windows.md)
+- **Windows:** `TuyaRtspBridge-Setup.exe` from [Releases](https://github.com/DanEng1982/tuya-rtsp-bridge/releases) — next, next, finish. Details: [docs/windows.md](docs/windows.md)
 - **Docker (Linux / HA host):** [docs/docker.md](docs/docker.md) — `docker compose up -d --build`
 - **Home Assistant OS add-on:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (host network)
 - **Arch Linux:** [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh` or `packaging/arch/PKGBUILD`
@@ -176,7 +176,7 @@ Need Go only to build the engine. Release builds on Windows already include the 
 | [docs/arch-linux.md](docs/arch-linux.md) | Arch: launch.sh + PKGBUILD |
 | [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) | HA Supervisor add-on |
 | [DEPENDENCIES.md](DEPENDENCIES.md) | Licenses (all redistributable or not shipped) |
-| [docs/nl](docs/nl/) · [docs/fr](docs/fr/) · [docs/es](docs/es/) · [docs/pt](docs/pt/) · [docs/it](docs/it/) · [docs/pl](docs/pl/) · [docs/cs](docs/cs/) · [docs/ru](docs/ru/) · [docs/uk](docs/uk/) · [docs/id](docs/id/) · [docs/zh](docs/zh/) · [docs/hi](docs/hi/) · [docs/ja](docs/ja/) · [docs/ko](docs/ko/) · [docs/he](docs/he/) · [docs/yi](docs/yi/) | NL / FR / ES / PT / IT / PL / CS / RU / UK / ID / 中文 / हिन्दी / 日本語 / 한국어 / עברית / ייִדיש |
+| [docs/de](docs/de/) · [docs/nl](docs/nl/) · [docs/fr](docs/fr/) · [docs/es](docs/es/) · [docs/pt](docs/pt/) · [docs/it](docs/it/) · [docs/pl](docs/pl/) · [docs/cs](docs/cs/) · [docs/ru](docs/ru/) · [docs/uk](docs/uk/) · [docs/id](docs/id/) · [docs/zh](docs/zh/) · [docs/hi](docs/hi/) · [docs/ja](docs/ja/) · [docs/ko](docs/ko/) · [docs/he](docs/he/) · [docs/yi](docs/yi/) | Per locale: `faq` · `getting-started` · `why` · `windows` · `api` · `docker` · `nvr` |
 | [SECURITY.md](SECURITY.md) | What not to commit |
 
 ## Join in

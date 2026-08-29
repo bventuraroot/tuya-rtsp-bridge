@@ -1,34 +1,40 @@
 # Časté otázky
 
-### Seznam kamer je prázdný
-Špatný region. «Západní Evropa» v německé aplikaci je **EU**, ne WE.
+### Prázdný seznam kamer
+Špatný region. «Západní Evropa» v DE app = **EU**, ne WE.
 
 ### QR se nedokončí
-Nechte okno otevřené a **potvrďte** v telefonu.
+Okno otevřené a **potvrďte** v telefonu.
 
-### QR je malý / štěrbina / nenačte se (Windows)
-Opraveno v **1.2.4+**: GUI kreslí QR na pevném plátně **320×320** (NEAREST). Aktualizujte app/Setup. Prázdný box „No QR“ je normální před **Create QR**.
+### QR štěrbina (Windows)
+Opraveno v **1.2.4+**: plátno **320×320** (NEAREST). Aktualizujte Setup.
 
-### Spojení odmítnuto (WinError 10061)
-UI teď API (`:8787`) spustí samo. Znovu **Create QR** nebo Restart UI/API.
+### WinError 10061
+UI spustí API `:8787` samo. Znovu Create QR.
 
-### VLC je černé
-VLC 3 u HEVC/RTSP často selže. Stream není mrtvý. Agent DVR / Frigate. Na Linuxu GUI používá ffmpeg MJPEG.
+### VLC černé
+Stream žije. Agent/Frigate. Linux: ffmpeg MJPEG.
 
-### Čekal jsem 60 fps
-Mnoho modelů dává v HD zhruba **10 fps**.
+### 60 fps?
+Často ~**10 fps** HD.
 
-### Je to ONVIF?
+### ONVIF?
 Ne. Jen RTSP.
 
-### Odchází video z domu?
-Signaling jde k Tuya. Lokálně je médium obvykle kamera → tento PC.
+### Odejde video z domu?
+Signaling k Tuya. Lokálně: kamera → tento PC.
+
+### go2rtc `tuya://`?
+Email/heslo Tuya Smart, ne QR Smart Life.
 
 ### Cloud PTZ mimo LAN?
-LAN PTZ (TCP **6668**) má přednost. Mimo síť: cloud fallback přes reverse app API po uložení email+hesla (`POST /api/cloud/auth`) — bez IoT developer keys.
+Nejdřív LAN TCP **6668**. Vzdáleně: `POST /api/cloud/auth`, `cloud_auth.json` mode 600. Bez IoT developer keys.
 
-### Home Assistant add-on?
-Ano — [`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). Host network. Docker: [docker.md](../docker.md).
+### Kde je login?
+`%APPDATA%\TuyaRtspBridge\` nebo `~/.local/share/tuya-rtsp-bridge/`.
 
-### Linux / macOS?
-`./launch.sh`. Arch: [arch-linux.md](../arch-linux.md). Data: `~/.local/share/tuya-rtsp-bridge/`.
+### HA add-on?
+[`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). [docker.md](docker.md).
+
+### Linux?
+`./launch.sh` · [arch-linux.md](../arch-linux.md).

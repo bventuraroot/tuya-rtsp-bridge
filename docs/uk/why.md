@@ -1,23 +1,14 @@
-# Навіщо це існує
+# Навіщо це потрібно
 
-Дешеві камери Tuya / Smart Life / iSmartLife легко купити й важко *володіти*.
-
-Заводська прошивка **не дає ONVIF** і не дає власного RTSP. Живе відео йде через хмару виробника. Другий глядач часто краде сеанс.
-
-Ви заплатили за датчик на *своїй* стіні. Пишіть на *ваш* диск.
-
-**Tuya RTSP Bridge**: один QR у вже встановленому додатку, потім
+Дешеві Tuya-камери без ONVIF і нативного RTSP. **Tuya RTSP Bridge** дає локальний RTSP після одного QR:
 
 ```
-rtsp://<цей-пк>:8554/<НазваКамери>/hd
+rtsp://<цей-пк>:8554/<CameraName>/hd
 ```
 
-у Frigate, Agent DVR, go2rtc, VLC або Home Assistant.
+Сигналізація Tuya; відео локально зазвичай камера → ваш ПК у LAN. Engine MIT: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal).
 
-Сигналізація лишається в Tuya. З цього ПК відео зазвичай лишається в LAN.
+Далі: [getting-started.md](getting-started.md) · [FAQ](faq.md) · [NVR](nvr.md)
 
-## Чим це не є
-
-Це не прошивка, не ONVIF і не обіцянка 60 кадр/с (часто ~10 кадр/с HD). Рушій: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal) (MIT).
-
-Знімки: [docs/images](../images/) — демо без облікових записів і відео.
+![Welcome](../images/ui-welcome.png)
+![Ready](../images/ui-ready.png)

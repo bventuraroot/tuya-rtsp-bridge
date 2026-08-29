@@ -1,23 +1,14 @@
 # Mengapa ini ada
 
-Kamera Tuya / Smart Life / iSmartLife murah mudah dibeli dan sulit *dimiliki*.
-
-Firmware pabrik **tidak punya ONVIF** maupun RTSP sendiri. Tayangan langsung lewat awan pabrik. Penonton kedua sering mencuri sesi.
-
-Anda membayar sensor di dinding *Anda*. Rekam ke disk *Anda*.
-
-**Tuya RTSP Bridge**: satu QR di aplikasi yang sudah Anda miliki, lalu
+Kamera Tuya murah tanpa ONVIF/RTSP native. **Tuya RTSP Bridge** → RTSP lokal setelah satu QR:
 
 ```
-rtsp://<pc-ini>:8554/<NamaKamera>/hd
+rtsp://<pc-ini>:8554/<CameraName>/hd
 ```
 
-di Frigate, Agent DVR, go2rtc, VLC, atau Home Assistant.
+Signaling Tuya; video lokal biasanya kamera → PC Anda di LAN. Engine MIT: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal).
 
-Pensinyalan tetap di Tuya. Dari PC ini video biasanya tetap di LAN.
+Lanjut: [getting-started.md](getting-started.md) · [FAQ](faq.md) · [NVR](nvr.md)
 
-## Bukan apa
-
-Bukan flash firmware, bukan ONVIF, bukan janji 60 fps (sering ~10 fps HD). Mesin: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal) (MIT).
-
-Cuplikan: [docs/images](../images/) — demo tanpa akun dan tanpa video.
+![Welcome](../images/ui-welcome.png)
+![Ready](../images/ui-ready.png)

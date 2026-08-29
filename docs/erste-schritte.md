@@ -1,15 +1,12 @@
 # Erste Schritte
 
-Ausführlich auf Englisch: [getting-started.md](getting-started.md). Kurz:
+Ausführlich: **[de/getting-started.md](de/getting-started.md)**
 
-1. Windows: `TuyaRtspBridge-Setup.exe` aus den Releases (kein extra Python/VLC/ffmpeg). Details: [windows.md](windows.md). Docker / HA OS: [docker.md](docker.md).
-2. **Tuya RTSP Bridge** starten (oder `http://<host>:8787` headless).
-3. Region wie im Handy (Deutschland = **EU**).
-4. QR erzeugen → Smart Life scannen → **bestätigen**. QR ist fest **320×320** (scanbar).
-5. HD-URL nach Agent DVR / Frigate: `rtsp://127.0.0.1:8554/<Name>/hd`.
+Kurz:
 
-**PTZ:** im LAN über TCP 6668; remote optional Cloud-PTZ nach einmaligem Email/Passwort (`POST /api/cloud/auth`) — ohne IoT-Developer-Keys.
+1. Windows-Setup aus den [Releases](https://github.com/DanEng1982/tuya-rtsp-bridge/releases) oder Linux `./launch.sh` / [Docker](docker.md).
+2. **Tuya RTSP Bridge** starten → Region **EU**.
+3. QR (**320×320**) → scannen → bestätigen.
+4. HD-URL: `rtsp://127.0.0.1:8554/<Name>/hd`.
 
-Umzug: Kameras **nicht** aus dem Konto löschen. Neues WLAN in der App setzen, Brücke im neuen LAN starten, nur die PC-IP im NVR ändern.
-
-FAQ: [faq.md](faq.md).
+PTZ: LAN TCP 6668, remote optional Cloud. FAQ: [de/faq.md](de/faq.md) · Warum: [de/why.md](de/why.md).

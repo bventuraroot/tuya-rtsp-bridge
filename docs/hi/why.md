@@ -1,23 +1,14 @@
 # यह क्यों है
 
-सस्ते टुया / Smart Life / iSmartLife कैमरे खरीदना आसान है, *रख पाना* मुश्किल।
-
-स्टॉक फर्मवेयर में **ONVIF नहीं**, कैमरे पर अपना RTSP भी नहीं। लाइव व्यू कंपनी ऐप और उस क्लाउड से जाता है जिसे आप नहीं चलाते। दूसरा फ़ोन या «क्लाउड NVR» अक्सर सदस्यता माँगता है या सेशन चुरा लेता है।
-
-सेंसर **आपकी** दीवार पर है। रिकॉर्डिंग **आपकी** डिस्क पर हो।
-
-**टुया RTSP ब्रिज**: उसी ऐप में एक QR, फिर
+सस्ते Tuya कैम: कोई ONVIF/native RTSP नहीं। **Tuya RTSP Bridge** एक QR के बाद लोकल RTSP:
 
 ```
-rtsp://<यह-पीसी>:8554/<नाम>/hd
+rtsp://<यह-pc>:8554/<CameraName>/hd
 ```
 
-Frigate, Agent DVR, go2rtc, VLC या Home Assistant में।
+Engine MIT: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal).
 
-सिग्नलिंग टुया पर रहती है। इस पीसी से देखने पर वीडियो आमतौर पर LAN पर रहता है।
+आगे: [getting-started.md](getting-started.md) · [FAQ](faq.md) · [NVR](nvr.md)
 
-## यह क्या नहीं है
-
-फर्मवेयर फ्लैश नहीं, ONVIF नहीं, 60 fps का वादा नहीं (कई मॉडल HD में ~10 fps)। इंजन: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal) (MIT)।
-
-स्क्रीनशॉट: [docs/images](../images/) — डेमो, बिना खाते और बिना लाइव वीडियो।
+![Welcome](../images/ui-welcome.png)
+![Ready](../images/ui-ready.png)

@@ -1,23 +1,16 @@
 # Proč to existuje
 
-Levné kamery Tuya / Smart Life / iSmartLife se snadno koupí a těžko *vlastní*.
+Levné Tuya kamery: bez ONVIF, bez nativního RTSP, cloud app.
 
-Tovární firmware **nemá ONVIF** ani nativní RTSP. Živý náhled jde přes cloud výrobce. Druhý divák často ukradne relaci.
-
-Zaplatili jste senzor na *vaší* zdi. Nahrávejte na *váš* disk.
-
-**Tuya RTSP Bridge**: jeden QR v aplikaci, kterou už máte, pak
+**Tuya RTSP Bridge** → lokální RTSP po jednom QR:
 
 ```
-rtsp://<tento-pc>:8554/<NazevKamery>/hd
+rtsp://<tento-pc>:8554/<CameraName>/hd
 ```
 
-ve Frigate, Agent DVR, go2rtc, VLC nebo Home Assistant.
+Signaling Tuya; video lokálně obvykle kamera → váš PC v LAN. Engine MIT: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal).
 
-Signaling zůstává u Tuya. Z tohoto PC video obvykle zůstane v LAN.
+Dál: [getting-started.md](getting-started.md) · [FAQ](faq.md) · [NVR](nvr.md)
 
-## Co to není
-
-Není to flash firmwaru, není to ONVIF, neslibuje 60 fps (často ~10 fps HD). Engine: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal) (MIT).
-
-Snímky: [docs/images](../images/) — demo bez účtů a videa.
+![Welcome](../images/ui-welcome.png)
+![Ready](../images/ui-ready.png)

@@ -1,34 +1,40 @@
 # שאלות נפוצות
 
-### רשימת המצלמות ריקה
-אזור שגוי. «מערב אירופה» באפליקציה הגרמנית הוא **EU**, לא WE.
+### רשימת מצלמות ריקה
+אזור שגוי. «מערב אירופה» באפליקציה הגרמנית = **EU**, לא WE.
 
 ### ה-QR לא מסתיים
-השאירו את החלון פתוח ו**אשרו** בטלפון.
+השאירו חלון פתוח ו**אשרו** בטלפון.
 
-### QR זעיר / חריץ / לא נסרק (Windows)
-תוקן ב-**1.2.4+**: קנבס קבוע **320×320** (NEAREST). עדכנו את האפליקציה. «No QR» לפני Create QR הוא תקין.
+### QR סדק (Windows)
+תוקן ב-**1.2.4+**: קנבס **320×320** (NEAREST). עדכנו Setup.
 
-### חיבור נדחה (WinError 10061)
-ה-UI מפעיל את ה-API (`:8787`) לבד. נסו שוב Create QR.
+### WinError 10061
+ה-UI מפעיל API `:8787` לבד. נסו Create QR שוב.
 
 ### VLC שחור
-VLC 3 נכשל לעיתים ב-HEVC/RTSP. הסטרים חי. Agent/Frigate. בלינוקס: ffmpeg MJPEG.
+הסטרים חי. Agent/Frigate. Linux: ffmpeg MJPEG.
 
-### ציפיתי ל-60 fps
-דגמים רבים נותנים כ-**10 fps** ב-HD.
+### 60 fps?
+לעיתים קרובות ~**10 fps** HD.
 
-### זה ONVIF?
+### ONVIF?
 לא. רק RTSP.
 
 ### האם הווידאו יוצא מהבית?
-סיגנלינג ל-Tuya. מקומית בדרך כלל מצלמה → המחשב הזה.
+סיגנלינג ל-Tuya. מקומית: מצלמה → המחשב הזה.
+
+### go2rtc `tuya://`?
+Email/סיסמה של Tuya Smart, לא QR של Smart Life.
 
 ### Cloud PTZ מחוץ ל-LAN?
-LAN PTZ (TCP **6668**) קודם. מרחוק: cloud אחרי email+סיסמה פעם אחת (`POST /api/cloud/auth`) — בלי מפתחות IoT developer.
+קודם LAN TCP **6668**. מרחוק: `POST /api/cloud/auth`, `cloud_auth.json` mode 600.
 
-### תוסף Home Assistant?
-כן — [`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). Host network. Docker: [docker.md](../docker.md).
+### איפה הלוגין?
+`%APPDATA%\TuyaRtspBridge\` או `~/.local/share/tuya-rtsp-bridge/`.
 
-### Linux / macOS?
-`./launch.sh`. Arch: [arch-linux.md](../arch-linux.md). נתונים: `~/.local/share/tuya-rtsp-bridge/`.
+### תוסף HA?
+[`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). [docker.md](docker.md).
+
+### Linux?
+`./launch.sh` · [arch-linux.md](../arch-linux.md).

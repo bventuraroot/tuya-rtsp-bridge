@@ -1,34 +1,40 @@
 # Поширені запитання
 
-### Список камер порожній після входу
+### Список камер порожній
 Невірний регіон. «Західна Європа» в DE-додатку = **EU**, не WE.
 
 ### QR не завершується
-Тримайте вікно відкритим і **підтвердіть** в телефоні.
+Вікно відкрите і **підтвердіть** у телефоні.
 
-### QR крихітний / щілина / не сканується (Windows)
-Виправлено в **1.2.4+**: фіксоване полотно **320×320** (NEAREST). Оновіть застосунок. «No QR» до Create QR — нормально.
+### QR-щілина (Windows)
+Виправлено в **1.2.4+**: полотно **320×320** (NEAREST). Оновіть Setup.
 
-### З’єднання відхилено (WinError 10061)
-UI сам запускає API (`:8787`). Повторіть Create QR.
+### WinError 10061
+UI сам запускає API `:8787`. Повторіть Create QR.
 
 ### VLC чорний
-VLC 3 часто падає на HEVC/RTSP. Потік живий. Agent/Frigate. Linux: pipe MJPEG ffmpeg.
+Потік живий. Agent/Frigate. Linux: ffmpeg MJPEG.
 
-### Хотів 60 fps
-Багато моделей дають ~**10 fps** у HD.
+### 60 fps?
+Часто ~**10 fps** HD.
 
-### Це ONVIF?
+### ONVIF?
 Ні. Лише RTSP.
 
 ### Чи виходить відео з дому?
-Сигналізація до Tuya. Локально зазвичай камера → цей ПК.
+Сигналізація до Tuya. Локально: камера → цей ПК.
+
+### go2rtc `tuya://`?
+Email/пароль Tuya Smart, не QR Smart Life.
 
 ### Cloud PTZ поза LAN?
-Спочатку LAN PTZ (TCP **6668**). Віддалено: cloud після email+пароль один раз (`POST /api/cloud/auth`) — без IoT developer keys.
+Спочатку LAN TCP **6668**. Віддалено: `POST /api/cloud/auth`, `cloud_auth.json` mode 600.
 
-### Аддон Home Assistant?
-Так — [`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). Host network. Docker: [docker.md](../docker.md).
+### Де логін?
+`%APPDATA%\TuyaRtspBridge\` або `~/.local/share/tuya-rtsp-bridge/`.
 
-### Linux / macOS?
-`./launch.sh`. Arch: [arch-linux.md](../arch-linux.md). Дані: `~/.local/share/tuya-rtsp-bridge/`.
+### Аддон HA?
+[`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). [docker.md](docker.md).
+
+### Linux?
+`./launch.sh` · [arch-linux.md](../arch-linux.md).

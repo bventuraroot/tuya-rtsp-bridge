@@ -6,6 +6,7 @@
 - Windows DPI awareness; API reconnects if backend was down (WinError 10061)
 - Home Assistant OS add-on skeleton (`homeassistant/tuya_rtsp_bridge`) — #1
 - Cloud PTZ fallback + protect password auto-relogin (local builds)
+- Docs parity: 17 locales each have faq / getting-started / why / windows / api / docker / nvr
 
 ## 1.2.3
 

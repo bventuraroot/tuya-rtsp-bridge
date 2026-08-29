@@ -1,37 +1,14 @@
-<div dir="rtl" lang="he">
-
 # למה זה קיים
 
-מצלמות Tuya / Smart Life / iSmartLife זולות קל לקנות וקשה *להחזיק*.
-
-הקופסה נראית כמו מצלמת IP רגילה. בפועל היצרן נעל את הדברים השימושיים מאחורי הענן שלו.
-
-- **אין ONVIF** בקושחה המקורית
-- **אין RTSP מובנה** שאפשר להדביק ב-Frigate, Agent DVR, go2rtc או Home Assistant
-- האפליקציה הרשמית רוצה חשבון, טלפון, ונתיב דרך שרתים שאתם לא שולטים בהם
-- טלפון שני או "NVR בענן" זה לרוב מנוי — או צופה שני שגונב את הסשן החי
-
-שילמתם על חיישן על *הקיר שלכם*. מגיע לכם להקליט אותו על *הדיסק שלכם*.
-
-**גשר RTSP של Tuya** הוא תוכנית מקומית קטנה. סורקים QR פעם אחת באותה אפליקציה שכבר בשימוש. אחר כך לכל מצלמה יש כתובת רגילה:
-
-</div>
+מצלמות Tuya זולות בלי ONVIF/RTSP מקורי. **Tuya RTSP Bridge** הופך אותן ל-RTSP מקומי אחרי QR אחד:
 
 ```
-rtsp://<המחשב-הזה>:8554/<שם-המצלמה>/hd
+rtsp://<מחשב-זה>:8554/<CameraName>/hd
 ```
 
-<div dir="rtl" lang="he">
+Engine MIT: [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal).
 
-הכניסה נשארת אצל Tuya. כשצופים מהמחשב הזה, הווידאו בדרך כלל נשאר מצלמה → המכונה הזאת ברשת הבית. חומרה זולה, ארכיון בבית. זו הנקודה.
+המשך: [getting-started.md](getting-started.md) · [FAQ](faq.md) · [NVR](nvr.md)
 
-## מה זה לא
-
-- לא פריצת קושחה, לא ONVIF
-- לא הבטחה ל-60 פריימים. הרבה דגמים מוציאים בערך **10 לשנייה** ב-HD HEVC. זו המצלמה
-- לא הורג את אפליקציית הטלפון. זה הנתיב *המקומי* ל-NVR
-- לא קשור ל-Tuya Inc. המנוע הוא [seydx/tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal) (MIT)
-
-המשך: [getting-started.md](getting-started.md) · [FAQ](faq.md)
-
-</div>
+![Welcome](../images/ui-welcome.png)
+![Ready](../images/ui-ready.png)

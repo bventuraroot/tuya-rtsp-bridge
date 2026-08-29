@@ -1,34 +1,40 @@
 # FAQ
 
-### Pusta lista kamer po logowaniu
-Zły region. «Europa Zachodnia» w aplikacji DE = **EU**, nie WE.
+### Pusta lista kamer
+Zły region. «Europa Zachodnia» w app DE = **EU**, nie WE.
 
 ### QR się nie kończy
-Zostaw okno otwarte i **potwierdź** w telefonie.
+Okno otwarte i **potwierdź** w telefonie.
 
-### QR maleńki / szczelina / nie da się zeskanować (Windows)
-Naprawione w **1.2.4+**: stałe płótno **320×320** (NEAREST). Zaktualizuj aplikację. «No QR» przed Create QR jest normalne.
+### QR-szczelina (Windows)
+Naprawione w **1.2.4+**: płótno **320×320** (NEAREST). Zaktualizuj Setup.
 
-### Połączenie odrzucone (WinError 10061)
-UI samo uruchamia API (`:8787`). Ponów Create QR.
+### WinError 10061
+UI samo startuje API `:8787`. Ponów Create QR.
 
 ### VLC czarne
-VLC 3 często pada na HEVC/RTSP. Strumień żyje. Agent/Frigate. Linux: pipe MJPEG ffmpeg.
+Strumień żyje. Agent/Frigate. Linux: ffmpeg MJPEG.
 
-### Chciałem 60 fps
-Wiele modeli daje ~**10 fps** w HD.
+### 60 fps?
+Często ~**10 fps** HD.
 
-### Czy to ONVIF?
+### ONVIF?
 Nie. Tylko RTSP.
 
 ### Czy wideo wychodzi z domu?
-Sygnalizacja do Tuya. Lokalnie zwykle kamera → ten PC.
+Sygnalizacja do Tuya. Lokalnie: kamera → ten PC.
+
+### go2rtc `tuya://`?
+Email/hasło Tuya Smart, nie QR Smart Life.
 
 ### Cloud PTZ poza LAN?
-Najpierw LAN PTZ (TCP **6668**). Zdalnie: cloud po jednorazowym email+hasło (`POST /api/cloud/auth`) — bez kluczy IoT developer.
+Najpierw LAN TCP **6668**. Zdalnie: `POST /api/cloud/auth`, `cloud_auth.json` mode 600. Bez kluczy IoT developer.
 
-### Add-on Home Assistant?
-Tak — [`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). Host network. Docker: [docker.md](../docker.md).
+### Gdzie login?
+`%APPDATA%\TuyaRtspBridge\` lub `~/.local/share/tuya-rtsp-bridge/`.
 
-### Linux / macOS?
-`./launch.sh`. Arch: [arch-linux.md](../arch-linux.md). Dane: `~/.local/share/tuya-rtsp-bridge/`.
+### Add-on HA?
+[`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). [docker.md](docker.md).
+
+### Linux?
+`./launch.sh` · [arch-linux.md](../arch-linux.md).
