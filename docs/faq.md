@@ -6,11 +6,19 @@ Wrong region. “Western Europe” in the German app is **EU** (`protect-eu`), n
 
 ### The QR never finishes
 
-Keep the window open and confirm in the phone. A pending poll (`result: true` without a user id) is normal.
+Keep the window open and **confirm** in the phone. A pending poll (`result: true` without a user id) is normal.
+
+### The QR is tiny / a horizontal slit / unscannable (Windows)
+
+Fixed in **1.2.4+**: the GUI draws the QR on a fixed **320×320** canvas (NEAREST pixels), not a Tk Label that collapses to character cells. Update the app / rebuild the Setup. If the box still says “No QR”, click **Create QR** and wait for the image — empty placeholder is normal before that.
+
+### Backend connection refused (WinError 10061)
+
+The desktop UI now starts the local API (`:8787`) automatically if it was down. Click **Create QR** again, or use **Restart UI / API**.
 
 ### VLC is black / the preview is a slit
 
-VLC 3 often fails on HEVC over RTSP. That does **not** mean the stream is dead. Use Agent DVR, Frigate, or ffplay. The desktop preview needs a current VLC install.
+VLC 3 often fails on HEVC over RTSP. That does **not** mean the stream is dead. Use Agent DVR, Frigate, or ffplay. The desktop preview needs a current VLC install (Windows Setup already bundles it). On Linux the GUI uses an ffmpeg MJPEG pipe instead of embedded VLC.
 
 ### I expected 60 fps
 
@@ -28,13 +36,21 @@ Signaling (login, WebRTC handshake) goes to Tuya. When you view through this PC,
 
 That needs a Tuya Smart **email/password**, not a Smart Life QR. Different login.
 
+### Cloud PTZ when I am not on the LAN?
+
+LAN PTZ (TCP **6668**) is preferred when the camera is reachable. Off-site, the bridge can fall back to the reverse mobile API (`tuya.m.device.dp.publish`) using your **Smart Life / Tuya Smart email + password** once (stored only in local `cloud_auth.json`, mode 600 — no Tuya IoT Platform developer keys). Set via `POST /api/cloud/auth` or the first cloud PTZ attempt after credentials exist.
+
 ### HLS / VLC HTTP?
 
 Optional and expensive (x264 transcode). Off by default. Agent/Frigate should use RTSP `/hd`.
 
 ### Where is my login stored?
 
-`%APPDATA%\TuyaRtspBridge\` — cookies and camera list. Do not put that folder in git or in a screenshot.
+`%APPDATA%\TuyaRtspBridge\` (Windows) or `~/.local/share/tuya-rtsp-bridge/` (Linux) — cookies, camera list, optional cloud password. Do not put that folder in git or in a screenshot.
+
+### Home Assistant add-on?
+
+Yes — Supervisor add-on under [`homeassistant/tuya_rtsp_bridge/`](../homeassistant/tuya_rtsp_bridge/). Needs **host network**. Plain Docker on the HA host is still fine: [docker.md](docker.md).
 
 ### Linux / macOS?
 

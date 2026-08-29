@@ -10,10 +10,11 @@ You do **not** need to install Python, VLC, ffmpeg, or Git. The Setup copies a p
 
 1. Start **Tuya RTSP Bridge** from the Start menu or desktop icon (no black console).
 2. Pick the same region as the phone app.
-3. Create QR → confirm in Smart Life / Tuya Smart.
-4. Copy `rtsp://<this-pc>:8554/<CameraName>/hd` into Frigate / Agent DVR / go2rtc.
+3. Create QR → confirm in Smart Life / Tuya Smart. The QR box is a fixed **320×320** square (scannable; not a thin slit).
+4. If you see **connection refused** once, wait a second and click Create QR again — the UI starts the local API automatically.
+5. Copy `rtsp://<this-pc>:8554/<CameraName>/hd` into Frigate / Agent DVR / go2rtc.
 
-Logins stay in `%APPDATA%\TuyaRtspBridge\` — never inside the install folder.
+Logins stay in `%APPDATA%\TuyaRtspBridge\` — never inside the install folder. Optional cloud PTZ password is stored there as `cloud_auth.json` (mode 600).
 
 ## What is inside the Setup
 
@@ -22,7 +23,7 @@ Logins stay in `%APPDATA%\TuyaRtspBridge\` — never inside the install folder.
 | Private CPython 3.12 + tkinter + pip wheels | GUI and login, no system Python |
 | `tuya-ipc-terminal.exe` | RTSP engine (MIT, seydx) |
 | Official VideoLAN VLC 3 (64-bit) | In-app preview (`libvlc`) |
-| ffmpeg 9.0.1 essentials (GPL-3, Gyan) | Watchdog probe |
+| ffmpeg 9.0.1 essentials (GPL-3, Gyan) | Watchdog probe + Linux-style tools on Windows if needed |
 
 Licenses: `NOTICE.md`, `DEPENDENCIES.md`, plus `bin/FFMPEG-LICENSE.txt` and VLC's own COPYING inside `vlc\`.
 

@@ -43,6 +43,14 @@ rtsp://<цей-пк>:8554/<НазваКамери>/hd
 
 ![Дві умовні камери, HD RTSP на 127.0.0.1.](docs/images/ui-ready.png)
 
+## Нове в 1.2.4+
+
+- QR-вхід: фіксоване полотно **320×320** (виправлено щілинний баг Windows)
+- **Аддон Home Assistant OS:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (host network)
+- Docker/HA: [docs/docker.md](docs/docker.md)
+- PTZ: спочатку LAN (TCP 6668), опційно **cloud PTZ** після email/пароля — без IoT developer keys
+- Protect-сесія: auto-relogin зі збереженим паролем
+
 ## Подяки
 
 RTSP-рушій — **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal)** від **[seydx](https://github.com/seydx)** (MIT, коміт `d65b3e9`). Див. [CREDITS.md](CREDITS.md) і [NOTICE.md](NOTICE.md).

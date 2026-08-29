@@ -1,29 +1,34 @@
-# 자주 묻는 말
+# 자주 묻는 질문
 
-### 로그인했는데 카메라가 비었다
+### 로그인 후 카메라 목록이 비어 있음
+지역이 틀림. 독일어 앱의 «서유럽»은 **EU** (WE 아님).
 
-지역이 틀렸다. 독일어 앱의 "서유럽"은 **EU**(`protect-eu`)이지 WE가 아니다. 같은 대륙의 다른 쪽을 시험해 봐라.
+### QR이 끝나지 않음
+창을 연 채로 폰에서 **확인**.
 
-### QR이 안 끝난다
+### QR이 너무 작음 / 틈 / 스캔 불가 (Windows)
+**1.2.4+** 수정: 고정 **320×320** 캔버스 (NEAREST). 앱 업데이트. Create QR 전 «No QR»은 정상.
 
-창을 열어 두고 폰에서 확인한다. 사용자 ID 없이 `result: true`인 건 대기 상태고 정상이다.
+### 연결 거부 (WinError 10061)
+UI가 API (`:8787`)를 자동 시작. Create QR 재시도.
 
-### VLC가 검다 / 미리보기가 한 줄이다
+### VLC 검정
+VLC 3는 HEVC/RTSP에서 자주 실패. 스트림은 살아 있음. Agent/Frigate. Linux: ffmpeg MJPEG.
 
-VLC 3는 HEVC over RTSP에서 자주 죽는다. 스트림이 죽은 게 아닐 수 있다. Agent DVR, Frigate, ffplay를 써라.
+### 60 fps를 기대함
+많은 기종이 HD에서 약 **10 fps**.
 
-### 60fps인 줄 알았다
+### ONVIF인가?
+아니오. RTSP만.
 
-많은 Tuya IPC는 HD HEVC로 **초당 10장**이다. 이 다리가 프레임을 만들어 내지 않는다.
+### 영상이 집 밖으로 나가나?
+시그널링은 Tuya. 로컬은 보통 카메라→이 PC.
 
-### 이게 ONVIF인가
+### LAN 밖 Cloud PTZ?
+먼저 LAN PTZ (TCP **6668**). 원격은 email+password 한 번 (`POST /api/cloud/auth`) — IoT developer 키 불필요.
 
-아니다. 순정 Tuya는 ONVIF를 말하지 않는다. 이 프로젝트는 RTSP만 한다.
+### Home Assistant 애드온?
+예 — [`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/). 호스트 네트워크. Docker: [docker.md](../docker.md).
 
-### 영상이 집 밖으로 나가나
-
-신호(로그인, 핸드셰이크)는 Tuya로 간다. 이 PC로 볼 때 영상 알맹이는 대개 카메라 → 이 PC LAN이다. 모바일 데이터의 폰은 *다른* 시청자고 클라우드 길을 탄다.
-
-### 로그인은 어디에 저장되나
-
-`%APPDATA%\TuyaRtspBridge\`. git에도 스크린샷에도 넣지 마라.
+### Linux / macOS?
+`./launch.sh`. Arch: [arch-linux.md](../arch-linux.md). 데이터: `~/.local/share/tuya-rtsp-bridge/`.

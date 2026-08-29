@@ -1,15 +1,16 @@
-# З чого почати
+# Початок роботи
 
-Працює з камерами, які видно в **Tuya Smart**, **Smart Life** або **iSmartLife**.
+Камери в **Tuya Smart**, **Smart Life** або **iSmartLife**.
 
-1. Windows: `TuyaRtspBridge-Setup.exe` з Releases (Python/VLC/ffmpeg усередині). Linux: `./launch.sh`.
-2. Запустіть **Tuya RTSP Bridge**.
-3. Оберіть той самий регіон, що в телефоні.
-4. Створити QR → сканувати → **підтвердити**.
-5. Скопіюйте HD-адресу в NVR.
+## Перший запуск
+1. Windows: Setup з Releases. Linux: `./launch.sh` / Arch. Docker/HA: [docker.md](../docker.md).
+2. Запустіть **Tuya RTSP Bridge** (або `http://<host>:8787`).
+3. Той самий регіон, що в телефоні.
+4. Create QR → сканувати → **підтвердити**. QR **320×320**.
+5. Скопіюйте HD URL у NVR.
 
-Сеанси: `%APPDATA%\TuyaRtspBridge` або `~/.local/share/tuya-rtsp-bridge/`.
+## PTZ
+Стрілки в UI. **LAN:** TCP **6668**. **Віддалено:** cloud після email+пароль один раз (`POST /api/cloud/auth`) — без IoT keys.
 
-Новий Wi‑Fi: **не** видаляйте камери з облікового запису. На новому місці змініть мережу в додатку, запустіть міст, у NVR змініть лише IP комп’ютера.
-
-PTZ: утримувати стрілку = рух, відпустити = стоп. Локальний протокол TCP **6668**.
+## Попередній перегляд
+Windows Setup = VLC. Linux = ffmpeg MJPEG. RTSP його не потребує.

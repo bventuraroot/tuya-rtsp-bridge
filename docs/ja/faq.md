@@ -1,29 +1,34 @@
 # よくある質問
 
-### ログインしたのにカメラが空
-
-地域違い。「西ヨーロッパ」はドイツ語アプリでは **EU**（`protect-eu`）で、WEではない。同じ大陸のもう一方を試す。
+### ログイン後カメラ一覧が空
+リージョン違い。ドイツ語アプリの「西ヨーロッパ」は **EU**（WEではない）。
 
 ### QRが終わらない
+ウィンドウを開いたままスマホで**確認**。
 
-窓を開いたまま、スマホで確認する。ユーザーIDなしの `result: true` は待ち状態で正常。
+### QRが極小／スリット／読めない (Windows)
+**1.2.4+** で修正：固定 **320×320** キャンバス（NEAREST）。アプリを更新。「No QR」は Create QR 前は正常。
 
-### VLCが黒い / プレビューが細い
+### 接続拒否 (WinError 10061)
+UI が API (`:8787`) を自動起動。Create QR を再試行。
 
-VLC 3はHEVC over RTSPでよく落ちる。ストリームが死んでいるとは限らない。Agent DVR、Frigate、ffplayを使う。
+### VLC が黒い
+VLC 3 は HEVC/RTSP で失敗しがち。ストリームは生きている。Agent/Frigate。Linux は ffmpeg MJPEG。
 
-### 60fpsのつもりだった
+### 60 fps が欲しい
+多くの機種は HD で約 **10 fps**。
 
-多くのTuya IPCはHD HEVCで **約10fps**。この橋はフレームを捏造しない。
+### ONVIF？
+いいえ。RTSP のみ。
 
-### これはONVIF？
+### 映像は家の外へ？
+シグナリングは Tuya。ローカルでは通常カメラ→この PC。
 
-違う。純正TuyaはONVIFを話さない。このプロジェクトはRTSPだけ。
+### LAN 外の Cloud PTZ？
+先に LAN PTZ (TCP **6668**)。遠隔は email+password を一度 (`POST /api/cloud/auth`) — IoT developer キー不要。
 
-### 映像は家の外に出る？
+### Home Assistant アドオン？
+あり — [`homeassistant/tuya_rtsp_bridge/`](../../homeassistant/tuya_rtsp_bridge/)。ホストネット。Docker: [docker.md](../docker.md)。
 
-合図（ログイン、ハンドシェイク）はTuyaへ。このPC経由で見るとき、映像の中身はだいたいカメラ→このPCのLAN。携帯回線のスマホは *別の* 視聴者で、雲の道を使う。
-
-### ログインはどこに保存される？
-
-`%APPDATA%\TuyaRtspBridge\`。gitにもスクショにも入れない。
+### Linux / macOS？
+`./launch.sh`。Arch: [arch-linux.md](../arch-linux.md)。データ: `~/.local/share/tuya-rtsp-bridge/`。

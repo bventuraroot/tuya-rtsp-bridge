@@ -43,6 +43,14 @@ Na inloggen — alleen demonamen. Previews in de docs zijn expres zwart (geen li
 
 ![Twee voorbeeldcamera’s, HD-RTSP op 127.0.0.1.](docs/images/ui-ready.png)
 
+## Nieuw in 1.2.4+
+
+- QR-login: vast **320×320**-canvas (Windows spleet-bug gefixt)
+- **Home Assistant OS add-on:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (host-netwerk)
+- Docker/HA: [docs/docker.md](docs/docker.md)
+- PTZ: eerst LAN (TCP 6668), optioneel **cloud-PTZ** na email/wachtwoord — geen IoT-developer-keys
+- Protect-sessie: auto-relogin met opgeslagen wachtwoord
+
 ## Credits
 
 De RTSP-engine is **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal)** van **[seydx](https://github.com/seydx)** (MIT, commit `d65b3e9`). Zie [CREDITS.md](CREDITS.md) en [NOTICE.md](NOTICE.md).

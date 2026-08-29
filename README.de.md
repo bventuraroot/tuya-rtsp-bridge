@@ -43,6 +43,14 @@ Nach dem Login — nur Demo-Namen (`Front yard`, `Driveway`). Die Vorschau bleib
 
 ![Zwei Platzhalter-Kameras, HD-RTSP auf 127.0.0.1.](docs/images/ui-ready.png)
 
+## Neu in 1.2.4+
+
+- QR-Login: festes **320×320**-Canvas (Windows-Schlitz-Bug behoben)
+- **Home-Assistant-OS-Add-on:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (Host-Netz)
+- Docker/HA: [docs/docker.md](docs/docker.md)
+- PTZ: LAN (TCP 6668) zuerst, optional **Cloud-PTZ** nach Email/Passwort — ohne IoT-Developer-Keys
+- Protect-Session: Auto-Relogin mit gespeichertem Passwort
+
 ## Credits
 
 Die RTSP-Engine ist **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal)** von **[seydx](https://github.com/seydx)** (MIT), Stand Commit `d65b3e9`, plus drei lokale Patches. Siehe [CREDITS.md](CREDITS.md) und [NOTICE.md](NOTICE.md).

@@ -58,3 +58,12 @@ rtsp://<このPC>:8554/<カメラ名>/hd
 こちらのコードはMIT。エンジンはMIT、Copyright (c) 2025 seydx。Tuya Inc.とは無関係。
 
 名称・手元のデータ・同梱ライセンスは [docs/legal.md](docs/legal.md)。
+
+## 1.2.4+ の新機能
+
+- QR ログイン：固定 **320×320** キャンバス（Windows スリットバグ修正）
+- **Home Assistant OS アドオン:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/)（ホストネット）
+- Docker/HA: [docs/docker.md](docs/docker.md)
+- PTZ: まず LAN（TCP 6668）、任意で **クラウド PTZ**（email/password を一度）— IoT 開発者キー不要
+- Protect セッション：保存パスワードで自動再ログイン
+

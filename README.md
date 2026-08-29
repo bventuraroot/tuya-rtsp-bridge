@@ -37,6 +37,14 @@ rtsp://<this-pc>:8554/<CameraName>/hd
 
 Signaling still uses Tuya. When you watch from this PC, video typically stays on the LAN. Full story: [docs/why.md](docs/why.md) · [docs/warum.md](docs/warum.md).
 
+## What’s new in 1.2.4+
+
+- QR login: fixed **320×320** canvas (Windows slit-QR bug fixed) — [issue #2](https://github.com/DanEng1982/tuya-rtsp-bridge/issues/2)
+- **Home Assistant OS add-on:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (host network) — [issue #1](https://github.com/DanEng1982/tuya-rtsp-bridge/issues/1)
+- Docker / HA guide: [docs/docker.md](docs/docker.md)
+- PTZ: LAN first (TCP 6668), optional **cloud PTZ** after one email/password — no IoT Platform keys
+- Protect session auto-relogin when cookies expire
+
 ### The app
 
 First run — language, region, QR, then confirm in Smart Life. No cameras yet:
@@ -58,13 +66,15 @@ The RTSP engine is **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-termi
 ```
 Phone (Smart Life) ──QR──► this PC ──RTSP :8554──► Frigate / Agent DVR / VLC
                               │
-                              └── LAN PTZ (port 6668) when the camera allows it
+                              ├── LAN PTZ (TCP 6668) when on the same network
+                              └── Cloud PTZ fallback (optional email/password, no IoT keys)
 ```
 
 - HD: `rtsp://<this-pc>:8554/<CameraName>/hd` (usually HEVC 1080p)
 - SD: `rtsp://<this-pc>:8554/<CameraName>/sd` (H.264, smaller)
 - All cameras share **one** bridge IP; only the path changes
-- Live preview uses bundled VLC on Windows Setup; on Linux install `vlc`
+- Live preview: bundled VLC on Windows Setup; Linux GUI uses an ffmpeg MJPEG pipe
+- QR login draws a fixed **320×320** scannable square (Windows slit-QR bug fixed in 1.2.4+)
 - English, Deutsch, Nederlands, Français, Español, Português, Italiano, Polski, Čeština, Русский, Українська, Bahasa Indonesia, 简体中文, हिन्दी, 日本語, 한국어, עברית, ייִדיש
 
 Signaling still uses Tuya cloud. When you watch from this PC, video typically stays on your LAN.
@@ -74,7 +84,8 @@ Signaling still uses Tuya cloud. When you watch from this PC, video typically st
 - Stock firmware has **no ONVIF** and **no camera-native RTSP**
 - Many models output about **10 fps** in the HD bitstream — that is the camera, not this app
 - VLC 3 sometimes shows a black window on HEVC/RTSP; Agent DVR / Frigate are the intended viewers
-- Preview needs VLC; recording should happen in your NVR, not on the bridge
+- Preview is optional; recording should happen in your NVR, not on the bridge
+- Cloud PTZ needs your app email/password once if you are off the camera LAN
 
 Supported login regions: Western Europe, Eastern Europe, USA West, USA East, China, India.
 
@@ -93,6 +104,7 @@ Windows users do **not** install Python, VLC, or ffmpeg. That is all inside the 
 
 - **Windows:** `TuyaRtspBridge-Setup.exe` from [Releases](../../releases) — next, next, finish. Details: [docs/windows.md](docs/windows.md)
 - **Docker (Linux / HA host):** [docs/docker.md](docs/docker.md) — `docker compose up -d --build`
+- **Home Assistant OS add-on:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (host network)
 - **Arch Linux:** [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh` or `packaging/arch/PKGBUILD`
 - **From source:** see [Install from source](#install-from-source)
 
@@ -103,11 +115,11 @@ Logins: `%APPDATA%\TuyaRtspBridge\` (Windows) or `~/.local/share/tuya-rtsp-bridg
 
 1. Start **Tuya RTSP Bridge**
 2. Pick the same region as in the phone app (Germany “Western Europe” → **EU**)
-3. Click **Create QR**
+3. Click **Create QR** (fixed 320×320 square — scannable on phones)
 4. In Smart Life / Tuya Smart: scan, then **confirm**
 5. Cameras appear with copy-paste HD URLs
 
-If the QR “does nothing”, wait — the app polls until you confirm. Wrong region = empty camera list; try the other EU/US cluster.
+If the QR “does nothing”, wait — the app polls until you confirm. Wrong region = empty camera list; try the other EU/US cluster. If Windows shows a connection error once, wait a second and retry — the UI starts the local API automatically.
 
 ### 3. Watch
 
@@ -160,8 +172,9 @@ Need Go only to build the engine. Release builds on Windows already include the 
 | [docs/brand.md](docs/brand.md) | Logo, icon, social preview |
 | [docs/legal.md](docs/legal.md) · [docs/rechtliches.md](docs/rechtliches.md) | Names, ToS, what we store, bundled licenses |
 | [CHANGELOG.md](CHANGELOG.md) | What changed in each Setup |
-| [docs/docker.md](docs/docker.md) | Docker Compose (Linux host / Desktop ports) |
+| [docs/docker.md](docs/docker.md) | Docker Compose + Home Assistant OS add-on |
 | [docs/arch-linux.md](docs/arch-linux.md) | Arch: launch.sh + PKGBUILD |
+| [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) | HA Supervisor add-on |
 | [DEPENDENCIES.md](DEPENDENCIES.md) | Licenses (all redistributable or not shipped) |
 | [docs/nl](docs/nl/) · [docs/fr](docs/fr/) · [docs/es](docs/es/) · [docs/pt](docs/pt/) · [docs/it](docs/it/) · [docs/pl](docs/pl/) · [docs/cs](docs/cs/) · [docs/ru](docs/ru/) · [docs/uk](docs/uk/) · [docs/id](docs/id/) · [docs/zh](docs/zh/) · [docs/hi](docs/hi/) · [docs/ja](docs/ja/) · [docs/ko](docs/ko/) · [docs/he](docs/he/) · [docs/yi](docs/yi/) | NL / FR / ES / PT / IT / PL / CS / RU / UK / ID / 中文 / हिन्दी / 日本語 / 한국어 / עברית / ייִדיש |
 | [SECURITY.md](SECURITY.md) | What not to commit |

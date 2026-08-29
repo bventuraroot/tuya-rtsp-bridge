@@ -58,3 +58,12 @@ rtsp://<이-PC>:8554/<카메라이름>/hd
 우리 코드는 MIT. 엔진은 MIT, Copyright (c) 2025 seydx. Tuya Inc.와는 무관하다.
 
 이름, 로컬 데이터, 동봉 라이선스: [docs/legal.md](docs/legal.md).
+
+## 1.2.4+ 신규
+
+- QR 로그인: 고정 **320×320** 캔버스 (Windows 슬릿 버그 수정)
+- **Home Assistant OS 애드온:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (호스트 네트워크)
+- Docker/HA: [docs/docker.md](docs/docker.md)
+- PTZ: 먼저 LAN (TCP 6668), 선택 **클라우드 PTZ** (email/password 한 번) — IoT developer 키 불필요
+- Protect 세션: 저장 비밀번호로 자동 재로그인
+

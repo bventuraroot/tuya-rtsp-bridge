@@ -66,3 +66,12 @@ rtsp://<דער-קאָמפּיוטער>:8554/<קאַמערע-נאָמען>/hd
 </div>
 
 נעמען, לאָקאַלע דאַטן, בײַגעלייגטע ליצענצן: [docs/legal.md](docs/legal.md).
+
+## נײַ אין 1.2.4+
+
+- QR לאָגין: פֿיקסירט **320×320** קאַנוועס (Windows שפּאַלט־באַג פֿאַרריכט)
+- **Home Assistant OS add-on:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (host network)
+- Docker/HA: [docs/docker.md](docs/docker.md)
+- PTZ: ערשט LAN (TCP 6668), אָפּציאָנעל **cloud PTZ** נאָך email/פּאַראָל — אָן IoT developer keys
+- Protect סעסיע: auto-relogin מיט געהיטן פּאַראָל
+

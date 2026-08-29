@@ -1,15 +1,16 @@
 # Aan de slag
 
-Werkt met camera’s die je ziet in **Tuya Smart**, **Smart Life** of **iSmartLife**.
+Camera’s in **Tuya Smart**, **Smart Life** of **iSmartLife**.
 
-1. Windows: `TuyaRtspBridge-Setup.exe` uit Releases (Python/VLC/ffmpeg zitten erin). Linux: `./launch.sh`.
-2. Start **Tuya RTSP Bridge**.
-3. Kies dezelfde regio als op de telefoon.
-4. QR maken → scannen → **bevestigen**.
-5. Kopieer de HD-URL naar de NVR.
+## Eerste start
+1. Windows: Setup uit Releases. Linux: `./launch.sh` / Arch. Docker/HA: [docker.md](../docker.md).
+2. Start **Tuya RTSP Bridge** (of `http://<host>:8787`).
+3. Zelfde regio als de telefoon.
+4. Create QR → scannen → **bevestigen**. QR vast **320×320**.
+5. Kopieer HD-URL naar de NVR.
 
-Sessies: `%APPDATA%\TuyaRtspBridge` of `~/.local/share/tuya-rtsp-bridge/`.
+## PTZ
+Pijlen in de UI. **LAN:** TCP **6668**. **Off-site:** cloud na eenmalig email+wachtwoord (`POST /api/cloud/auth`) — geen IoT-keys.
 
-Nieuw wifi: camera’s **niet** uit het account verwijderen. Op de nieuwe plek het netwerk in de app wijzigen, de brug starten, in de NVR alleen het pc-IP aanpassen.
-
-PTZ: pijl ingedrukt = bewegen, loslaten = stop. Lokaal protocol TCP **6668**.
+## Preview
+Windows Setup = VLC. Linux = ffmpeg-MJPEG. RTSP heeft het niet nodig.

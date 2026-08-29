@@ -83,3 +83,12 @@ Arch: [docs/arch-linux.md](docs/arch-linux.md) — `./launch.sh`
 हमारा कोड: MIT। वेंडर इंजन: MIT, Copyright (c) 2025 seydx। Tuya Inc. से संबद्ध नहीं।
 
 नाम, स्थानीय डेटा, बंडल लाइसेंस: [docs/legal.md](docs/legal.md)।
+
+## 1.2.4+ में नया
+
+- QR लॉगिन: स्थिर **320×320** canvas (Windows स्लिट बग ठीक)
+- **Home Assistant OS add-on:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (host network)
+- Docker/HA: [docs/docker.md](docs/docker.md)
+- PTZ: पहले LAN (TCP 6668), वैकल्पिक **cloud PTZ** email/password के बाद — बिना IoT developer keys
+- Protect सत्र: सहेजे पासवर्ड से auto-relogin
+

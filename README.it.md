@@ -43,6 +43,14 @@ Dopo l’accesso — solo nomi demo. Le anteprime restano nere di proposito (nie
 
 ![Due telecamere fittizie, RTSP HD su 127.0.0.1.](docs/images/ui-ready.png)
 
+## Novità in 1.2.4+
+
+- Login QR: canvas fisso **320×320** (bug fessura Windows risolto)
+- **Add-on Home Assistant OS:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (host network)
+- Docker/HA: [docs/docker.md](docs/docker.md)
+- PTZ: prima LAN (TCP 6668), **cloud PTZ** opzionale dopo email/password — senza chiavi IoT developer
+- Sessione protect: re-login automatico con password salvata
+
 ## Crediti
 
 Il motore RTSP è **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal)** di **[seydx](https://github.com/seydx)** (MIT, commit `d65b3e9`). Vedi [CREDITS.md](CREDITS.md) e [NOTICE.md](NOTICE.md).

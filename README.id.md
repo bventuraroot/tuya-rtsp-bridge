@@ -43,6 +43,14 @@ Setelah masuk — hanya nama demo. Pratinjau di dokumentasi sengaja hitam (tanpa
 
 ![Dua kamera contoh, RTSP HD di 127.0.0.1.](docs/images/ui-ready.png)
 
+## Baru di 1.2.4+
+
+- Login QR: kanvas tetap **320×320** (bug celah Windows diperbaiki)
+- **Add-on Home Assistant OS:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (host network)
+- Docker/HA: [docs/docker.md](docs/docker.md)
+- PTZ: LAN dulu (TCP 6668), opsional **cloud PTZ** setelah email/password — tanpa kunci IoT developer
+- Sesi protect: auto-relogin dengan password tersimpan
+
 ## Kredit
 
 Mesin RTSP adalah **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal)** milik **[seydx](https://github.com/seydx)** (MIT, komit `d65b3e9`). Lihat [CREDITS.md](CREDITS.md) dan [NOTICE.md](NOTICE.md).

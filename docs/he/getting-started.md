@@ -1,19 +1,16 @@
-<div dir="rtl" lang="he">
+# התחלה
 
-# איך מתחילים
+מצלמות ב-**Tuya Smart**, **Smart Life** או **iSmartLife**.
 
-עובד עם מצלמות שמופיעות ב-**Tuya Smart**, **Smart Life** או **iSmartLife**. שם המותג על הקופסה לא משנה, כל עוד האפליקציה בטלפון היא אחת מאלה.
+## הרצה ראשונה
+1. Windows: Setup מ-Releases. Linux: `./launch.sh` / Arch. Docker/HA: [docker.md](../docker.md).
+2. הפעילו **Tuya RTSP Bridge** (או `http://<host>:8787`).
+3. אותו אזור כמו בטלפון.
+4. Create QR → סריקה → **אישור**. QR קבוע **320×320**.
+5. העתיקו URL HD ל-NVR.
 
-1. Windows: `TuyaRtspBridge-Setup.exe` מ-Releases (כולל Python/VLC/ffmpeg). לינוקס: `./launch.sh`.
-2. מפעילים את **גשר RTSP של Tuya**.
-3. בוחרים את אותו אזור כמו באפליקציה בטלפון.
-4. יוצרים QR → סורקים → **מאשרים** בטלפון.
-5. מדביקים את כתובת ה-HD ב-NVR.
+## PTZ
+חצים ב-UI. **LAN:** TCP **6668**. **מחוץ לרשת:** cloud אחרי email+סיסמה (`POST /api/cloud/auth`) — בלי מפתחות IoT.
 
-הסשן שורד הפעלה מחדש (`%APPDATA%\TuyaRtspBridge`). סורקים שוב רק אם Tuya זורק את הסשן.
-
-מעבר דירה: מזהי המכשיר נשארים אם **לא** מוחקים את המצלמות מהחשבון ו**לא** מאפסים אותן. SSID חדש מגדירים במקום, באפליקציה. ב-NVR משנים רק את ה-IP של המחשב.
-
-PTZ: מחזיקים חץ = זז. מרפים = עוצר. פרוטוקול מקומי TCP 6668, לא הענן. לא בכל דגם.
-
-</div>
+## תצוגה מקדימה
+Windows Setup = VLC. Linux = ffmpeg MJPEG. RTSP לא צריך אותה.

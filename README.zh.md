@@ -43,6 +43,14 @@ rtsp://<本机>:8554/<摄像机名>/hd
 
 ![两台占位摄像机，高清 RTSP 指向 127.0.0.1。](docs/images/ui-ready.png)
 
+## 1.2.4+ 新内容
+
+- QR 登录：固定 **320×320** 画布（修复 Windows 细缝 bug）
+- **Home Assistant OS 插件：** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/)（host 网络）
+- Docker/HA：[docs/docker.md](docs/docker.md)
+- PTZ：优先局域网（TCP 6668），可选 **云 PTZ**（保存一次 email/密码）— 无需 IoT 开发者密钥
+- Protect 会话：用已存密码自动重新登录
+
 ## 致谢
 
 RTSP 引擎是 **[seydx](https://github.com/seydx)** 的 **[tuya-ipc-terminal](https://github.com/seydx/tuya-ipc-terminal)**（MIT，提交 `d65b3e9`）。见 [CREDITS.md](CREDITS.md)、[NOTICE.md](NOTICE.md)。

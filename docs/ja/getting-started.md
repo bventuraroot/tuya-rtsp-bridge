@@ -1,15 +1,16 @@
-# はじめ方
+# はじめに
 
-**Tuya Smart**、**Smart Life**、**iSmartLife** に出るカメラなら動く。箱のブランド（LSC、Nous、BlitzWolf、無名の「Tuya」）は問わない。スマホのアプリがどれかならよい。
+**Tuya Smart** / **Smart Life** / **iSmartLife** に出るカメラ。
 
-1. Windows: Releasesの `TuyaRtspBridge-Setup.exe`（Python/VLC/ffmpeg込み）。Linux: `./launch.sh`。
-2. **Tuya RTSP ブリッジ** を起動する。
-3. スマホアプリと同じ地域を選ぶ。
-4. QRを作る → 読む → スマホで **確認**。
-5. HDのURLをNVRに貼る。
+## 初回
+1. Windows: Releases の Setup。Linux: `./launch.sh` / Arch。Docker/HA: [docker.md](../docker.md)。
+2. **Tuya RTSP Bridge** を起動（または `http://<host>:8787`）。
+3. スマホと同じリージョン。
+4. Create QR → スキャン → **確認**。QR は **320×320**。
+5. HD URL を NVR に。
 
-セッションは再起動後も残る（`%APPDATA%\TuyaRtspBridge`）。Tuyaが蹴るまで、もう一度読む必要はない。
+## PTZ
+UI の矢印。**LAN:** TCP **6668**。**遠隔:** email+password を一度 (`POST /api/cloud/auth`) — IoT キー不要。
 
-引っ越し: アカウントからカメラを消さず、初期化もしなければ機器IDは同じ。新しいSSIDは現地のアプリで。NVRではPCのIPだけ変える。パスはそのまま。
-
-PTZ: 矢印を押している間だけ動く。離すと止まる。クラウドではなくLANのTCP 6668。全機種があるわけではない。
+## プレビュー
+Windows Setup = VLC。Linux = ffmpeg MJPEG。RTSP には不要。

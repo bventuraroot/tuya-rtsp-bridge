@@ -1,15 +1,16 @@
 # Mulai
 
-Berjalan dengan kamera yang terlihat di **Tuya Smart**, **Smart Life**, atau **iSmartLife**.
+Kamera di **Tuya Smart**, **Smart Life**, atau **iSmartLife**.
 
-1. Windows: `TuyaRtspBridge-Setup.exe` dari Releases (Python/VLC/ffmpeg sudah termasuk). Linux: `./launch.sh`.
-2. Jalankan **Tuya RTSP Bridge**.
-3. Pilih wilayah yang sama dengan di ponsel.
-4. Buat QR → pindai → **konfirmasi**.
+## Jalankan pertama
+1. Windows: Setup dari Releases. Linux: `./launch.sh` / Arch. Docker/HA: [docker.md](../docker.md).
+2. Jalankan **Tuya RTSP Bridge** (atau `http://<host>:8787`).
+3. Region sama seperti ponsel.
+4. Create QR → pindai → **konfirmasi**. QR **320×320**.
 5. Salin URL HD ke NVR.
 
-Sesi: `%APPDATA%\TuyaRtspBridge` atau `~/.local/share/tuya-rtsp-bridge/`.
+## PTZ
+Panah di UI. **LAN:** TCP **6668**. **Off-site:** cloud setelah email+password sekali (`POST /api/cloud/auth`) — tanpa kunci IoT.
 
-Wi‑Fi baru: **jangan** hapus kamera dari akun. Di tempat baru ubah jaringan di aplikasi, jalankan jembatan, di NVR ubah hanya IP PC.
-
-PTZ: tahan panah = gerak, lepas = berhenti. Protokol lokal TCP **6668**.
+## Pratinjau
+Windows Setup = VLC. Linux = ffmpeg MJPEG. RTSP tidak membutuhkannya.

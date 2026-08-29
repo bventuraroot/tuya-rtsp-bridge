@@ -83,3 +83,12 @@ Sessions : `%APPDATA%\TuyaRtspBridge\` (Windows) ou `~/.local/share/tuya-rtsp-br
 Notre code : MIT. Moteur embarqué : MIT, Copyright (c) 2025 seydx. Non affilié à Tuya Inc.
 
 Noms, données locales, licences fournies : [docs/legal.md](docs/legal.md).
+
+## Nouveau en 1.2.4+
+
+- Login QR : canvas fixe **320×320** (bug fente Windows corrigé)
+- **Add-on Home Assistant OS :** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (réseau hôte)
+- Docker/HA : [docs/docker.md](docs/docker.md)
+- PTZ : LAN d’abord (TCP 6668), **cloud PTZ** optionnel après email/mot de passe — pas de clés IoT developer
+- Session protect : re-login auto avec mot de passe stocké
+

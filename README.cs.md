@@ -83,3 +83,12 @@ Relace: `%APPDATA%\TuyaRtspBridge\` (Windows) nebo `~/.local/share/tuya-rtsp-bri
 Náš kód: MIT. Dodaný engine: MIT, Copyright (c) 2025 seydx. Není přidruženo k Tuya Inc.
 
 Názvy, místní data, přiložené licence: [docs/legal.md](docs/legal.md).
+
+## Novinky v 1.2.4+
+
+- QR login: pevné plátno **320×320** (oprava windowsové štěrbiny)
+- **Home Assistant OS add-on:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (host network)
+- Docker/HA: [docs/docker.md](docs/docker.md)
+- PTZ: nejdřív LAN (TCP 6668), volitelně **cloud PTZ** po email/hesle — bez IoT developer keys
+- Protect relace: auto-relogin s uloženým heslem
+

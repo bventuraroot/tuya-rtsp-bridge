@@ -66,3 +66,12 @@ rtsp://<המחשב-הזה>:8554/<שם-המצלמה>/hd
 </div>
 
 שמות, נתונים מקומיים, רישיונות מצורפים: [docs/legal.md](docs/legal.md).
+
+## חדש ב-1.2.4+
+
+- כניסת QR: קנבס קבוע **320×320** (תוקן באג הסדק ב-Windows)
+- **תוסף Home Assistant OS:** [homeassistant/tuya_rtsp_bridge/](homeassistant/tuya_rtsp_bridge/) (host network)
+- Docker/HA: [docs/docker.md](docs/docker.md)
+- PTZ: קודם LAN (TCP 6668), אופציונלי **cloud PTZ** אחרי email/סיסמה — בלי מפתחות IoT developer
+- סשן protect: התחברות מחדש אוטומטית עם סיסמה שמורה
+
