@@ -66,26 +66,33 @@ def ffmpeg() -> Path | None:
 
 
 def cam_bytes(ff: Path, cam: str) -> int:
+    """Probe SD first (H.264, reliable byte count), fall back to HD."""
     dest = user_data() / "tmp" / f"wd_{cam}.ts"
     dest.parent.mkdir(parents=True, exist_ok=True)
-    if dest.exists():
-        dest.unlink()
     flags = creationflags()
-    subprocess.run(
-        [
-            str(ff), "-hide_banner", "-loglevel", "error",
-            "-rtsp_transport", "tcp", "-timeout", "8000000", "-t", "4",
-            "-i", f"rtsp://127.0.0.1:8554/{cam}/hd",
-            "-an", "-c", "copy", "-y", str(dest),
-        ],
-        capture_output=True,
-        timeout=18,
-        creationflags=flags,
-    )
-    n = dest.stat().st_size if dest.exists() else 0
-    if dest.exists():
-        dest.unlink()
-    return n
+    for stream in ("sd", "hd"):
+        if dest.exists():
+            dest.unlink()
+        try:
+            subprocess.run(
+                [
+                    str(ff), "-hide_banner", "-loglevel", "error",
+                    "-rtsp_transport", "tcp", "-timeout", "8000000", "-t", "3",
+                    "-i", f"rtsp://127.0.0.1:8554/{cam}/{stream}",
+                    "-an", "-c", "copy", "-y", str(dest),
+                ],
+                capture_output=True,
+                timeout=16,
+                creationflags=flags,
+            )
+        except Exception:
+            continue
+        n = dest.stat().st_size if dest.exists() else 0
+        if dest.exists():
+            dest.unlink()
+        if n > 5000:
+            return n
+    return 0
 
 
 def restart_engine() -> None:
@@ -123,13 +130,15 @@ def tick() -> None:
     ok = 0
     for cam in cams:
         n = cam_bytes(ff, cam)
-        if n > 10000:
+        if n > 5000:
             ok += 1
-    need = 1 if len(cams) == 1 else 2
+    need = 1  # never require majority — offline/low-power cams must not thrash restarts
     log(f"probe cams={len(cams)} ok={ok}")
     if ok < need:
         log("media dead → restart")
         restart_engine()
+    elif ok < len(cams):
+        log(f"partial ok={ok}/{len(cams)} (no restart)")
 
 
 def main() -> None:

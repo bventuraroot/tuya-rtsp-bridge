@@ -60,10 +60,17 @@ def _user_key(region_key: str, email: str) -> str:
 
 
 def _rtsp_path(name: str, device_id: str) -> str:
-    safe = re.sub(r"[\s/\\]+", "_", name).strip("_")
+    # Collapse tabs/newlines from Smart Life names; keep unicode for path match with engine.
+    clean = " ".join((name or "").replace("\t", " ").split())
+    safe = re.sub(r"[\s/\\]+", "_", clean).strip("_")
     if not safe:
         safe = device_id
     return f"/{safe}"
+
+
+def _clean_name(name: str, device_id: str) -> str:
+    s = " ".join((name or device_id or "").replace("\t", " ").split())
+    return s or device_id or "camera"
 
 
 class TuyaClient:
@@ -355,7 +362,7 @@ class TuyaClient:
                 skill = (cfg.get("result") or {}).get("skill") or ""
             except Exception:
                 continue
-            name = device.get("deviceName") or did
+            name = _clean_name(device.get("deviceName") or "", did)
             cameras.append(
                 {
                     "userKey": user_key,

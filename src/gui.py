@@ -191,8 +191,38 @@ class BridgeGui(tk.Tk):
         self.btn_refresh = tk.Button(head, text=t("cameras_refresh"), command=self.do_refresh, bg=PANEL, fg=INK,
                   relief="flat", padx=10, pady=6)
         self.btn_refresh.pack(side="right")
-        self.cam_box = tk.Frame(mid, bg=BG)
-        self.cam_box.pack(fill="both", expand=True, padx=20)
+
+        # Scrollable camera list (4×270px cards do not fit without it).
+        cam_wrap = tk.Frame(mid, bg=BG)
+        cam_wrap.pack(fill="both", expand=True, padx=20)
+        self._cam_canvas = tk.Canvas(cam_wrap, bg=BG, highlightthickness=0)
+        self._cam_scroll = tk.Scrollbar(cam_wrap, orient="vertical", command=self._cam_canvas.yview)
+        self.cam_box = tk.Frame(self._cam_canvas, bg=BG)
+        self.cam_box.bind(
+            "<Configure>",
+            lambda e: self._cam_canvas.configure(scrollregion=self._cam_canvas.bbox("all")),
+        )
+        self._cam_win = self._cam_canvas.create_window((0, 0), window=self.cam_box, anchor="nw")
+        self._cam_canvas.configure(yscrollcommand=self._cam_scroll.set)
+        self._cam_canvas.pack(side="left", fill="both", expand=True)
+        self._cam_scroll.pack(side="right", fill="y")
+        self._cam_canvas.bind(
+            "<Configure>",
+            lambda e: self._cam_canvas.itemconfigure(self._cam_win, width=e.width),
+        )
+
+        def _wheel(event: tk.Event) -> None:
+            # Linux button 4/5 or Windows delta
+            if getattr(event, "num", None) == 5 or getattr(event, "delta", 0) < 0:
+                self._cam_canvas.yview_scroll(1, "units")
+            else:
+                self._cam_canvas.yview_scroll(-1, "units")
+
+        for w in (self._cam_canvas, self.cam_box):
+            w.bind("<MouseWheel>", _wheel)
+            w.bind("<Button-4>", _wheel)
+            w.bind("<Button-5>", _wheel)
+
         self.yaml = tk.Text(mid, height=3, bg="#0e140e", fg=INK, insertbackground=INK,
                             relief="flat", font=("Consolas", 10))
         self.yaml.pack(fill="x", padx=20, pady=(8, 6))
@@ -341,18 +371,21 @@ class BridgeGui(tk.Tk):
             self._cards.pop("empty")["frame"].destroy()
         for cam in cams:
             did = str(cam.get("deviceId") or cam.get("deviceName"))
-            url = cam.get("rtspHd") or ""
+            # Preview: SD = H.264 (VLC shows picture). HD is often HEVC → black window.
+            url_prev = cam.get("rtspSd") or cam.get("rtspHd") or ""
+            url_hd = cam.get("rtspHd") or url_prev
             if did not in self._cards:
                 self._cards[did] = self._make_card(cam)
             rec = self._cards[did]
             rec["name"].config(text=cam.get("deviceName") or t("camera"))
             rec["id"].config(text=cam.get("deviceId") or "")
-            rec["url_l"].config(text=url)
-            rec["url"] = url
-            rec["copy"].config(command=lambda u=url: self._clip(u))
+            rec["url_l"].config(text=url_hd)
+            rec["url"] = url_hd
+            rec["url_prev"] = url_prev
+            rec["copy"].config(command=lambda u=url_hd: self._clip(u))
             if self._fs is not None:
                 continue
-            local = self._local_url(url)
+            local = self._local_url(url_prev)
             prev: VlcPreview = rec["preview"]
             if rtsp_up and local and not prev.running:
                 rec["thumb"].update_idletasks()
@@ -363,13 +396,17 @@ class BridgeGui(tk.Tk):
 
     def _make_card(self, cam: dict) -> dict:
         did = str(cam.get("deviceId") or "")
-        url = cam.get("rtspHd") or ""
+        url_hd = cam.get("rtspHd") or ""
+        url_prev = cam.get("rtspSd") or url_hd
         card = tk.Frame(self.cam_box, bg=PANEL, bd=1, relief="solid")
         card.pack(fill="x", pady=6)
         thumb = tk.Canvas(card, width=480, height=270, bg="#050705", highlightthickness=0, cursor="hand2")
         thumb.pack(side="left", padx=8, pady=8)
         txt_id = thumb.create_text(240, 135, text=t("fs_hint"), fill=DIM, font=("Segoe UI", 11))
-        rec: dict = {"frame": card, "thumb": thumb, "txt_id": txt_id, "url": url}
+        rec: dict = {
+            "frame": card, "thumb": thumb, "txt_id": txt_id,
+            "url": url_hd, "url_prev": url_prev,
+        }
         prev = VlcPreview()
         rec["preview"] = prev
         thumb.bind("<Button-1>", lambda e, d=did: self._open_fullscreen(d))
@@ -381,10 +418,10 @@ class BridgeGui(tk.Tk):
         rec["name"].pack(anchor="w")
         rec["id"] = tk.Label(right, text=did, fg=DIM, bg=PANEL, font=("Consolas", 9))
         rec["id"].pack(anchor="w")
-        rec["url_l"] = tk.Label(right, text=url, fg=INK, bg=PANEL, font=("Consolas", 10),
+        rec["url_l"] = tk.Label(right, text=url_hd, fg=INK, bg=PANEL, font=("Consolas", 10),
                                 wraplength=420, justify="left")
         rec["url_l"].pack(anchor="w", pady=4)
-        rec["copy"] = tk.Button(right, text=t("copy_hd"), command=lambda u=url: self._clip(u),
+        rec["copy"] = tk.Button(right, text=t("copy_hd"), command=lambda u=url_hd: self._clip(u),
                                 bg=BG, fg=AMBER, relief="flat")
         rec["copy"].pack(anchor="w", side="left")
         rec["fsbtn"] = tk.Button(right, text=t("fullscreen"), command=lambda d=did: self._open_fullscreen(d),
@@ -413,7 +450,8 @@ class BridgeGui(tk.Tk):
         rec = self._cards.get(did)
         if not rec or self._fs is not None:
             return
-        url = self._local_url(rec["url"])
+        # Fullscreen also prefers SD for VLC; HD URL stays on the card for Frigate copy.
+        url = self._local_url(rec.get("url_prev") or rec["url"])
         self.after(80, lambda: self._fs_go(rec, url))
 
     def _fs_go(self, rec: dict, url: str) -> None:
