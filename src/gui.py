@@ -15,7 +15,7 @@ from pathlib import Path
 import tkinter as tk
 from PIL import Image, ImageTk
 
-from preview import VlcPreview
+from preview import SnapPreview, VlcPreview
 from paths import install_root, user_data
 from i18n import LANG_LABELS, current_label, is_rtl, lang_from_label, t
 
@@ -23,6 +23,8 @@ ROOT = install_root()
 API = "http://127.0.0.1:8787"
 BG, PANEL, INK, DIM, LINE = "#0c100c", "#141a14", "#c8e6b8", "#6f8a62", "#2a3628"
 AMBER, OK, BAD = "#e2b13c", "#7dce6a", "#d36b58"
+# libVLC window embed is reliable on Windows; Linux/Wayland → ffmpeg stills.
+USE_SNAP_PREVIEW = os.name != "nt"
 
 
 def _nowin() -> int:
@@ -386,15 +388,16 @@ class BridgeGui(tk.Tk):
             if self._fs is not None:
                 continue
             local = self._local_url(url_prev)
-            prev: VlcPreview = rec["preview"]
+            prev = rec["preview"]
             if rtsp_up and local and not prev.running:
                 rec["thumb"].update_idletasks()
                 try:
-                    prev.start(local, int(rec["thumb"].winfo_id()), cache_ms=200)
-                    if prev.last_error:
-                        rec["thumb"].itemconfig(rec["txt_id"], text=prev.last_error[:80])
-                    elif prev.running:
-                        rec["thumb"].itemconfig(rec["txt_id"], text="")
+                    if USE_SNAP_PREVIEW:
+                        prev.start(local)
+                    else:
+                        prev.start(local, int(rec["thumb"].winfo_id()), cache_ms=200)
+                    if getattr(prev, "last_error", ""):
+                        rec["thumb"].itemconfig(rec["txt_id"], text=str(prev.last_error)[:80])
                 except Exception as exc:
                     rec["thumb"].itemconfig(rec["txt_id"], text=str(exc)[:80])
             elif not rtsp_up and prev.running:
@@ -414,7 +417,10 @@ class BridgeGui(tk.Tk):
             "frame": card, "thumb": thumb, "txt_id": txt_id,
             "url": url_hd, "url_prev": url_prev,
         }
-        prev = VlcPreview()
+        if USE_SNAP_PREVIEW:
+            prev = SnapPreview(thumb, txt_id, did or url_hd)
+        else:
+            prev = VlcPreview()
         rec["preview"] = prev
         thumb.bind("<Button-1>", lambda e, d=did: self._open_fullscreen(d))
 
@@ -476,9 +482,25 @@ class BridgeGui(tk.Tk):
         cv.pack(fill="both", expand=True)
         win.update()
         self._fs = win
-        prev = VlcPreview()
-        self._fs_prev = prev
-        prev.start(url, int(cv.winfo_id()), cache_ms=150)
+        if USE_SNAP_PREVIEW:
+            # Fullscreen canvas stills
+            fs_cv = tk.Canvas(cv, bg="black", highlightthickness=0)
+            fs_cv.pack(fill="both", expand=True)
+            win.update_idletasks()
+            tid = fs_cv.create_text(
+                win.winfo_screenwidth() // 2,
+                win.winfo_screenheight() // 2,
+                text="…",
+                fill=DIM,
+                font=("Segoe UI", 16),
+            )
+            prev = SnapPreview(fs_cv, tid, f"fs-{id(rec)}", interval_s=1.5)
+            self._fs_prev = prev
+            prev.start(url)
+        else:
+            prev = VlcPreview()
+            self._fs_prev = prev
+            prev.start(url, int(cv.winfo_id()), cache_ms=150)
         win.bind("<Escape>", lambda e: self._close_fullscreen())
         win.protocol("WM_DELETE_WINDOW", self._close_fullscreen)
         win.focus_force()
