@@ -7,11 +7,17 @@ export TUYA_BRIDGE_ROOT="$ROOT"
 
 # App sources + private site-packages (tinytuya, python-vlc).
 # System site-packages (requests, pillow, …) stay on the default path.
+# Do NOT inherit ambient PYTHONPATH (Hermes/conda venv breaks system PIL/Tk).
 PY_PATH="$ROOT/src"
 if [[ -d "$ROOT/site-packages" ]]; then
   PY_PATH="$PY_PATH:$ROOT/site-packages"
 fi
-export PYTHONPATH="${PY_PATH}${PYTHONPATH:+:$PYTHONPATH}"
+if [[ -n "${TUYA_EXTRA_PYTHONPATH:-}" ]]; then
+  PY_PATH="$PY_PATH:$TUYA_EXTRA_PYTHONPATH"
+fi
+export PYTHONPATH="$PY_PATH"
+# Drop venv pollution that would shadow distro packages.
+unset VIRTUAL_ENV PYTHONHOME
 
 # Prefer package venv if an older install left one; else *system* python3.
 # Never inherit a random venv python from PATH (Hermes, conda, …).

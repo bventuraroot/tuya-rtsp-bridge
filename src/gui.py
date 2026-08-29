@@ -157,8 +157,17 @@ class BridgeGui(tk.Tk):
         self.region_box = tk.OptionMenu(left, self.region, "")
         self.region_box.config(bg="#0e140e", fg=INK, highlightthickness=0, width=32)
         self.region_box.pack(fill="x", padx=18)
-        self.qr_label = tk.Label(left, text=t("qr_none"), bg="#ffffff", fg="#666", width=32, height=14)
-        self.qr_label.pack(padx=18, pady=14, fill="x")
+        # QR size is pixels once an image is set — never use character width/height here
+        # (Tk treats width/height as pixels with images → 32×14 becomes an unscannable slit).
+        self._qr_px = 300
+        self.qr_frame = tk.Frame(left, bg="#ffffff", width=self._qr_px, height=self._qr_px)
+        self.qr_frame.pack(padx=18, pady=14)
+        self.qr_frame.pack_propagate(False)
+        self.qr_label = tk.Label(
+            self.qr_frame, text=t("qr_none"), bg="#ffffff", fg="#666",
+            font=("Segoe UI", 11), justify="center", wraplength=self._qr_px - 24,
+        )
+        self.qr_label.place(relx=0.5, rely=0.5, anchor="center")
         self.hint = tk.Label(left, text=t("hint"), fg=DIM, bg=PANEL,
                              wraplength=310, justify="right" if is_rtl() else "left")
         self.hint.pack(anchor="w", padx=18)
@@ -280,8 +289,7 @@ class BridgeGui(tk.Tk):
             self._last_qr = s.get("qrId") or ""
             self._load_qr()
         elif not s.get("hasQr"):
-            self.qr_label.config(image="", text=t("qr_session") if s.get("loggedIn") else t("qr_none"))
-            self.qr_img = None
+            self._clear_qr(t("qr_session") if s.get("loggedIn") else t("qr_none"))
 
         flags = s.get("flags") or {}
         for k, var in self.vars.items():
@@ -453,14 +461,26 @@ class BridgeGui(tk.Tk):
             rec["preview"].stop()
         self.destroy()
 
+    def _clear_qr(self, msg: str) -> None:
+        self.qr_img = None
+        self.qr_label.configure(image="", text=msg)
+        # drop pixel size hints so placeholder text can layout inside the fixed frame
+        self.qr_label["width"] = 0
+        self.qr_label["height"] = 0
+
     def _load_qr(self) -> None:
         try:
             with urllib.request.urlopen(API + "/api/qr.png", timeout=8) as res:
-                img = Image.open(BytesIO(res.read())).resize((280, 280))
+                raw = Image.open(BytesIO(res.read())).convert("RGB")
+            # NEAREST keeps modules crisp for phone cameras
+            px = self._qr_px
+            img = raw.resize((px, px), Image.Resampling.NEAREST)
             self.qr_img = ImageTk.PhotoImage(img)
-            self.qr_label.config(image=self.qr_img, text="")
+            self.qr_label.configure(image=self.qr_img, text="")
+            self.qr_label["width"] = px
+            self.qr_label["height"] = px
         except Exception:
-            self.qr_label.config(image="", text=t("qr_error"))
+            self._clear_qr(t("qr_error"))
 
     def _clip(self, text: str) -> None:
         self.clipboard_clear()
