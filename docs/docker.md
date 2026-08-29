@@ -22,6 +22,19 @@ Then in Frigate / go2rtc / Agent DVR:
 rtsp://<this-host>:8554/<CameraName>/hd
 ```
 
+## Home Assistant OS add-on
+
+Supervisor add-on: [`homeassistant/tuya_rtsp_bridge/`](../homeassistant/tuya_rtsp_bridge/).
+
+1. Clone this repo on the HA host, **or** add `https://github.com/DanEng1982/tuya-rtsp-bridge` (subdirectory `homeassistant`) as a custom add-on repository via `repository.json`
+2. **Settings → Add-ons → Add-on store → ⋮ → Repositories** if needed
+3. Install **Tuya RTSP Bridge** → Start
+4. Open `http://<ha-host>:8787` for QR login
+
+Details: [homeassistant/tuya_rtsp_bridge/README.md](../homeassistant/tuya_rtsp_bridge/README.md).
+
+`host_network: true` is required. Do **not** also run the official Tuya cloud integration for the same cameras.
+
 ## Windows / macOS Docker Desktop
 
 `network_mode: host` does not work there:

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.4
+
+- Fix Windows QR display: Canvas + fixed 320×320 NEAREST (no Tk Label slit) — #2
+- Windows DPI awareness; API reconnects if backend was down (WinError 10061)
+- Home Assistant OS add-on skeleton (`homeassistant/tuya_rtsp_bridge`) — #1
+- Cloud PTZ fallback + protect password auto-relogin (local builds)
+
 ## 1.2.3
 
 - Honest licenses: bundled ffmpeg is GPL-3 (Gyan essentials), VLC zip is GPL-2 / libVLC LGPL

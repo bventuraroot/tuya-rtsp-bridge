@@ -12,6 +12,15 @@ import urllib.request
 from io import BytesIO
 from pathlib import Path
 
+# Windows: process-DPI before any Tk window, else QR pixels get scaled mushy.
+if os.name == "nt":
+    try:
+        import ctypes
+
+        ctypes.windll.user32.SetProcessDPIAware()
+    except Exception:
+        pass
+
 import tkinter as tk
 from PIL import Image, ImageTk
 
@@ -25,6 +34,7 @@ BG, PANEL, INK, DIM, LINE = "#0c100c", "#141a14", "#c8e6b8", "#6f8a62", "#2a3628
 AMBER, OK, BAD = "#e2b13c", "#7dce6a", "#d36b58"
 # libVLC window embed is reliable on Windows; Linux/Wayland → ffmpeg live pipe.
 USE_SNAP_PREVIEW = os.name != "nt"
+QR_PX = 320  # fixed display size — never character-cells, never stretched by layout
 
 
 def _nowin() -> int:
@@ -71,17 +81,27 @@ def api(path: str, body: dict | None = None) -> dict:
         method = "POST"
         data = json.dumps(body).encode("utf-8")
         headers["Content-Type"] = "application/json"
-    req = urllib.request.Request(API + path, data=data, headers=headers, method=method)
-    try:
-        with urllib.request.urlopen(req, timeout=30) as res:
-            return json.loads(res.read().decode("utf-8"))
-    except urllib.error.HTTPError as exc:
+    last_err: Exception | None = None
+    for attempt in range(2):
+        req = urllib.request.Request(API + path, data=data, headers=headers, method=method)
         try:
-            err = json.loads(exc.read().decode("utf-8"))
-            msg = err.get("error") or err.get("message") or str(exc)
-        except Exception:
-            msg = str(exc)
-        raise RuntimeError(msg) from exc
+            with urllib.request.urlopen(req, timeout=30) as res:
+                return json.loads(res.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            try:
+                err = json.loads(exc.read().decode("utf-8"))
+                msg = err.get("error") or err.get("message") or str(exc)
+            except Exception:
+                msg = str(exc)
+            raise RuntimeError(msg) from exc
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+            last_err = exc
+            # WinError 10061 / connection refused → spawn backend once
+            if attempt == 0:
+                ensure_backend()
+                continue
+            raise RuntimeError(str(exc)) from exc
+    raise RuntimeError(str(last_err) if last_err else "API unreachable")
 
 
 class BridgeGui(tk.Tk):
@@ -167,17 +187,35 @@ class BridgeGui(tk.Tk):
         self.region_box = tk.OptionMenu(left, self.region, "")
         self.region_box.config(bg="#0e140e", fg=INK, highlightthickness=0, width=32)
         self.region_box.pack(fill="x", padx=18)
-        # QR size is pixels once an image is set — never use character width/height here
-        # (Tk treats width/height as pixels with images → 32×14 becomes an unscannable slit).
-        self._qr_px = 300
-        self.qr_frame = tk.Frame(left, bg="#ffffff", width=self._qr_px, height=self._qr_px)
+        # QR: fixed-size Canvas (not Label width/height — those flip to char-cells
+        # without an image and crush the code to an unscannable slit on Windows).
+        self._qr_px = QR_PX
+        self.qr_frame = tk.Frame(
+            left, bg="#ffffff", width=self._qr_px, height=self._qr_px,
+            highlightthickness=1, highlightbackground="#c8c8c8",
+        )
         self.qr_frame.pack(padx=18, pady=14)
         self.qr_frame.pack_propagate(False)
-        self.qr_label = tk.Label(
-            self.qr_frame, text=t("qr_none"), bg="#ffffff", fg="#666",
-            font=("Segoe UI", 11), justify="center", wraplength=self._qr_px - 24,
+        self.qr_canvas = tk.Canvas(
+            self.qr_frame,
+            width=self._qr_px,
+            height=self._qr_px,
+            bg="#ffffff",
+            highlightthickness=0,
+            bd=0,
         )
-        self.qr_label.place(relx=0.5, rely=0.5, anchor="center")
+        self.qr_canvas.place(x=0, y=0, width=self._qr_px, height=self._qr_px)
+        self._qr_item = self.qr_canvas.create_text(
+            self._qr_px // 2,
+            self._qr_px // 2,
+            text=t("qr_none"),
+            fill="#666666",
+            font=("Segoe UI", 11),
+            justify="center",
+            width=self._qr_px - 24,
+        )
+        # keep legacy name for any external refs
+        self.qr_label = self.qr_canvas
         self.hint = tk.Label(left, text=t("hint"), fg=DIM, bg=PANEL,
                              wraplength=310, justify="right" if is_rtl() else "left")
         self.hint.pack(anchor="w", padx=18)
@@ -584,22 +622,32 @@ class BridgeGui(tk.Tk):
 
     def _clear_qr(self, msg: str) -> None:
         self.qr_img = None
-        self.qr_label.configure(image="", text=msg)
-        # drop pixel size hints so placeholder text can layout inside the fixed frame
-        self.qr_label["width"] = 0
-        self.qr_label["height"] = 0
+        self.qr_canvas.delete("all")
+        self._qr_item = self.qr_canvas.create_text(
+            self._qr_px // 2,
+            self._qr_px // 2,
+            text=msg,
+            fill="#666666",
+            font=("Segoe UI", 11),
+            justify="center",
+            width=self._qr_px - 24,
+        )
 
     def _load_qr(self) -> None:
         try:
+            ensure_backend()
             with urllib.request.urlopen(API + "/api/qr.png", timeout=8) as res:
                 raw = Image.open(BytesIO(res.read())).convert("RGB")
-            # NEAREST keeps modules crisp for phone cameras
+            # Force exact display size with NEAREST so modules stay crisp for phones.
             px = self._qr_px
             img = raw.resize((px, px), Image.Resampling.NEAREST)
             self.qr_img = ImageTk.PhotoImage(img)
-            self.qr_label.configure(image=self.qr_img, text="")
-            self.qr_label["width"] = px
-            self.qr_label["height"] = px
+            self.qr_canvas.delete("all")
+            self.qr_canvas.create_image(0, 0, anchor="nw", image=self.qr_img)
+            # lock geometry again (DPI / theme changes)
+            self.qr_frame.configure(width=px, height=px)
+            self.qr_canvas.configure(width=px, height=px)
+            self.qr_canvas.place(x=0, y=0, width=px, height=px)
         except Exception:
             self._clear_qr(t("qr_error"))
 

@@ -15,6 +15,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import qrcode
+from PIL import Image
 
 from rtsp_manager import RtspManager
 from hd_proxy import MultiHdProxy
@@ -182,11 +183,22 @@ def set_phase(phase: str, message: str) -> None:
 
 
 def qr_png_bytes() -> bytes:
+    """Square QR PNG at fixed pixel size — GUI must not stretch further."""
     payload = client.qr_payload()
-    qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=8, border=2)
+    # box_size picked so final image ≈ 320px after border
+    qr = qrcode.QRCode(
+        version=None,
+        error_correction=qrcode.constants.ERROR_CORRECT_M,
+        box_size=10,
+        border=2,
+    )
     qr.add_data(payload)
     qr.make(fit=True)
-    img = qr.make_image(fill_color="black", back_color="white")
+    img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
+    # Normalize to fixed size with NEAREST (module edges stay sharp).
+    target = 320
+    if img.size != (target, target):
+        img = img.resize((target, target), Image.Resampling.NEAREST)
     buf = io.BytesIO()
     img.save(buf, format="PNG")
     return buf.getvalue()
