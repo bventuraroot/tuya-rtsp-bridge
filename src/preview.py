@@ -6,6 +6,7 @@ import sys
 from paths import vlc_dir
 
 _instance = None
+_instance_failed = ""
 
 
 def configure_vlc_env() -> None:
@@ -15,7 +16,7 @@ def configure_vlc_env() -> None:
     os.environ["PATH"] = str(d) + os.pathsep + os.environ.get("PATH", "")
     plug = d / "plugins"
     if plug.is_dir():
-        os.environ["VLC_PLUGIN_PATH"] = str(plug)
+        os.environ.setdefault("VLC_PLUGIN_PATH", str(plug))
 
 
 def vlc_mod():
@@ -26,21 +27,48 @@ def vlc_mod():
 
 
 def vlc_instance():
-    global _instance
+    """Return a shared libVLC Instance, or None if libVLC cannot start."""
+    global _instance, _instance_failed
+    if _instance is not None:
+        return _instance
+    if _instance_failed:
+        return None
     vlc = vlc_mod()
-    if _instance is None:
-        _instance = vlc.Instance(
+    # Prefer plain software decode; hw flags break some Linux installs.
+    attempts = [
+        (
             "--intf",
             "dummy",
             "--no-video-title-show",
             "--quiet",
-            "--network-caching=150",
-            "--live-caching=150",
+            "--network-caching=200",
+            "--live-caching=200",
             "--rtsp-tcp",
-            "--avcodec-hw=any",
             "--no-audio",
-        )
-    return _instance
+            "--vout=x11",
+        ),
+        (
+            "--intf",
+            "dummy",
+            "--quiet",
+            "--rtsp-tcp",
+            "--no-audio",
+        ),
+        [],
+    ]
+    last = ""
+    for args in attempts:
+        try:
+            inst = vlc.Instance(*args) if args else vlc.Instance()
+        except Exception as exc:
+            last = str(exc)
+            continue
+        if inst is not None:
+            _instance = inst
+            return _instance
+        last = "Instance() returned None"
+    _instance_failed = last or "libVLC unavailable"
+    return None
 
 
 def _attach(player, wid: int) -> None:
@@ -58,6 +86,7 @@ class VlcPreview:
         self.player = None
         self.url = ""
         self.hwnd = 0
+        self.last_error = ""
 
     @property
     def running(self) -> bool:
@@ -70,19 +99,33 @@ class VlcPreview:
         if self.player is not None and self.url == url and self.hwnd == hwnd:
             return
         self.stop()
-        inst = vlc_instance()
-        ply = inst.media_player_new()
-        _attach(ply, hwnd)
-        media = inst.media_new(url)
-        media.add_option(f":network-caching={cache_ms}")
-        media.add_option(f":live-caching={cache_ms}")
-        media.add_option(":rtsp-tcp")
-        media.add_option(":no-audio")
-        ply.set_media(media)
-        ply.play()
-        self.player = ply
-        self.url = url
-        self.hwnd = hwnd
+        try:
+            inst = vlc_instance()
+            if inst is None:
+                self.last_error = _instance_failed or "libVLC missing"
+                return
+            ply = inst.media_player_new()
+            if ply is None:
+                self.last_error = "media_player_new failed"
+                return
+            _attach(ply, hwnd)
+            media = inst.media_new(url)
+            if media is None:
+                self.last_error = "media_new failed"
+                return
+            media.add_option(f":network-caching={cache_ms}")
+            media.add_option(f":live-caching={cache_ms}")
+            media.add_option(":rtsp-tcp")
+            media.add_option(":no-audio")
+            ply.set_media(media)
+            ply.play()
+            self.player = ply
+            self.url = url
+            self.hwnd = hwnd
+            self.last_error = ""
+        except Exception as exc:
+            self.last_error = f"{type(exc).__name__}: {exc}"
+            self.stop()
 
     def stop(self) -> None:
         ply = self.player

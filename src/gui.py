@@ -389,7 +389,14 @@ class BridgeGui(tk.Tk):
             prev: VlcPreview = rec["preview"]
             if rtsp_up and local and not prev.running:
                 rec["thumb"].update_idletasks()
-                prev.start(local, int(rec["thumb"].winfo_id()), cache_ms=150)
+                try:
+                    prev.start(local, int(rec["thumb"].winfo_id()), cache_ms=200)
+                    if prev.last_error:
+                        rec["thumb"].itemconfig(rec["txt_id"], text=prev.last_error[:80])
+                    elif prev.running:
+                        rec["thumb"].itemconfig(rec["txt_id"], text="")
+                except Exception as exc:
+                    rec["thumb"].itemconfig(rec["txt_id"], text=str(exc)[:80])
             elif not rtsp_up and prev.running:
                 prev.stop()
                 rec["thumb"].itemconfig(rec["txt_id"], text=t("no_stream"))
