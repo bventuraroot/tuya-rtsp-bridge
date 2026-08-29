@@ -25,8 +25,76 @@ STOP_DP = "116"
 LAN_CACHE = "lan.json"
 VERS = (3.5, 3.4, 3.3)
 
+# Interfaces that are almost never the camera LAN (VPN tunnels, docker, …)
+_SKIP_IFACE_PREFIX = (
+    "nordlynx",
+    "wg",
+    "tun",
+    "tap",
+    "docker",
+    "br-",
+    "veth",
+    "virbr",
+    "tailscale",
+    "zt",
+)
+
+
+def _iface_ipv4s() -> list[tuple[str, str]]:
+    """Return [(iface, ip)] for usable LAN addresses — never prefer VPN over Ethernet."""
+    out: list[tuple[str, str]] = []
+    try:
+        import fcntl
+        import struct
+        import array
+        import os
+
+        # parse `ip -4 -o addr` — portable enough on Linux
+        import subprocess
+
+        text = subprocess.check_output(
+            ["ip", "-4", "-o", "addr", "show", "scope", "global"],
+            text=True,
+            timeout=3,
+        )
+    except Exception:
+        text = ""
+    for line in text.splitlines():
+        # 2: enp…    inet 192.168.2.159/24 …
+        parts = line.split()
+        if len(parts) < 4:
+            continue
+        iface = parts[1]
+        if any(iface.startswith(p) for p in _SKIP_IFACE_PREFIX):
+            continue
+        if "inet" not in parts:
+            continue
+        try:
+            ip = parts[parts.index("inet") + 1].split("/")[0]
+        except Exception:
+            continue
+        if ip.startswith("127."):
+            continue
+        out.append((iface, ip))
+    # stable preference: eth/en/wl first
+    def rank(item: tuple[str, str]) -> tuple[int, str]:
+        iface, ip = item
+        if iface.startswith(("en", "eth", "wl", "wlan")):
+            return (0, iface)
+        if ip.startswith(("192.168.", "10.")) or ip.startswith("172."):
+            return (1, iface)
+        return (2, iface)
+
+    out.sort(key=rank)
+    return out
+
 
 def _local_ipv4() -> str:
+    """Best-effort LAN IP for the camera subnet (not VPN)."""
+    ifaces = _iface_ipv4s()
+    if ifaces:
+        return ifaces[0][1]
+    # last resort: old UDP trick
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
         s.connect(("8.8.8.8", 80))
@@ -37,19 +105,30 @@ def _local_ipv4() -> str:
         s.close()
 
 
-def _scan_6668(prefix: str | None = None) -> list[str]:
-    if not prefix:
+def _prefixes() -> list[str]:
+    """All /24 prefixes we should scan for port 6668."""
+    prefs: list[str] = []
+    for _, ip in _iface_ipv4s():
+        parts = ip.split(".")
+        if len(parts) == 4:
+            p = ".".join(parts[:3]) + "."
+            if p not in prefs:
+                prefs.append(p)
+    if not prefs:
         ip = _local_ipv4()
         parts = ip.split(".")
-        if len(parts) != 4 or parts[0] in ("127",):
-            return []
-        prefix = ".".join(parts[:3]) + "."
+        if len(parts) == 4 and parts[0] != "127":
+            prefs.append(".".join(parts[:3]) + ".")
+    return prefs
+
+
+def _scan_6668(prefix: str | None = None) -> list[str]:
+    prefixes = [prefix] if prefix else _prefixes()
     found: list[str] = []
 
-    def chk(i: int) -> Optional[str]:
-        ip = f"{prefix}{i}"
+    def chk(ip: str) -> Optional[str]:
         s = socket.socket()
-        s.settimeout(0.35)
+        s.settimeout(0.25)
         try:
             if s.connect_ex((ip, 6668)) == 0:
                 return ip
@@ -59,10 +138,12 @@ def _scan_6668(prefix: str | None = None) -> list[str]:
             s.close()
         return None
 
-    with ThreadPoolExecutor(max_workers=64) as ex:
-        for ip in ex.map(chk, range(1, 255)):
-            if ip:
-                found.append(ip)
+    for pref in prefixes:
+        with ThreadPoolExecutor(max_workers=64) as ex:
+            ips = [f"{pref}{i}" for i in range(1, 255)]
+            for ip in ex.map(chk, ips):
+                if ip and ip not in found:
+                    found.append(ip)
     return found
 
 
@@ -88,7 +169,11 @@ class LocalPtz:
             self._map = {}
 
     def _save_cache(self) -> None:
-        out = {did: {"ip": v["ip"], "version": v["version"]} for did, v in self._map.items() if v.get("ip")}
+        out = {
+            did: {"ip": v["ip"], "version": v["version"]}
+            for did, v in self._map.items()
+            if v.get("ip")
+        }
         (self.data_dir / LAN_CACHE).write_text(json.dumps(out, indent=2), encoding="utf-8")
 
     def _local_key(self, device_id: str) -> str:
@@ -119,14 +204,13 @@ class LocalPtz:
         with self._lock:
             hit = self._map.get(device_id)
             if hit and hit.get("ip") and hit.get("key") and hit.get("version"):
-                return hit
+                # re-fetch key if missing from disk cache (keys not persisted)
+                if hit.get("key"):
+                    return hit
             cached_ip = (hit or {}).get("ip")
             cached_ver = (hit or {}).get("version")
         key = self._local_key(device_id)
-        me = _local_ipv4()
-        same = lambda ip: ip and ip.rsplit(".", 1)[0] == me.rsplit(".", 1)[0]
-        if cached_ip and not same(cached_ip):
-            cached_ip = None
+        # Accept any IP that still probes; don't reject just because VPN is primary.
         if cached_ip:
             vers = (cached_ver,) if cached_ver else VERS
             for ver in vers:
@@ -141,7 +225,11 @@ class LocalPtz:
             hit = self._map.get(device_id) or {}
             if hit.get("ip"):
                 ips.append(hit["ip"])
-            ips.extend(v.get("ip") for v in self._map.values() if v.get("ip") and v.get("ip") not in ips)
+            ips.extend(
+                v.get("ip")
+                for v in self._map.values()
+                if v.get("ip") and v.get("ip") not in ips
+            )
         scanned = _scan_6668()
         for ip in scanned:
             if ip not in ips:
@@ -156,7 +244,10 @@ class LocalPtz:
                         self._save_cache()
                     return rec
                 last = f"{ip} v{ver}"
-        raise RuntimeError(f"Kamera {device_id} nicht auf LAN (letzter Versuch {last})")
+        raise RuntimeError(
+            f"Kamera {device_id} nicht auf LAN "
+            f"(prefixes={_prefixes() or ['?']}, scanned={len(scanned)}, last={last or 'none'})"
+        )
 
     def warmup(self, device_ids: list[str]) -> None:
         def run() -> None:
@@ -166,7 +257,7 @@ class LocalPtz:
                 except Exception:
                     pass
 
-        threading.Thread(target=run, daemon=True).start()
+        threading.Thread(target=run, daemon=True, name="ptz-warmup").start()
 
     def _device(self, device_id: str):
         rec = self.ensure(device_id)
@@ -182,7 +273,7 @@ class LocalPtz:
             raise ValueError(f"unbekannte Richtung {direction}")
         d = self._device(device_id)
         res = d.set_value(PTZ_DP, DIR[direction])
-        return {"via": "lan", "dp": PTZ_DP, "value": DIR[direction], "result": res}
+        return {"via": "lan", "dp": PTZ_DP, "value": DIR[direction], "result": res, "ip": self._map.get(device_id, {}).get("ip")}
 
     def stop(self, device_id: str) -> dict:
         rec = self.ensure(device_id)
@@ -193,4 +284,4 @@ class LocalPtz:
             res = d.set_value(STOP_DP, True)
         except Exception as exc:
             res = {"error": str(exc)}
-        return {"via": "lan", "dp": STOP_DP, "value": True, "result": res}
+        return {"via": "lan", "dp": STOP_DP, "value": True, "result": res, "ip": rec.get("ip")}

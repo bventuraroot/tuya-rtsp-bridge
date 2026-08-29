@@ -15,7 +15,7 @@ from pathlib import Path
 import tkinter as tk
 from PIL import Image, ImageTk
 
-from preview import SnapPreview, VlcPreview
+from preview import LivePipePreview, VlcPreview
 from paths import install_root, user_data
 from i18n import LANG_LABELS, current_label, is_rtl, lang_from_label, t
 
@@ -23,7 +23,7 @@ ROOT = install_root()
 API = "http://127.0.0.1:8787"
 BG, PANEL, INK, DIM, LINE = "#0c100c", "#141a14", "#c8e6b8", "#6f8a62", "#2a3628"
 AMBER, OK, BAD = "#e2b13c", "#7dce6a", "#d36b58"
-# libVLC window embed is reliable on Windows; Linux/Wayland → ffmpeg stills.
+# libVLC window embed is reliable on Windows; Linux/Wayland → ffmpeg live pipe.
 USE_SNAP_PREVIEW = os.name != "nt"
 
 
@@ -72,8 +72,16 @@ def api(path: str, body: dict | None = None) -> dict:
         data = json.dumps(body).encode("utf-8")
         headers["Content-Type"] = "application/json"
     req = urllib.request.Request(API + path, data=data, headers=headers, method=method)
-    with urllib.request.urlopen(req, timeout=20) as res:
-        return json.loads(res.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=30) as res:
+            return json.loads(res.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        try:
+            err = json.loads(exc.read().decode("utf-8"))
+            msg = err.get("error") or err.get("message") or str(exc)
+        except Exception:
+            msg = str(exc)
+        raise RuntimeError(msg) from exc
 
 
 class BridgeGui(tk.Tk):
@@ -418,7 +426,9 @@ class BridgeGui(tk.Tk):
             "url": url_hd, "url_prev": url_prev,
         }
         if USE_SNAP_PREVIEW:
-            prev = SnapPreview(thumb, txt_id, did or url_hd)
+            prev = LivePipePreview(
+                thumb, txt_id, did or url_hd, width=480, height=270, fps=8, fit="fixed"
+            )
         else:
             prev = VlcPreview()
         rec["preview"] = prev
@@ -463,8 +473,15 @@ class BridgeGui(tk.Tk):
         rec = self._cards.get(did)
         if not rec or self._fs is not None:
             return
-        # Fullscreen also prefers SD for VLC; HD URL stays on the card for Frigate copy.
         url = self._local_url(rec.get("url_prev") or rec["url"])
+        # Pause list previews so ffmpeg bandwidth goes to fullscreen.
+        for other in self._cards.values():
+            p = other.get("preview")
+            if p and p is not rec.get("preview"):
+                try:
+                    p.stop()
+                except Exception:
+                    pass
         self.after(80, lambda: self._fs_go(rec, url))
 
     def _fs_go(self, rec: dict, url: str) -> None:
@@ -478,29 +495,48 @@ class BridgeGui(tk.Tk):
         bar.pack(fill="x")
         tk.Button(bar, text=t("back"), command=self._close_fullscreen,
                   bg="#222", fg=INK, relief="flat", padx=14).pack(side="left", padx=8, pady=4)
-        cv = tk.Frame(win, bg="black")
-        cv.pack(fill="both", expand=True)
-        win.update()
+        # PTZ on fullscreen too
+        did = ""
+        for k, v in self._cards.items():
+            if v is rec:
+                did = k
+                break
+        if did:
+            fs_ptz = tk.Frame(bar, bg="#111")
+            fs_ptz.pack(side="left", padx=20)
+
+            def fs_cell(lab: str, d: str) -> None:
+                b = tk.Button(fs_ptz, text=lab, width=3, bg="#222", fg=INK, relief="flat")
+                b.pack(side="left", padx=2)
+                if d == "stop":
+                    b.config(command=lambda: self._ptz(did, "stop"))
+                else:
+                    b.bind("<ButtonPress-1>", lambda e, dd=d: self._ptz(did, dd))
+                    b.bind("<ButtonRelease-1>", lambda e: self._ptz(did, "stop"))
+
+            fs_cell("↑", "up")
+            fs_cell("←", "left")
+            fs_cell("■", "stop")
+            fs_cell("→", "right")
+            fs_cell("↓", "down")
+
+        fs_cv = tk.Canvas(win, bg="black", highlightthickness=0)
+        fs_cv.pack(fill="both", expand=True)
+        win.update_idletasks()
+        sw = max(800, win.winfo_screenwidth())
+        sh = max(480, win.winfo_screenheight() - 40)
+        tid = fs_cv.create_text(sw // 2, sh // 2, text="…", fill=DIM, font=("Segoe UI", 16))
         self._fs = win
         if USE_SNAP_PREVIEW:
-            # Fullscreen canvas stills
-            fs_cv = tk.Canvas(cv, bg="black", highlightthickness=0)
-            fs_cv.pack(fill="both", expand=True)
-            win.update_idletasks()
-            tid = fs_cv.create_text(
-                win.winfo_screenwidth() // 2,
-                win.winfo_screenheight() // 2,
-                text="…",
-                fill=DIM,
-                font=("Segoe UI", 16),
+            prev = LivePipePreview(
+                fs_cv, tid, f"fs-{id(rec)}", width=sw, height=sh, fps=15, fit="fill"
             )
-            prev = SnapPreview(fs_cv, tid, f"fs-{id(rec)}", interval_s=1.5)
             self._fs_prev = prev
             prev.start(url)
         else:
             prev = VlcPreview()
             self._fs_prev = prev
-            prev.start(url, int(cv.winfo_id()), cache_ms=150)
+            prev.start(url, int(fs_cv.winfo_id()), cache_ms=120)
         win.bind("<Escape>", lambda e: self._close_fullscreen())
         win.protocol("WM_DELETE_WINDOW", self._close_fullscreen)
         win.focus_force()
@@ -519,8 +555,26 @@ class BridgeGui(tk.Tk):
                     fs.destroy()
                 except tk.TclError:
                     pass
+            # Resume list previews on next paint tick.
+            if resume:
+                self._busy = False
 
         self.after(30, cleanup)
+
+    def _ptz(self, device_id: str, direction: str) -> None:
+        def go() -> None:
+            try:
+                res = api("/api/ptz/move", {"deviceId": device_id, "direction": direction})
+                if direction != "stop":
+                    msg = f"PTZ {direction}"
+                    if isinstance(res, dict) and res.get("ip"):
+                        msg += f" @ {res['ip']}"
+                    self.after(0, lambda m=msg: self.status.config(text=m))
+            except Exception as exc:
+                err = str(exc)
+                self.after(0, lambda e=err: self.status.config(text=f"PTZ: {e}"))
+
+        self._thread(go)
 
     def _on_close(self) -> None:
         self._close_fullscreen(resume=False)
@@ -556,9 +610,6 @@ class BridgeGui(tk.Tk):
 
     def copy_yaml(self) -> None:
         self._clip(self.yaml.get("1.0", "end").strip())
-
-    def _ptz(self, device_id: str, direction: str) -> None:
-        self._thread(lambda: api("/api/ptz/move", {"deviceId": device_id, "direction": direction}))
 
     def push_flags(self) -> None:
         body = {k: bool(v.get()) for k, v in self.vars.items()}

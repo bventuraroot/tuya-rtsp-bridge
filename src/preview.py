@@ -1,4 +1,4 @@
-"""Live preview via libVLC (Windows) or ffmpeg snapshots (Linux/Wayland)."""
+"""Live preview: continuous ffmpeg MJPEG pipe (Linux) or libVLC (Windows)."""
 from __future__ import annotations
 
 import os
@@ -72,55 +72,6 @@ def _nowin() -> int:
     return subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
 
 
-def grab_jpeg(url: str, dest: Path, timeout_s: float = 10.0) -> bool:
-    """One frame from RTSP via ffmpeg. Returns True if dest is a usable JPEG."""
-    ff = ffmpeg_exe()
-    if not ff or not url:
-        return False
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    tmp = dest.with_suffix(".part.jpg")
-    try:
-        if tmp.exists():
-            tmp.unlink()
-        r = subprocess.run(
-            [
-                str(ff),
-                "-hide_banner",
-                "-loglevel",
-                "error",
-                "-rtsp_transport",
-                "tcp",
-                "-timeout",
-                "5000000",
-                "-i",
-                url,
-                "-frames:v",
-                "1",
-                "-q:v",
-                "4",
-                "-update",
-                "1",
-                "-y",
-                str(tmp),
-            ],
-            capture_output=True,
-            timeout=timeout_s,
-            creationflags=_nowin(),
-        )
-        if r.returncode != 0 or not tmp.exists() or tmp.stat().st_size < 800:
-            if tmp.exists():
-                tmp.unlink(missing_ok=True)
-            return False
-        tmp.replace(dest)
-        return True
-    except Exception:
-        try:
-            tmp.unlink(missing_ok=True)
-        except OSError:
-            pass
-        return False
-
-
 class VlcPreview:
     """libVLC window embed — works best on Windows; fragile on Wayland."""
 
@@ -182,21 +133,35 @@ class VlcPreview:
             pass
 
 
-class SnapPreview:
-    """Periodic ffmpeg stills drawn onto a Tk canvas — reliable on Linux/Wayland."""
+class LivePipePreview:
+    """Persistent ffmpeg MJPEG pipe → Tk canvas. Usable FPS without VLC embed."""
 
-    def __init__(self, canvas, txt_id: int, cam_key: str, interval_s: float = 2.5) -> None:
+    def __init__(
+        self,
+        canvas,
+        txt_id: int,
+        cam_key: str,
+        *,
+        width: int = 480,
+        height: int = 270,
+        fps: int = 10,
+        fit: str = "fixed",  # fixed | fill
+    ) -> None:
         self.canvas = canvas
         self.txt_id = txt_id
         self.cam_key = cam_key
-        self.interval_s = interval_s
+        self.width = width
+        self.height = height
+        self.fps = max(2, min(int(fps), 25))
+        self.fit = fit
         self.url = ""
         self._stop = threading.Event()
         self._thread: threading.Thread | None = None
+        self._proc: subprocess.Popen | None = None
         self._photo = None
         self._img_id = None
         self.last_error = ""
-        self.hwnd = 0  # API compat with VlcPreview
+        self.hwnd = 0
 
     @property
     def running(self) -> bool:
@@ -210,62 +175,185 @@ class SnapPreview:
         self.stop()
         self.url = url
         self._stop.clear()
-        self._thread = threading.Thread(target=self._loop, daemon=True, name=f"snap-{self.cam_key[:12]}")
+        self._thread = threading.Thread(
+            target=self._loop, daemon=True, name=f"live-{self.cam_key[:12]}"
+        )
         self._thread.start()
 
     def stop(self) -> None:
         self._stop.set()
         self.url = ""
+        self._kill_proc()
         t = self._thread
         self._thread = None
         if t and t.is_alive():
-            t.join(timeout=0.2)
+            t.join(timeout=0.4)
+
+    def _kill_proc(self) -> None:
+        p = self._proc
+        self._proc = None
+        if not p:
+            return
+        try:
+            p.terminate()
+        except Exception:
+            pass
+        try:
+            p.wait(timeout=1.0)
+        except Exception:
+            try:
+                p.kill()
+            except Exception:
+                pass
+
+    def _spawn(self, url: str) -> subprocess.Popen | None:
+        ff = ffmpeg_exe()
+        if not ff:
+            self.last_error = "ffmpeg missing"
+            return None
+        # Scale + FPS limit in ffmpeg so Tk only paints ready frames.
+        w, h = self._target_size()
+        vf = f"fps={self.fps},scale={w}:{h}:force_original_aspect_ratio=decrease,pad={w}:{h}:(ow-iw)/2:(oh-ih)/2"
+        cmd = [
+            str(ff),
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-rtsp_transport",
+            "tcp",
+            "-fflags",
+            "nobuffer",
+            "-flags",
+            "low_delay",
+            "-probesize",
+            "32",
+            "-analyzeduration",
+            "0",
+            "-i",
+            url,
+            "-an",
+            "-vf",
+            vf,
+            "-f",
+            "mjpeg",
+            "-q:v",
+            "5",
+            "pipe:1",
+        ]
+        try:
+            return subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL,
+                creationflags=_nowin(),
+            )
+        except Exception as exc:
+            self.last_error = str(exc)
+            return None
+
+    def _target_size(self) -> tuple[int, int]:
+        if self.fit == "fill":
+            try:
+                self.canvas.update_idletasks()
+                w = max(320, int(self.canvas.winfo_width() or self.width))
+                h = max(180, int(self.canvas.winfo_height() or self.height))
+                return w, h
+            except Exception:
+                pass
+        return self.width, self.height
 
     def _loop(self) -> None:
-        dest = user_data() / "tmp" / f"prev_{self.cam_key}.jpg"
         fails = 0
         while not self._stop.is_set():
             url = self.url
             if not url:
                 break
-            ok = grab_jpeg(url, dest, timeout_s=12.0)
-            if ok:
-                fails = 0
-                self.last_error = ""
-                try:
-                    self.canvas.after(0, lambda p=dest: self._paint(p))
-                except Exception:
-                    break
-            else:
+            proc = self._spawn(url)
+            if not proc or not proc.stdout:
                 fails += 1
                 if fails >= 2:
-                    self.last_error = "no frame"
-                    try:
-                        self.canvas.after(
-                            0,
-                            lambda: self.canvas.itemconfig(self.txt_id, text="no frame / offline"),
-                        )
-                    except Exception:
+                    self._set_text("no stream")
+                self._stop.wait(2.0)
+                continue
+            self._proc = proc
+            buf = bytearray()
+            try:
+                while not self._stop.is_set() and self.url == url:
+                    chunk = proc.stdout.read(4096)
+                    if not chunk:
                         break
-            # wait interval, but wake early on stop
-            self._stop.wait(self.interval_s if ok else 4.0)
+                    buf.extend(chunk)
+                    # drain complete JPEGs (FFD8 … FFD9)
+                    while True:
+                        soi = buf.find(b"\xff\xd8")
+                        if soi < 0:
+                            buf.clear()
+                            break
+                        if soi > 0:
+                            del buf[:soi]
+                        eoi = buf.find(b"\xff\xd9", 2)
+                        if eoi < 0:
+                            # keep growing but cap runaway
+                            if len(buf) > 2_000_000:
+                                buf.clear()
+                            break
+                        frame = bytes(buf[: eoi + 2])
+                        del buf[: eoi + 2]
+                        fails = 0
+                        self.last_error = ""
+                        try:
+                            self.canvas.after(0, lambda f=frame: self._paint(f))
+                        except Exception:
+                            self._stop.set()
+                            break
+            finally:
+                self._kill_proc()
+            fails += 1
+            if fails >= 3:
+                self._set_text("no frame / offline")
+            self._stop.wait(1.0 if fails else 0.05)
 
-    def _paint(self, path: Path) -> None:
+    def _set_text(self, msg: str) -> None:
+        self.last_error = msg
+        try:
+            self.canvas.after(0, lambda: self.canvas.itemconfig(self.txt_id, text=msg))
+        except Exception:
+            pass
+
+    def _paint(self, jpeg: bytes) -> None:
         if self._stop.is_set():
             return
         try:
+            from io import BytesIO
+
             from PIL import Image, ImageTk
 
-            im = Image.open(path).convert("RGB")
-            # fit 480x270 canvas
-            im = im.resize((480, 270), Image.Resampling.BILINEAR)
+            im = Image.open(BytesIO(jpeg)).convert("RGB")
+            # If canvas grew (fullscreen), re-letterbox via PIL once more cheaply.
+            if self.fit == "fill":
+                tw, th = self._target_size()
+                if im.size != (tw, th):
+                    im = im.resize((tw, th), Image.Resampling.BILINEAR)
             photo = ImageTk.PhotoImage(im)
-            self._photo = photo  # keep ref
+            self._photo = photo
+            cw = max(1, int(self.canvas.winfo_width() or im.size[0]))
+            ch = max(1, int(self.canvas.winfo_height() or im.size[1]))
+            x = max(0, (cw - im.size[0]) // 2)
+            y = max(0, (ch - im.size[1]) // 2)
             if self._img_id is None:
-                self._img_id = self.canvas.create_image(0, 0, anchor="nw", image=photo)
+                self._img_id = self.canvas.create_image(x, y, anchor="nw", image=photo)
             else:
+                self.canvas.coords(self._img_id, x, y)
                 self.canvas.itemconfig(self._img_id, image=photo)
             self.canvas.itemconfig(self.txt_id, text="")
-            self.canvas.tag_raise(self.txt_id)
+            try:
+                self.canvas.tag_raise(self.txt_id)
+            except Exception:
+                pass
         except Exception as exc:
             self.last_error = str(exc)
+
+
+# Back-compat alias used by older gui imports
+SnapPreview = LivePipePreview
+
