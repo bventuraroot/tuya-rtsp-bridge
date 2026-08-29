@@ -152,12 +152,18 @@ def stage_engine() -> None:
         if not go:
             raise SystemExit("bin/tuya-ipc-terminal.exe missing and go is not on PATH")
         vendor = ROOT / "vendor" / "tuya-ipc-terminal"
-        log("go build engine …")
+        log("go build engine (windows/amd64) …")
+        env = os.environ.copy()
+        env["GOOS"] = "windows"
+        env["GOARCH"] = "amd64"
+        env["CGO_ENABLED"] = "0"
+        src.parent.mkdir(parents=True, exist_ok=True)
         subprocess.run(
-            [go, "build", "-o", str(src), "."],
+            [go, "build", "-trimpath", "-ldflags=-s -w", "-o", str(src), "."],
             cwd=vendor,
             check=True,
             timeout=300,
+            env=env,
         )
     BIN.mkdir(parents=True, exist_ok=True)
     shutil.copy2(src, BIN / "tuya-ipc-terminal.exe")

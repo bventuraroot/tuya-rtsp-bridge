@@ -1,0 +1,104 @@
+name: Windows Setup
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v1.2.4)"
+        required: true
+        default: "v1.2.4"
+      prerelease:
+        description: "Mark as prerelease"
+        required: false
+        default: "false"
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  windows-setup:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build RTSP engine (windows amd64)
+        shell: bash
+        run: |
+          mkdir -p bin
+          cd vendor/tuya-ipc-terminal
+          GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o ../../bin/tuya-ipc-terminal.exe .
+
+      - name: Install Inno Setup 6
+        shell: pwsh
+        run: |
+          choco install innosetup -y --no-progress
+          if (-not (Test-Path "C:\Program Files (x86)\Inno Setup 6\ISCC.exe")) {
+            throw "ISCC.exe missing after choco install"
+          }
+
+      - name: Build Windows bundle + Setup
+        shell: pwsh
+        run: |
+          python packaging/windows/build_bundle.py
+
+      - name: Upload Setup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TuyaRtspBridge-Setup
+          path: installer/output/TuyaRtspBridge-Setup.exe
+          if-no-files-found: error
+
+      - name: Create / update GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${{ github.event.inputs.tag }}"
+          if [ -z "$TAG" ]; then
+            TAG="${GITHUB_REF_NAME}"
+          fi
+          case "$TAG" in
+            v*) ;;
+            *) TAG="v${TAG}" ;;
+          esac
+          PRE="${{ github.event.inputs.prerelease }}"
+          PRE_FLAG=()
+          if [ "$PRE" = "true" ]; then
+            PRE_FLAG=(--prerelease)
+          fi
+          EXE=installer/output/TuyaRtspBridge-Setup.exe
+          test -f "$EXE"
+          NOTES=$(mktemp)
+          {
+            echo "## Tuya RTSP Bridge ${TAG}"
+            echo
+            echo "Windows foolproof Setup (private CPython + VLC + ffmpeg + RTSP engine)."
+            echo
+            echo "### Highlights"
+            echo "- QR login fixed **320×320** canvas (Windows slit bug)"
+            echo "- Home Assistant OS add-on path"
+            echo "- Cloud PTZ fallback + protect session auto-relogin"
+            echo
+            echo "See CHANGELOG.md for details."
+          } > "$NOTES"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$EXE" --clobber
+          else
+            gh release create "$TAG" "$EXE" \
+              --title "Tuya RTSP Bridge ${TAG}" \
+              --notes-file "$NOTES" \
+              "${PRE_FLAG[@]}"
+          fi
+          rm -f "$NOTES"
