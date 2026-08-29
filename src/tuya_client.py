@@ -122,11 +122,140 @@ class TuyaClient:
             headers=self._headers(referer),
             timeout=30,
         )
+        # Auto-relogin once on expired protect session when cloud_auth password exists.
+        if resp.status_code in (401, 403) or (
+            resp.status_code == 200
+            and "USER_SESSION_INVALID" in (resp.text or "")
+        ):
+            if self._try_password_relogin():
+                resp = self.session.post(
+                    self._url(path),
+                    data=data,
+                    headers=self._headers(referer),
+                    timeout=30,
+                )
         resp.raise_for_status()
         body = resp.json()
         if not body.get("success"):
-            raise RuntimeError(body.get("errorMsg") or body.get("msg") or "Tuya-API-Fehler")
+            msg = body.get("errorMsg") or body.get("msg") or "Tuya-API-Fehler"
+            if "USER_SESSION_INVALID" in str(msg) and self._try_password_relogin():
+                resp = self.session.post(
+                    self._url(path),
+                    data=data,
+                    headers=self._headers(referer),
+                    timeout=30,
+                )
+                resp.raise_for_status()
+                body = resp.json()
+                if body.get("success"):
+                    return body
+            raise RuntimeError(msg)
         return body
+
+    def _cloud_auth_path(self) -> Path:
+        return self.data_dir / "cloud_auth.json"
+
+    def _load_cloud_password(self) -> tuple[Optional[str], Optional[str], str]:
+        p = self._cloud_auth_path()
+        if not p.exists():
+            return None, None, "49"
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except Exception:
+            return None, None, "49"
+        if not isinstance(data, dict):
+            return None, None, "49"
+        email = (data.get("email") or "").strip() or None
+        password = data.get("password") or None
+        country = str(data.get("countryCode") or "49")
+        return email, password, country
+
+    def password_login(
+        self, email: str, password: str, country_code: str = "49"
+    ) -> dict:
+        """Protect email/password login → cookies + loginResult (no QR)."""
+        import hashlib
+
+        from cryptography.hazmat.backends import default_backend
+        from cryptography.hazmat.primitives import serialization
+        from cryptography.hazmat.primitives.asymmetric import padding
+
+        email = (email or "").strip()
+        if not email or not password:
+            raise RuntimeError("Email und Passwort nötig")
+        origin = f"https://{self.host}"
+        headers = self._headers("/login")
+        # fresh jar for login
+        self.session = requests.Session()
+        self.session.get(origin + "/login", timeout=20)
+        tok = self.session.post(
+            origin + "/api/login/token",
+            json={"countryCode": str(country_code), "username": email, "isUid": False},
+            headers=headers,
+            timeout=20,
+        ).json()
+        if not tok.get("success"):
+            raise RuntimeError(
+                tok.get("errorMsg") or tok.get("errorCode") or "Login-Token fehlgeschlagen"
+            )
+        tres = tok["result"]
+        pb = tres.get("pbKey") or ""
+        token = tres.get("token")
+        pem = pb if "BEGIN" in pb else f"-----BEGIN PUBLIC KEY-----\n{pb}\n-----END PUBLIC KEY-----"
+        pub = serialization.load_pem_public_key(pem.encode(), backend=default_backend())
+        enc = pub.encrypt(
+            hashlib.md5(password.encode()).hexdigest().encode(), padding.PKCS1v15()
+        ).hex()
+        body = self.session.post(
+            origin + "/api/private/email/login",
+            json={
+                "countryCode": str(country_code),
+                "email": email,
+                "passwd": enc,
+                "token": token,
+                "ifencrypt": 1,
+                "options": '{"group":1}',
+            },
+            headers=headers,
+            timeout=20,
+        ).json()
+        if not body.get("success"):
+            raise RuntimeError(
+                body.get("errorMsg") or body.get("errorCode") or "Passwort-Login fehlgeschlagen"
+            )
+        login = body.get("result")
+        if not isinstance(login, dict) or not login.get("sid"):
+            raise RuntimeError("Passwort-Login ohne SID")
+        self.login = login
+        self.token = None
+        self.save_session()
+        return login
+
+    def _try_password_relogin(self) -> bool:
+        email, password, country = self._load_cloud_password()
+        if not email or not password:
+            # try session email + stored password only
+            return False
+        try:
+            self.password_login(email, password, country)
+            return True
+        except Exception as exc:
+            self.last_error = f"relogin: {exc}"
+            return False
+
+    def ensure_session(self) -> None:
+        """Validate protect session; password-relogin from cloud_auth if needed."""
+        if not self.login and not self.load_latest_session():
+            email, password, country = self._load_cloud_password()
+            if email and password:
+                self.password_login(email, password, country)
+            else:
+                raise RuntimeError("Nicht eingeloggt")
+        try:
+            self._post("/api/customized/web/app/info", payload=None, referer="/playback")
+        except Exception:
+            if not self._try_password_relogin():
+                raise
 
     def generate_qr(self) -> str:
         self.session.get(self._url("/login"), timeout=20)
@@ -303,6 +432,7 @@ class TuyaClient:
         return bool(self.login)
 
     def discover_cameras(self) -> list[dict]:
+        self.ensure_session()
         if not self.login:
             raise RuntimeError("Nicht eingeloggt")
         self._post("/api/customized/web/app/info", payload=None, referer="/playback")

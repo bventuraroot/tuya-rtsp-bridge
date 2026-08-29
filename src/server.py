@@ -388,6 +388,12 @@ class Handler(SimpleHTTPRequestHandler):
                         pass
                 cams = client.discover_cameras()
                 set_phase("logged_in", f"{len(cams)} Kamera(s) gefunden.")
+                try:
+                    restart_rtsp_engine()
+                    apply_service_flags(services.load_flags())
+                    set_phase("logged_in", f"{len(cams)} Kamera(s) · RTSP :{rtsp.port}")
+                except Exception as exc:
+                    set_phase("logged_in", f"{len(cams)} Kamera(s). RTSP: {exc}")
                 self._json(200, public_state())
                 return
             if path == "/api/rtsp/start":
