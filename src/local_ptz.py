@@ -215,11 +215,14 @@ class LocalPtz:
             st = d.status()
         except Exception:
             return False
-        if not isinstance(st, dict):
-            return False
-        if st.get("Error") or st.get("Err"):
-            return False
-        return "dps" in st or "DPS" in st
+        if isinstance(st, dict):
+            if st.get("Error") or st.get("Err"):
+                return False
+            return "dps" in st or "DPS" in st
+        # Cámaras Tuya IPC retornan None en status() pero aceptan comandos PTZ (DP 119)
+        if st is None:
+            return True
+        return False
 
     def ensure(self, device_id: str) -> dict:
         with self._lock:
