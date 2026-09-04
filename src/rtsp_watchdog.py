@@ -118,10 +118,18 @@ def restart_engine() -> None:
         )
 
 
+_consecutive_dead = 0
+
+
 def tick() -> None:
+    global _consecutive_dead
     if not port_up():
-        log("8554 down → restart")
-        restart_engine()
+        _consecutive_dead += 1
+        log(f"8554 down (count={_consecutive_dead})")
+        if _consecutive_dead >= 2:
+            log("8554 down confirmado → restart")
+            restart_engine()
+            _consecutive_dead = 0
         return
     ff = ffmpeg()
     cams = cameras()
@@ -135,10 +143,16 @@ def tick() -> None:
     need = 1  # never require majority — offline/low-power cams must not thrash restarts
     log(f"probe cams={len(cams)} ok={ok}")
     if ok < need:
-        log("media dead → restart")
-        restart_engine()
-    elif ok < len(cams):
-        log(f"partial ok={ok}/{len(cams)} (no restart)")
+        _consecutive_dead += 1
+        log(f"media dead probe failure (count={_consecutive_dead})")
+        if _consecutive_dead >= 2:
+            log("media dead confirmado → restart")
+            restart_engine()
+            _consecutive_dead = 0
+    else:
+        _consecutive_dead = 0
+        if ok < len(cams):
+            log(f"partial ok={ok}/{len(cams)} (no restart)")
 
 
 def main() -> None:

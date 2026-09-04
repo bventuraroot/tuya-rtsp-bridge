@@ -106,11 +106,12 @@ class RtspManager:
         threading.Thread(target=self._pump, daemon=True).start()
 
     def _pump(self) -> None:
-        if not self.proc or not self.proc.stdout:
+        proc = self.proc
+        if not proc or not proc.stdout:
             return
-        for line in self.proc.stdout:
+        for line in proc.stdout:
             self._log(line)
-        code = self.proc.poll()
+        code = proc.poll() if proc else None
         self._log(f"RTSP-Prozess beendet ({code}).")
 
     def stop(self) -> None:
