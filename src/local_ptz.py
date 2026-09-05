@@ -110,6 +110,12 @@ def _local_ipv4() -> str:
 def _prefixes() -> list[str]:
     """All /24 prefixes we should scan for port 6668."""
     prefs: list[str] = []
+    
+    # Subredes comunes de routers domésticos (necesario cuando corre dentro de Docker en Mac/Windows)
+    for default_pref in ["192.168.1.", "192.168.0.", "192.168.2.", "10.0.0."]:
+        if default_pref not in prefs:
+            prefs.append(default_pref)
+
     for _, ip in _iface_ipv4s():
         parts = ip.split(".")
         if len(parts) == 4:
